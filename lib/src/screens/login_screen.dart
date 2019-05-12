@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lol/src/controllers/user_controller.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -6,6 +7,11 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreen extends State<LoginScreen> {
+  final Map<String, dynamic> _formData = {
+    'userName': null,
+  };
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
@@ -20,28 +26,31 @@ class _LoginScreen extends State<LoginScreen> {
           child: SingleChildScrollView(
             child: Container(
               width: targetWidth,
-              child: Column(
-                children: <Widget>[
-                  _lolLogo(),
-                  SizedBox(
-                    height: 40.0,
-                  ),
-                  _userNameTextField(),
-                  SizedBox(
-                    height: 40.0,
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 60.0,
-                    child: RaisedButton(
-                      child: Text('SIGN IN'),
-                      onPressed: () => {},
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    _lolLogo(),
+                    SizedBox(
+                      height: 40.0,
                     ),
-                  ),
-                  SizedBox(
-                    height: 40.0,
-                  ),
-                ],
+                    _userNameTextField(),
+                    SizedBox(
+                      height: 40.0,
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 60.0,
+                      child: RaisedButton(
+                        child: Text('SIGN IN'),
+                        onPressed: () => _submitForm(),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 40.0,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -74,8 +83,42 @@ class _LoginScreen extends State<LoginScreen> {
           labelText: 'Username',
           filled: true,
       ),
-      onSaved: (String value) {},
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'Username  is required';
+        }
+      },
+      onSaved: (String value) {
+        _formData['userName'] = value;
+      },
     );
+  }
+
+  void _submitForm() async {
+    print('------- submitForm ------');
+    _formKey.currentState.save();
+    Map<String, dynamic> successInformation;
+
+    successInformation = await UserController().auth(_formData['userName']);
+
+    if(successInformation['success']) {
+      print('success');
+    } else {
+      showDialog(context: context, builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Error Occurred'),
+          content: Text(successInformation['message']),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Ok'),
+              onPressed: (){
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      });
+    }
   }
 
 }
