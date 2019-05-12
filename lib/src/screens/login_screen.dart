@@ -12,9 +12,6 @@ class _LoginScreen extends State<LoginScreen> {
     final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Login'),
-      ),
       body: Container(
         decoration: BoxDecoration(
           image: _backgroundImage(),
@@ -29,19 +26,9 @@ class _LoginScreen extends State<LoginScreen> {
                   SizedBox(
                     height: 40.0,
                   ),
-                  _emailTextField(),
+                  _userNameTextField(),
                   SizedBox(
-                    height: 30.0,
-                  ),
-                  _passwordTextField(),
-                  SizedBox(
-                    height: 30.0,
-                  ),
-                  Text('Region/Language'),
-                  _regionDropDownButton(),
-                  _languageDropDownButton(),
-                  SizedBox(
-                    height: 30.0,
+                    height: 40.0,
                   ),
                   SizedBox(
                     width: double.infinity,
@@ -81,7 +68,7 @@ class _LoginScreen extends State<LoginScreen> {
     );
   }
 
-  Widget _emailTextField() {
+  Widget _userNameTextField() {
     return TextFormField(
       decoration: InputDecoration(
           labelText: 'Username',
@@ -91,58 +78,4 @@ class _LoginScreen extends State<LoginScreen> {
     );
   }
 
-  Widget _passwordTextField() {
-    return TextFormField(
-      decoration: InputDecoration(
-          labelText: 'Password',
-          filled: true,
-      ),
-      obscureText: true,
-      onSaved: (String value) {},
-    );
-  }
-
-  String regionValue = 'North America';
-
-  Widget _regionDropDownButton() {
-    return DropdownButton<String>(
-      value: regionValue,
-      onChanged: (String newValue) {
-        setState(() {
-          regionValue = newValue;
-        });
-      },
-      items: <String>[
-        'North America',
-        'Brazil',
-        'Japan',
-      ].map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
-    );
-  }
-
-  String languageValue = 'English';
-
-  Widget _languageDropDownButton() {
-    return DropdownButton<String>(
-      value: languageValue,
-      onChanged: (String newValue) {
-        setState(() {
-          languageValue = newValue;
-        });
-      },
-      items: <String>[
-        'English',
-      ].map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
-    );
-  }
 }
