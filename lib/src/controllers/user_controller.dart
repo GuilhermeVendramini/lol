@@ -1,45 +1,52 @@
 import 'dart:convert';
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:lol/src/models/user_model.dart';
 
-
-class UserController {
-
+class UserController with ChangeNotifier {
   UserModel _authUser;
+}
 
+class User extends UserController {
   UserModel get getUser {
     return _authUser;
   }
+}
 
+class UserAuth extends User {
   Future<Map<String, dynamic>> auth(String userName) async {
-    print('------------------------------ auth -----------------');
-    final Map<String, dynamic> authData = {
-      'userName': userName,
-    };
-
     http.Response response;
-
-    response = await http.post(
-      'https://teste',
-      body: json.encode(authData),
+    response = await http.get(
+      'https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/$userName',
       headers: {
-        'Content-Type': 'application/json',
+        'Accept-Charset': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'X-Riot-Token': 'RGAPI-c626a81e-63bd-472b-8186-4f0404ab144b',
       },
     );
 
     final Map<String, dynamic> responseData = json.decode(response.body);
+    print(responseData);
 
-    _authUser = UserModel(
-      profileIconId: responseData['profileIconId'],
-      name: responseData['name'],
-      puuid: responseData['puuid'],
-      summonerLevel: responseData['summonerLevel'],
-      accountId: responseData['accountId'],
-      id: responseData['id'],
-      revisionDate: responseData['revisionDate'],
-    );
+    bool hasError = true;
+    String message = 'Invalid Username';
 
-    return null;
+    if(responseData.containsKey('accountId')) {
+      hasError = false;
+      message = 'Authenticated successfully';
+
+      _authUser = UserModel(
+        profileIconId: responseData['profileIconId'],
+        name: responseData['name'],
+        puuid: responseData['puuid'],
+        summonerLevel: responseData['summonerLevel'],
+        accountId: responseData['accountId'],
+        id: responseData['id'],
+        revisionDate: responseData['revisionDate'],
+      );
+      notifyListeners();
+    }
+
+    return {'success': !hasError, 'message': message};
   }
 }

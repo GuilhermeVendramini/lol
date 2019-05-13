@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lol/src/controllers/user_controller.dart';
+import 'package:provider/provider.dart';
 
-class LoginScreen extends StatefulWidget {
-  @override
-  _LoginScreen createState() => _LoginScreen();
-}
-
-class _LoginScreen extends State<LoginScreen> {
+class LoginScreen extends StatelessWidget {
   final Map<String, dynamic> _formData = {
     'userName': null,
   };
@@ -16,6 +12,7 @@ class _LoginScreen extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
+    final userAuth = Provider.of<UserAuth>(context);
 
     return Scaffold(
       body: Container(
@@ -43,7 +40,7 @@ class _LoginScreen extends State<LoginScreen> {
                       height: 60.0,
                       child: RaisedButton(
                         child: Text('SIGN IN'),
-                        onPressed: () => _submitForm(),
+                        onPressed: () => _submitForm(userAuth, context),
                       ),
                     ),
                     SizedBox(
@@ -94,23 +91,21 @@ class _LoginScreen extends State<LoginScreen> {
     );
   }
 
-  void _submitForm() async {
-    print('------- submitForm ------');
+  void _submitForm(UserAuth userAuth, BuildContext context) async {
     _formKey.currentState.save();
     Map<String, dynamic> successInformation;
-
-    successInformation = await UserController().auth(_formData['userName']);
+    successInformation = await userAuth.auth(_formData['userName']);
 
     if(successInformation['success']) {
-      print('success');
+      Navigator.pushReplacementNamed(context, '/profile');
     } else {
       showDialog(context: context, builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Error Occurred'),
+          title: Text('Login'),
           content: Text(successInformation['message']),
           actions: <Widget>[
             FlatButton(
-              child: Text('Ok'),
+              child: Text('OK'),
               onPressed: (){
                 Navigator.of(context).pop();
               },
