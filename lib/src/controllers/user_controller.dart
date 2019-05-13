@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:lol/src/models/user_model.dart';
+import 'package:lol/src/controllers/api.dart';
 
 class UserController with ChangeNotifier {
   UserModel _authUser;
@@ -21,7 +22,7 @@ class UserAuth extends User {
       'https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/$userName',
       headers: {
         'Accept-Charset': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'X-Riot-Token': 'RGAPI-c626a81e-63bd-472b-8186-4f0404ab144b',
+        'X-Riot-Token': '$API_KEY',
       },
     );
 
