@@ -50,7 +50,7 @@ class _RunMaterialAppState extends State<RunMaterialApp> {
       ),
       home: userAuth.isLogged != null ? UserProfileScreen() : LoginScreen(),
       routes: {
-        '/profile':  (BuildContext context) => UserProfileScreen(),
+        '/profile': (BuildContext context) => UserProfileScreen(),
       },
     );
   }

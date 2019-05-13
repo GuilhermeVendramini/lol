@@ -23,6 +23,19 @@ class User extends UserController {
 
 class UserAuth extends User {
 
+  void userLogout() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('profileIconId');
+    prefs.remove('name');
+    prefs.remove('puuid');
+    prefs.remove('summonerLevel');
+    prefs.remove('accountId');
+    prefs.remove('id');
+    prefs.remove('revisionDate');
+    _isLogged = null;
+    notifyListeners();
+  }
+
   Future<bool> verifyLogged() async {
     // Get local User data
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -36,7 +49,6 @@ class UserAuth extends User {
         id: prefs.getString('id'),
         revisionDate: prefs.getInt('revisionDate'),
       );
-      print('----------------aquiii---------');
       _isLogged = true;
       notifyListeners();
       return true;

@@ -2,7 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:lol/src/controllers/user_controller.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatelessWidget {
+
+class LoginScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _LoginScreenSate();
+  }
+}
+
+class _LoginScreenSate extends State<LoginScreen> {
   final Map<String, dynamic> _formData = {
     'userName': null,
   };
@@ -32,6 +40,12 @@ class LoginScreen extends StatelessWidget {
                       height: 40.0,
                     ),
                     _userNameTextField(),
+                    SizedBox(
+                      height: 30.0,
+                    ),
+                    Text('Region/Language'),
+                    _regionDropDownButton(),
+                    _languageDropDownButton(),
                     SizedBox(
                       height: 40.0,
                     ),
@@ -88,6 +102,50 @@ class LoginScreen extends StatelessWidget {
       onSaved: (String value) {
         _formData['userName'] = value;
       },
+    );
+  }
+
+  String regionValue = 'North America';
+
+  Widget _regionDropDownButton() {
+    return DropdownButton<String>(
+      value: regionValue,
+      onChanged: (String newValue) {
+        setState(() {
+          regionValue = newValue;
+        });
+      },
+      items: <String>[
+        'North America',
+        'Brazil',
+        'Japan',
+      ].map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+    );
+  }
+
+  String languageValue = 'English';
+
+  Widget _languageDropDownButton() {
+    return DropdownButton<String>(
+      value: languageValue,
+      onChanged: (String newValue) {
+        setState(() {
+          languageValue = newValue;
+        });
+      },
+      items: <String>[
+        'English',
+      ].map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
     );
   }
 
