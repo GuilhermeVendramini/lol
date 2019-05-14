@@ -3,19 +3,51 @@ import 'package:provider/provider.dart';
 import 'package:lol/src/controllers/user_controller.dart';
 
 class UserProfileScreen extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserAuth>(context);
-    return Scaffold(
-      drawer: _buildSideDrawer(context),
-      appBar: AppBar(
-        title: Text(user.getUser.name),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: () {},
-          ),
-        ],
+    return DefaultTabController(
+      length: 4,
+      child: Scaffold(
+        drawer: _buildSideDrawer(context),
+        appBar: AppBar(
+          title: Text(user.getUser.name),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.settings),
+              onPressed: () {},
+            ),
+          ],
+        ),
+        body: TabBarView(
+          children: <Widget>[
+            Text('Profile'),
+            Text('Matches'),
+            Text('News'),
+            Text('Favorites'),
+          ],
+        ),
+        bottomNavigationBar: TabBar(
+          tabs: <Widget>[
+            Tab(
+              icon: Icon(Icons.person),
+              text: 'Profile',
+            ),
+            Tab(
+              icon: Icon(Icons.games),
+              text: 'Matches',
+            ),
+            Tab(
+              icon: Icon(Icons.feedback),
+              text: 'News',
+            ),
+            Tab(
+              icon: Icon(Icons.favorite),
+              text: 'Favorites',
+            ),
+          ],
+        ),
       ),
     );
   }
