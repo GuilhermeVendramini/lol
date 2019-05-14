@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 // Screens
 import 'package:lol/src/screens/login_screen.dart';
-import 'package:lol/src/screens/user_profile_screen.dart';
+import 'package:lol/src/screens/base_screen.dart';
 
 // Controllers
 import 'package:lol/src/controllers/user_controller.dart';
@@ -48,9 +48,9 @@ class _RunMaterialAppState extends State<RunMaterialApp> {
         accentColor: Colors.cyan[600],
         buttonColor: Colors.cyan[600],
       ),
-      home: userAuth.isLogged != null ? UserProfileScreen() : LoginScreen(),
+      home: userAuth.isLogged != null ? BaseScreen() : LoginScreen(),
       routes: {
-        '/profile': (BuildContext context) => UserProfileScreen(),
+        '/profile': (BuildContext context) => BaseScreen(),
       },
     );
   }
