@@ -36,21 +36,34 @@ class BaseScreen extends StatelessWidget {
             ],
           ),
           bottomNavigationBar: TabBar(
+            labelColor: Theme.of(context).textTheme.body1.color,
             tabs: <Widget>[
               Tab(
-                icon: Icon(Icons.person),
+                icon: Icon(
+                  Icons.person,
+                  color: Theme.of(context).textTheme.body1.color,
+                ),
                 text: 'Profile',
               ),
               Tab(
-                icon: Icon(Icons.games),
+                icon: Icon(
+                  Icons.games,
+                  color: Theme.of(context).textTheme.body1.color,
+                ),
                 text: 'Matches',
               ),
               Tab(
-                icon: Icon(Icons.security),
+                icon: Icon(
+                  Icons.security,
+                  color: Theme.of(context).textTheme.body1.color,
+                ),
                 text: 'Champs',
               ),
               Tab(
-                icon: Icon(Icons.feedback),
+                icon: Icon(
+                  Icons.feedback,
+                  color: Theme.of(context).textTheme.body1.color,
+                ),
                 text: 'News',
               ),
             ],

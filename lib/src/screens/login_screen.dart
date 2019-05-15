@@ -19,7 +19,7 @@ class _LoginScreenSate extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
-    final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
+    final double targetWidth = deviceWidth > 650.0 ? 600.0 : deviceWidth * 0.95;
     final userAuth = Provider.of<UserAuth>(context);
 
     return Scaffold(
@@ -74,7 +74,7 @@ class _LoginScreenSate extends State<LoginScreen> {
     return DecorationImage(
       fit: BoxFit.cover,
       colorFilter: ColorFilter.mode(
-          Colors.white.withOpacity(0.2),
+          Colors.black.withOpacity(0.3),
           BlendMode.dstATop
       ),
       image: AssetImage('assets/images/background.jpg'),
