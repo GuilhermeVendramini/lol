@@ -4,7 +4,7 @@ import 'package:lol/src/controllers/user_controller.dart';
 import 'package:lol/src/widgets/components/profile_tabbarview.dart';
 import 'package:lol/src/widgets/components/matches_tabbarview.dart';
 import 'package:lol/src/widgets/components/news_tabbarview.dart';
-import 'package:lol/src/widgets/components/favorites_tabbarview.dart';
+import 'package:lol/src/widgets/components/champions_tabbarview.dart';
 
 class BaseScreen extends StatelessWidget {
 
@@ -31,8 +31,8 @@ class BaseScreen extends StatelessWidget {
             children: <Widget>[
               ProfileTabBarView(user),
               MatchesTabBarView(),
+              ChampionsTabBarView(),
               NewsTabBarView(),
-              FavoritesTabBarView(),
             ],
           ),
           bottomNavigationBar: TabBar(
@@ -46,12 +46,12 @@ class BaseScreen extends StatelessWidget {
                 text: 'Matches',
               ),
               Tab(
-                icon: Icon(Icons.feedback),
-                text: 'News',
+                icon: Icon(Icons.security),
+                text: 'Champs',
               ),
               Tab(
-                icon: Icon(Icons.favorite),
-                text: 'Favorites',
+                icon: Icon(Icons.feedback),
+                text: 'News',
               ),
             ],
           ),

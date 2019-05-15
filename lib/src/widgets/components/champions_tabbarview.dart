@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class FavoritesTabBarView extends StatelessWidget {
+class ChampionsTabBarView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text('Favorites');
+    return Text('Champions');
   }
 }
