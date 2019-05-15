@@ -161,7 +161,6 @@ class ProfileTabBarView extends StatelessWidget {
                 padding: EdgeInsets.all(10.0),
                 height: 180.0,
                 child: Card(
-                  color: Colors.white,
                   child: Container(
                     padding: EdgeInsets.all(20.0),
                     child: ChartLanes(),
@@ -182,7 +181,6 @@ class ProfileTabBarView extends StatelessWidget {
                 padding: EdgeInsets.all(10.0),
                 height: 180.0,
                 child: Card(
-                  color: Colors.white,
                   child: Container(
                     padding: EdgeInsets.all(20.0),
                     child: ChartRoles(),
@@ -306,6 +304,12 @@ class ChartLanes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    charts.Color colorTextChart = charts.Color.black;
+
+    if(Theme.of(context).brightness == Brightness.dark) {
+      colorTextChart = charts.Color.white;
+    }
+
     return new charts.BarChart(
       seriesList,
       animate: animate,
@@ -317,6 +321,9 @@ class ChartLanes extends StatelessWidget {
               // Tick and Label styling here.
               labelStyle: charts.TextStyleSpec(
                   fontSize: 16, // size in Pts.
+                  color: charts.Color.fromOther(
+                      color: colorTextChart,
+                  ),
               ),
 
               // Change the line colors to match text color.
@@ -331,7 +338,8 @@ class ChartLanes extends StatelessWidget {
 
               // Tick and Label styling here.
               labelStyle: charts.TextStyleSpec(
-                  fontSize: 12, // size in Pts.
+                fontSize: 12, // size in Pts.
+                color: colorTextChart,
               ),
 
               // Change the line colors to match text color.
@@ -379,6 +387,12 @@ class ChartRoles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    charts.Color colorTextChart = charts.Color.black;
+
+    if(Theme.of(context).brightness == Brightness.dark) {
+      colorTextChart = charts.Color.white;
+    }
+
     return new charts.BarChart(
       seriesList,
       animate: animate,
@@ -389,7 +403,8 @@ class ChartRoles extends StatelessWidget {
 
               // Tick and Label styling here.
               labelStyle: charts.TextStyleSpec(
-                  fontSize: 16, // size in Pts.
+                fontSize: 16, // size in Pts.
+                color: colorTextChart,
               ),
 
               // Change the line colors to match text color.
@@ -404,7 +419,8 @@ class ChartRoles extends StatelessWidget {
 
               // Tick and Label styling here.
               labelStyle: charts.TextStyleSpec(
-                  fontSize: 12, // size in Pts.
+                fontSize: 12, // size in Pts.
+                color: colorTextChart,
               ),
 
               // Change the line colors to match text color.
