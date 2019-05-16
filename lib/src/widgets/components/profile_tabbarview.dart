@@ -126,10 +126,13 @@ class ProfileTabBarView extends StatelessWidget {
                             Text('${user.getUser.summonerLevel}'),
                           ],
                         ),
+                        SizedBox(
+                          height: 2.0,
+                        ),
                         Row(
                           children: <Widget>[
                             Text(
-                              'Total Games: ',
+                              'Total games: ',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16.0,
@@ -137,6 +140,9 @@ class ProfileTabBarView extends StatelessWidget {
                             ),
                             Text(totalGames),
                           ],
+                        ),
+                        SizedBox(
+                          height: 2.0,
                         ),
                         Row(
                           children: <Widget>[
@@ -150,6 +156,9 @@ class ProfileTabBarView extends StatelessWidget {
                             Text('TOP'),
                           ],
                         ),
+                        SizedBox(
+                          height: 2.0,
+                        ),
                         Row(
                           children: <Widget>[
                             Text(
@@ -161,6 +170,9 @@ class ProfileTabBarView extends StatelessWidget {
                             ),
                             Text('Support'),
                           ],
+                        ),
+                        SizedBox(
+                          height: 2.0,
                         ),
                         Row(
                           children: <Widget>[

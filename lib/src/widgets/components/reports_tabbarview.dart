@@ -71,7 +71,7 @@ class ReportsTabBarView extends StatelessWidget {
                 height: 60.0,
               ),
               Text(
-                'Last 10 matches',
+                'Results',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18.0,
