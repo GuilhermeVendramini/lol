@@ -8,6 +8,7 @@ class UserModel {
   final String accountId;
   final String id;
   final int revisionDate;
+  final String avatar;
 
   UserModel({
     @required this.profileIconId,
@@ -17,5 +18,6 @@ class UserModel {
     @required this.accountId,
     @required this.id,
     @required this.revisionDate,
+    @required this.avatar,
   });
 }

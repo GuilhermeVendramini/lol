@@ -32,6 +32,7 @@ class UserAuth extends User {
     prefs.remove('accountId');
     prefs.remove('id');
     prefs.remove('revisionDate');
+    prefs.remove('avatar');
     _isLogged = null;
     notifyListeners();
   }
@@ -40,14 +41,29 @@ class UserAuth extends User {
     // Get local User data
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     if(prefs.getString('name') != null && prefs.getString('name').isNotEmpty) {
+
+      final String userName = prefs.getString('name');
+      http.Response response;
+
+      response = await http.get(
+        'https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/$userName',
+        headers: {
+          'Accept-Charset': 'application/x-www-form-urlencoded; charset=UTF-8',
+          'X-Riot-Token': '$API_KEY',
+        },
+      );
+
+      final Map<String, dynamic> responseData = json.decode(response.body);
+
       _authUser = UserModel(
         profileIconId: prefs.getInt('profileIconId'),
         name: prefs.getString('name'),
         puuid: prefs.getString('puuid'),
-        summonerLevel: prefs.getInt('summonerLevel'),
+        summonerLevel: responseData['summonerLevel'],
         accountId: prefs.getString('accountId'),
         id: prefs.getString('id'),
-        revisionDate: prefs.getInt('revisionDate'),
+        revisionDate: responseData['revisionDate'],
+        avatar: 'https://avatar.leagueoflegends.com/NA1/$userName.png',
       );
       _isLogged = true;
       notifyListeners();
@@ -83,6 +99,7 @@ class UserAuth extends User {
         accountId: responseData['accountId'],
         id: responseData['id'],
         revisionDate: responseData['revisionDate'],
+        avatar: 'https://avatar.leagueoflegends.com/NA1/$userName.png',
       );
 
       // Set local User data
@@ -94,6 +111,7 @@ class UserAuth extends User {
       prefs.setString('accountId', _authUser.accountId);
       prefs.setString('id', _authUser.id);
       prefs.setInt('revisionDate', _authUser.revisionDate);
+      prefs.setString('avatar', 'https://avatar.leagueoflegends.com/NA1/$userName.png');
       notifyListeners();
     }
 
