@@ -24,7 +24,11 @@ class UserMatches extends UserMatchesController {
 
 class UserMatchesService extends UserMatches {
   Future<Map<String, dynamic>> loadUserMatches(String accountId) async {
-    print('UserMatchesService');
+
+    if(_isMatchesLoaded != null) {
+      return {'success': true, 'message': 'Loaded matches successfully'};
+    }
+
     bool success = false;
     String message = 'Error load matches';
     http.Response response;
@@ -68,10 +72,7 @@ class UserMatchesService extends UserMatches {
       );
       _isMatchesLoaded = true;
     }
-    //notifyListeners();
-    print('aquiiii');
-    print(isMatchesLoaded);
-    //
+    notifyListeners();
     return {'success': success, 'message': message};
   }
 }

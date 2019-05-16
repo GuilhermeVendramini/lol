@@ -73,6 +73,10 @@ class UserAuth extends User {
   }
 
   Future<Map<String, dynamic>> auth(String userName) async {
+    if(_isLogged != null) {
+      return {'success': true, 'message': 'Authenticated successfully'};
+    }
+
     bool success = false;
     String message = 'Invalid Username';
     http.Response response;

@@ -5,6 +5,7 @@ import 'package:lol/src/widgets/components/profile_tabbarview.dart';
 import 'package:lol/src/widgets/components/matches_tabbarview.dart';
 import 'package:lol/src/widgets/components/reports_tabbarview.dart';
 import 'package:lol/src/widgets/components/champions_tabbarview.dart';
+import 'package:lol/src/controllers/user_matches_controller.dart';
 
 class BaseScreen extends StatelessWidget {
 
@@ -27,14 +28,7 @@ class BaseScreen extends StatelessWidget {
               ),
             ],
           ),
-          body: TabBarView(
-            children: <Widget>[
-              ProfileTabBarView(user),
-              ReportsTabBarView(),
-              MatchesTabBarView(),
-              ChampionsTabBarView(),
-            ],
-          ),
+          body: BaseScreenStateful(),
           bottomNavigationBar: TabBar(
             labelColor: Theme.of(context).textTheme.body1.color,
             tabs: <Widget>[
@@ -102,4 +96,41 @@ class BaseScreen extends StatelessWidget {
     );
   }
 
+}
+
+class BaseScreenStateful extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _BaseScreenState();
+  }
+}
+
+class _BaseScreenState extends State<BaseScreenStateful> {
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider<UserMatchesService>(
+      builder: (_) => UserMatchesService(),
+      child:  BaseScreenView(),
+    );
+  }
+}
+
+class BaseScreenView extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _BaseScreenViewState();
+  }
+}
+
+class _BaseScreenViewState extends State<BaseScreenView> {
+  Widget build(BuildContext context) {
+    return TabBarView(
+      children: <Widget>[
+        ProfileTabBarView(),
+        ReportsTabBarView(),
+        MatchesTabBarView(),
+        ChampionsTabBarView(),
+      ],
+    );
+  }
 }

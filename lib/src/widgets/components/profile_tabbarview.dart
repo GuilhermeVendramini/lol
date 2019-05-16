@@ -1,16 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_circular_chart/flutter_circular_chart.dart';
+import 'package:lol/src/controllers/user_matches_controller.dart';
+import 'package:lol/src/controllers/user_controller.dart';
 
 class ProfileTabBarView extends StatelessWidget {
-  final user;
+  //final user;
   final GlobalKey<FormState> _chartLevelKey = GlobalKey<FormState>();
 
-  ProfileTabBarView(this.user);
+  //ProfileTabBarView(this.user);
 
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double targetWidth = deviceWidth > 650.0 ? 600.0 : deviceWidth * 0.95;
+    final user = Provider.of<UserAuth>(context);
+    final userMatches = Provider.of<UserMatchesService>(context);
+    String totalGames = '';
+
+    if(userMatches.isMatchesLoaded == null) {
+      userMatches.loadUserMatches(user.getUser.accountId);
+    }
+
+    if(userMatches.isMatchesLoaded == true) {
+      totalGames = '${userMatches.getUserMatches.totalGames}';
+    }
+
     return Center(
       child: SingleChildScrollView(
         child: Container(
@@ -48,12 +63,12 @@ class ProfileTabBarView extends StatelessWidget {
                       CircularStackEntry(
                         <CircularSegmentEntry>[
                           CircularSegmentEntry(
-                            33.33,
+                            100.00,
                             Colors.blue[200],
                             rankKey: 'completed',
                           ),
                           CircularSegmentEntry(
-                            66.67,
+                            100.00,
                             Colors.blueGrey[600],
                             rankKey: 'remaining',
                           ),
@@ -90,7 +105,7 @@ class ProfileTabBarView extends StatelessWidget {
                     child: Column(
                       children: <Widget>[
                         Text(
-                          'Resume',
+                          'Last season resume',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20.0,
@@ -102,7 +117,7 @@ class ProfileTabBarView extends StatelessWidget {
                         Row(
                           children: <Widget>[
                             Text(
-                              'Level reputation: ',
+                              'Level: ',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16.0,
@@ -120,19 +135,31 @@ class ProfileTabBarView extends StatelessWidget {
                                 fontSize: 16.0,
                               ),
                             ),
-                            Text('218'),
+                            Text(totalGames),
                           ],
                         ),
                         Row(
                           children: <Widget>[
                             Text(
-                              'Mastery score: ',
+                              'Most played at: ',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16.0,
                               ),
                             ),
-                            Text('316'),
+                            Text('TOP'),
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              'Most played as: ',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.0,
+                              ),
+                            ),
+                            Text('Support'),
                           ],
                         ),
                         Row(
