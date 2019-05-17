@@ -42,7 +42,7 @@ class _RunMaterialAppState extends State<RunMaterialApp> {
     }
 
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Lol Profile',
       theme: ThemeData(
         brightness: Brightness.dark,
         accentColor: Colors.cyan[600],

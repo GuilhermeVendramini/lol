@@ -75,7 +75,6 @@ class UserAuth extends User {
       if(responseData['summonerLevel'] < 5) {
         _levelUserImage = 'assets/images/level-${responseData['summonerLevel']}.png';
       }
-      print(_levelUserImage);
 
       _isLogged = true;
       notifyListeners();
@@ -117,6 +116,11 @@ class UserAuth extends User {
         revisionDate: responseData['revisionDate'],
         avatar: 'https://avatar.leagueoflegends.com/NA1/$userName.png',
       );
+
+      _levelUserImage = 'assets/images/level-5.png';
+      if(responseData['summonerLevel'] < 5) {
+        _levelUserImage = 'assets/images/level-${responseData['summonerLevel']}.png';
+      }
 
       // Set local User data
       final SharedPreferences prefs = await SharedPreferences.getInstance();
