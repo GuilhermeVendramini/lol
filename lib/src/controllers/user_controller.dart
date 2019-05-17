@@ -9,6 +9,7 @@ import 'package:lol/src/controllers/api.dart';
 class UserController with ChangeNotifier {
   UserModel _authUser;
   bool _isLogged;
+  String _levelUserImage;
 }
 
 class User extends UserController {
@@ -18,6 +19,10 @@ class User extends UserController {
 
   bool get isLogged {
     return _isLogged;
+  }
+
+  String get levelUserImage {
+    return _levelUserImage;
   }
 }
 
@@ -65,6 +70,13 @@ class UserAuth extends User {
         revisionDate: responseData['revisionDate'],
         avatar: 'https://avatar.leagueoflegends.com/NA1/$userName.png',
       );
+
+      _levelUserImage = 'assets/images/level-5.png';
+      if(responseData['summonerLevel'] < 5) {
+        _levelUserImage = 'assets/images/level-${responseData['summonerLevel']}.png';
+      }
+      print(_levelUserImage);
+
       _isLogged = true;
       notifyListeners();
       return true;

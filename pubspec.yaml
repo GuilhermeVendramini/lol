@@ -50,6 +50,11 @@ flutter:
     - assets/images/lol-logo.png
     - assets/images/background.jpg
     - assets/images/avatar.png
+    - assets/images/icon.png
+    - assets/images/level-5.png
+    - assets/images/level-4.png
+    - assets/images/level-3.png
+    - assets/images/level-2.png
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

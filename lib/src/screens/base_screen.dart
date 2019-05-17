@@ -13,7 +13,7 @@ class BaseScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<UserAuth>(context);
     return WillPopScope(onWillPop: () async {
-      Navigator.pushReplacementNamed(context, '/profile');
+      return false;//Navigator.pushReplacementNamed(context, '/profile');
     },
       child: DefaultTabController(
         length: 4,
@@ -75,13 +75,6 @@ class BaseScreen extends StatelessWidget {
           AppBar(
             automaticallyImplyLeading: false,
             title: Text('Menu'),
-          ),
-          ListTile(
-            leading: Icon(Icons.home),
-            title: Text('Home'),
-            onTap: () {
-              Navigator.pushReplacementNamed(context, '/profile');
-            },
           ),
           ListTile(
             leading: Icon(Icons.exit_to_app),

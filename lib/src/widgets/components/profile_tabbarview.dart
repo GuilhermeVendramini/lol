@@ -5,10 +5,8 @@ import 'package:lol/src/controllers/user_matches_controller.dart';
 import 'package:lol/src/controllers/user_controller.dart';
 
 class ProfileTabBarView extends StatelessWidget {
-  //final user;
-  final GlobalKey<FormState> _chartLevelKey = GlobalKey<FormState>();
 
-  //ProfileTabBarView(this.user);
+  final GlobalKey<FormState> _chartLevelKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -35,16 +33,6 @@ class ProfileTabBarView extends StatelessWidget {
               SizedBox(
                 height: 30.0,
               ),
-              Text(
-                'Profile',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24.0,
-                ),
-              ),
-              SizedBox(
-                height: 40.0,
-              ),
               Container(
                   width: 160.0,
                   height: 160.0,
@@ -64,13 +52,8 @@ class ProfileTabBarView extends StatelessWidget {
                         <CircularSegmentEntry>[
                           CircularSegmentEntry(
                             100.00,
-                            Colors.blue[200],
+                            Colors.cyan[600],
                             rankKey: 'completed',
-                          ),
-                          CircularSegmentEntry(
-                            100.00,
-                            Colors.blueGrey[600],
-                            rankKey: 'remaining',
                           ),
                         ],
                         rankKey: 'progress',
@@ -79,117 +62,71 @@ class ProfileTabBarView extends StatelessWidget {
                     chartType: CircularChartType.Radial,
                     edgeStyle: SegmentEdgeStyle.round,
                     percentageValues: true,
-                  )),
-              Container(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 8.0),
-                  child: Column(
-                    children: <Widget>[
-                      Text('${user.getUser.summonerLevel}',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18.0,
-                          )),
-                    ],
                   ),
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Text('Welcome'),
+              Text(
+                user.getUser.name,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24.0,
                 ),
               ),
               SizedBox(
-                height: 40.0,
+                height: 60.0,
               ),
-              Container(
-                padding: EdgeInsets.all(10),
-                child: Card(
-                  child: Container(
-                    padding: EdgeInsets.all(20.0),
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                          'Last season resume',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20.0,
-                          ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      Image(
+                        height: 180,
+                        image: AssetImage(user.levelUserImage),
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Text(
+                        'LEVEL',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.0,
                         ),
-                        SizedBox(
-                          height: 20.0,
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              'Level: ',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16.0,
-                              ),
-                            ),
-                            Text('${user.getUser.summonerLevel}'),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 2.0,
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              'Total games: ',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16.0,
-                              ),
-                            ),
-                            Text(totalGames),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 2.0,
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              'Most played at: ',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16.0,
-                              ),
-                            ),
-                            Text('TOP'),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 2.0,
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              'Most played as: ',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16.0,
-                              ),
-                            ),
-                            Text('Support'),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 2.0,
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              'Last match: ',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16.0,
-                              ),
-                            ),
-                            Text('04/05/2019'),
-                          ],
-                        ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Text('${user.getUser.summonerLevel}'),
+                    ],
                   ),
-                ),
+                  Column(
+                    children: <Widget>[
+                      Image(
+                        height: 180,
+                        width: 170,
+                        image: AssetImage('assets/images/icon.png'),
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Text(
+                        'TOTAL GAMES',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Text(totalGames),
+                    ],
+                  )
+                ],
               ),
               SizedBox(
                 height: 40.0,
