@@ -52,6 +52,14 @@ class _RunMaterialAppState extends State<RunMaterialApp> {
         data: (brightness) => new ThemeData(
           accentColor: Colors.cyan[600],
           buttonColor: Colors.cyan[600],
+          cursorColor: Colors.cyan[600],
+          inputDecorationTheme: InputDecorationTheme(
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.cyan[600],),
+              ),
+              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.cyan[600],)),
+              labelStyle: TextStyle(color: Colors.cyan[600])
+          ),
           brightness: brightness,
         ),
         themedWidgetBuilder: (context, theme) {

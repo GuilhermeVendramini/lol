@@ -86,7 +86,7 @@ class _LoginScreenSate extends State<LoginScreen> {
     return DecorationImage(
       fit: BoxFit.cover,
       colorFilter: ColorFilter.mode(
-          Colors.black.withOpacity(0.3),
+          Colors.black.withOpacity(0.2),
           BlendMode.dstATop
       ),
       image: AssetImage('assets/images/background.jpg'),
