@@ -42,7 +42,7 @@ class UserMatchesService extends UserMatches {
   Future<Map<String, dynamic>> loadUserMatches(String accountId) async {
 
     if(_isMatchesLoaded != null) {
-      return {'success': true, 'message': 'Loaded matches successfully'};
+      return {'success': true, 'message': 'Matches already loaded.'};
     }
 
     bool success = false;

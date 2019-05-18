@@ -72,7 +72,7 @@ class UserAuth extends User {
       );
 
       _levelUserImage = 'assets/images/level-5.png';
-      if(responseData['summonerLevel'] < 5) {
+      if(responseData['summonerLevel']!= null && responseData['summonerLevel'] < 5) {
         _levelUserImage = 'assets/images/level-${responseData['summonerLevel']}.png';
       }
 

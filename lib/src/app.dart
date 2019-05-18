@@ -10,6 +10,7 @@ import 'package:lol/src/screens/settings_screen.dart';
 // Controllers
 import 'package:lol/src/controllers/user_controller.dart';
 import 'package:lol/src/controllers/user_matches_controller.dart';
+import 'package:lol/src/controllers/user_matches_details_controller.dart';
 
 class App extends StatefulWidget {
   @override
@@ -25,6 +26,7 @@ class _AppState extends State<App> {
       providers: [
         ChangeNotifierProvider<UserAuth>(builder: (_) => UserAuth()),
         ChangeNotifierProvider<UserMatchesService>(builder: (_) => UserMatchesService()),
+        ChangeNotifierProvider<UserMatchesDetailsService>(builder: (_) => UserMatchesDetailsService()),
       ],
       child:  RunMaterialApp(),
     );
