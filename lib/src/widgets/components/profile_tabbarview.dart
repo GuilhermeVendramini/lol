@@ -46,7 +46,6 @@ class ProfileTabBarView extends StatelessWidget {
                   child: AnimatedCircularChart(
                     key: _chartLevelKey,
                     size: const Size(200.0, 200.0),
-                    duration: Duration(seconds: 1),
                     initialChartData: <CircularStackEntry>[
                       CircularStackEntry(
                         <CircularSegmentEntry>[
@@ -100,7 +99,13 @@ class ProfileTabBarView extends StatelessWidget {
                       SizedBox(
                         height: 10.0,
                       ),
-                      Text('${user.getUser.summonerLevel}'),
+                      Text(
+                        '${user.getUser.summonerLevel}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18.0,
+                        ),
+                      ),
                     ],
                   ),
                   Column(
@@ -123,7 +128,13 @@ class ProfileTabBarView extends StatelessWidget {
                       SizedBox(
                         height: 10.0,
                       ),
-                      Text(totalGames),
+                      Text(
+                        totalGames,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18.0,
+                        ),
+                      ),
                     ],
                   )
                 ],

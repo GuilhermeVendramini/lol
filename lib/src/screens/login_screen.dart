@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:lol/src/controllers/user_controller.dart';
 import 'package:provider/provider.dart';
 
-
 class LoginScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -21,6 +20,19 @@ class _LoginScreenSate extends State<LoginScreen> {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double targetWidth = deviceWidth > 650.0 ? 600.0 : deviceWidth * 0.95;
     final userAuth = Provider.of<UserAuth>(context);
+
+    if(userAuth.isLogged == null) {
+      return Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+            image: _backgroundImage(),
+          ),
+          child: Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      );
+    }
 
     return Scaffold(
       body: Container(

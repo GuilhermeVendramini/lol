@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:dynamic_theme/dynamic_theme.dart';
 
 // Screens
 import 'package:lol/src/screens/login_screen.dart';
 import 'package:lol/src/screens/base_screen.dart';
+import 'package:lol/src/screens/settings_screen.dart';
 
 // Controllers
 import 'package:lol/src/controllers/user_controller.dart';
+import 'package:lol/src/controllers/user_matches_controller.dart';
 
 class App extends StatefulWidget {
   @override
@@ -18,8 +21,11 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<UserAuth>(
-      builder: (_) => UserAuth(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<UserAuth>(builder: (_) => UserAuth()),
+        ChangeNotifierProvider<UserMatchesService>(builder: (_) => UserMatchesService()),
+      ],
       child:  RunMaterialApp(),
     );
   }
@@ -41,17 +47,24 @@ class _RunMaterialAppState extends State<RunMaterialApp> {
       userAuth.verifyLogged();
     }
 
-    return MaterialApp(
-      title: 'Lol Profile',
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        accentColor: Colors.cyan[600],
-        buttonColor: Colors.cyan[600],
-      ),
-      home: userAuth.isLogged != null ? BaseScreen() : LoginScreen(),
-      routes: {
-        '/profile': (BuildContext context) => BaseScreen(),
-      },
+    return DynamicTheme(
+        defaultBrightness: Brightness.dark,
+        data: (brightness) => new ThemeData(
+          accentColor: Colors.cyan[600],
+          buttonColor: Colors.cyan[600],
+          brightness: brightness,
+        ),
+        themedWidgetBuilder: (context, theme) {
+          return new MaterialApp(
+            title: 'Lol Profile',
+            theme: theme,
+            home: userAuth.isLogged != null && userAuth.isLogged ? BaseScreen() : LoginScreen(),
+            routes: {
+              '/profile': (BuildContext context) => BaseScreen(),
+              '/settings': (BuildContext context) => SettingsScreen(),
+            },
+          );
+        }
     );
   }
 }

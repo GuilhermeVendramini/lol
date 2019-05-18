@@ -80,11 +80,13 @@ class UserAuth extends User {
       notifyListeners();
       return true;
     }
+    _isLogged = false;
+    notifyListeners();
     return false;
   }
 
   Future<Map<String, dynamic>> auth(String userName) async {
-    if(_isLogged != null) {
+    if(_isLogged != null && _isLogged) {
       return {'success': true, 'message': 'Authenticated successfully'};
     }
 
