@@ -32,8 +32,8 @@ class BaseScreen extends StatelessWidget {
           body: TabBarView(
             children: <Widget>[
               ProfileTabBarView(),
-              ReportsTabBarView(),
               MatchesTabBarView(),
+              ReportsTabBarView(),
               ChampionsTabBarView(),
             ],
           ),
@@ -49,17 +49,17 @@ class BaseScreen extends StatelessWidget {
               ),
               Tab(
                 icon: Icon(
-                  Icons.insert_chart,
-                  color: Theme.of(context).textTheme.body1.color,
-                ),
-                text: 'Reports',
-              ),
-              Tab(
-                icon: Icon(
                   Icons.games,
                   color: Theme.of(context).textTheme.body1.color,
                 ),
                 text: 'Matches',
+              ),
+              Tab(
+                icon: Icon(
+                  Icons.insert_chart,
+                  color: Theme.of(context).textTheme.body1.color,
+                ),
+                text: 'Reports',
               ),
               Tab(
                 icon: Icon(

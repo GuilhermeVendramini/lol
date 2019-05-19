@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:lol/src/models/user_matches_model.dart';
@@ -53,8 +54,14 @@ class MatchesTabBarView extends StatelessWidget {
               child: ListView.builder(
                   itemCount: _userMatchesDetails.length,
                   itemBuilder: (BuildContext context, int index) {
-                    Color colorTeamWin = _userMatchesDetails[index].userStats.teamWin == 'Win' ?
+
+                    Color _colorTeamWin = _userMatchesDetails[index].userStats.teamWin == 'Win' ?
                       Colors.cyan[600] : Colors.red[600];
+
+                    DateTime _dateMatch = DateTime.fromMillisecondsSinceEpoch(_userMatchesDetails[index].timestamp);
+                    String _dateMatchFormatted = DateFormat('dd/MM/yy').add_jm().format(_dateMatch);
+                    int _gameDuration = Duration(seconds: _userMatchesDetails[index].gameDuration).inMinutes;
+
                     return Card(
                       child: Container(
                         padding: EdgeInsets.all(18.0),
@@ -65,11 +72,10 @@ class MatchesTabBarView extends StatelessWidget {
                             Container(
                               padding: EdgeInsets.all(12.0),
                               decoration: BoxDecoration(
-                                  border: Border.all(color: colorTeamWin),
+                                  border: Border.all(color: _colorTeamWin),
                               ),
                               child: Column(
                                 children: <Widget>[
-                                  //Text('${_userMatchesDetails[index].gameId}'),
                                   Container(
                                     padding: EdgeInsets.all(4.0),
                                     child: Text(
@@ -77,7 +83,7 @@ class MatchesTabBarView extends StatelessWidget {
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18.0,
-                                        color: colorTeamWin,
+                                        color: _colorTeamWin,
                                       ),
                                     ),
                                   ),
@@ -124,10 +130,13 @@ class MatchesTabBarView extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: <Widget>[
                                   Text(
-                                    '10/20/2019',
+                                    _dateMatchFormatted,
+                                    style: TextStyle(
+                                      fontSize: 10.0,
+                                    ),
                                   ),
                                   Text(
-                                    'Duration: 40min',
+                                    'Duration: $_gameDuration m',
                                     style: TextStyle(
                                       fontSize: 10.0,
                                     ),

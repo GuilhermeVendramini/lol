@@ -14,6 +14,7 @@ import 'package:lol/src/controllers/api.dart';
 class UserMatchesDetailsController with ChangeNotifier {
   List<MatchDetailModel> _userMatchesDetailsModel;
   bool _isMatchesDetailsLoaded;
+  Map<String, dynamic> _userWinFail;
 }
 
 class UserMatchesDetails extends UserMatchesDetailsController {
@@ -23,6 +24,10 @@ class UserMatchesDetails extends UserMatchesDetailsController {
 
   bool get isMatchesDetailsLoaded {
     return _isMatchesDetailsLoaded;
+  }
+
+  Map<String, dynamic> get userWinFail {
+    return _userWinFail;
   }
 }
 
@@ -38,6 +43,7 @@ class UserMatchesDetailsService extends UserMatchesDetails {
     bool success = false;
     _isMatchesDetailsLoaded = true;
     _userMatchesDetailsModel = [];
+    int _win = 0, _fail = 0;
 
     if (userMatches.matches != null) {
       userMatches.matches.take(10).forEach((matchData) async {
@@ -101,17 +107,13 @@ class UserMatchesDetailsService extends UserMatchesDetails {
                 quadraKills: participantsData['stats']['quadraKills'],
                 tripleKills: participantsData['stats']['tripleKills'],
                 win: participantsData['stats']['win']  == 'true' ? 1 : 0,
+                champLevel: participantsData['stats']['champLevel'],
+                teamWin: null,
               ),
             ));
 
             if(mapUserParticipant['participantId'] == participantsData['participantId']) {
               Iterable<TeamModel> userTeam = teamsList.where((team) => team.teamId == participantsData['teamId']);
-              print('-------------');
-              print('Participante matchID: ${matchData.gameId}');
-              print('Participante Id: ${mapUserParticipant['participantId']}');
-              print('Participante teamId: ${participantsData['teamId']}');
-              print('Participante team venceu: ${userTeam.first.win}');
-              print('-------------');
               userStats = ParticipantsStatsModel(
                 assists: participantsData['stats']['assists'],
                 deaths: participantsData['stats']['deaths'],
@@ -124,6 +126,19 @@ class UserMatchesDetailsService extends UserMatchesDetails {
                 teamWin: userTeam.first.win,
                 champLevel: participantsData['stats']['champLevel'],
               );
+
+              userTeam.first.win == 'Win' ? _win++ : _fail++;
+              int _total = _win + _fail;
+              double _winComplete = _win / _total * 100;
+              double _failComplete =  _fail / _total * 100;
+              _userWinFail = {
+                'win':_win,
+                'fail': _fail,
+                'winComplete': _winComplete,
+                'failComplete': _failComplete,
+                'winRemaining': 100 - _winComplete,
+                'failRemaining': 100 - _failComplete,
+              };
             }
           });
 

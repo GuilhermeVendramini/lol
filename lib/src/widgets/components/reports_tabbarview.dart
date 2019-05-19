@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_circular_chart/flutter_circular_chart.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:lol/src/models/user_matches_model.dart';
 import 'package:lol/src/controllers/user_matches_controller.dart';
+import 'package:lol/src/controllers/user_matches_details_controller.dart';
 
 List<dynamic> _playedAt = [];
 
@@ -14,13 +16,25 @@ class ReportsTabBarView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userMatches = Provider.of<UserMatchesService>(context);
-    String mostPlayedAt = '';
-    String lastMatch = '';
+    final userMatchesDetails = Provider.of<UserMatchesDetailsService>(context);
+    UserMatchesModel _userMatches;
+    String _mostPlayedAt = '';
+    String _lastMatch = '';
+    Map<String, dynamic> _userWinFail;
 
     if(userMatches.isMatchesLoaded == true) {
-      mostPlayedAt = userMatches.mostPlayedAt['lane'];
-      lastMatch = userMatches.lastMatch;
+      _mostPlayedAt = userMatches.mostPlayedAt['lane'];
+      _lastMatch = userMatches.lastMatch;
       _playedAt = userMatches.playedAt;
+      _userMatches = userMatches.getUserMatches;
+
+      if(userMatchesDetails.isMatchesDetailsLoaded == null) {
+        userMatchesDetails.loadUserMatchesDetails(_userMatches);
+      }
+    }
+
+    if(userMatchesDetails.isMatchesDetailsLoaded != null) {
+      _userWinFail = userMatchesDetails.userWinFail;
     }
 
     final double deviceWidth = MediaQuery.of(context).size.width;
@@ -72,7 +86,7 @@ class ReportsTabBarView extends StatelessWidget {
                       AnimatedCircularChart(
                         key: _chartWonKey,
                         size: const Size(160.0, 160.0),
-                        holeLabel: '132',
+                        holeLabel: _userWinFail != null ? '${_userWinFail['win']}' : '',
                         labelStyle: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18.0,
@@ -83,12 +97,12 @@ class ReportsTabBarView extends StatelessWidget {
                           CircularStackEntry(
                             <CircularSegmentEntry>[
                               CircularSegmentEntry(
-                                90.00,
+                                _userWinFail != null ? _userWinFail['winComplete'] : 00.0,
                                 Colors.green[200],
                                 rankKey: 'completed',
                               ),
                               CircularSegmentEntry(
-                                10.00,
+                                _userWinFail != null ? _userWinFail['winRemaining'] : 100.0,
                                 Colors.blueGrey[600],
                                 rankKey: 'remaining',
                               ),
@@ -113,7 +127,7 @@ class ReportsTabBarView extends StatelessWidget {
                       AnimatedCircularChart(
                         key: _chartLostKey,
                         size: const Size(160.0, 160.0),
-                        holeLabel: '37',
+                        holeLabel: _userWinFail != null ? '${_userWinFail['fail']}' : '',
                         labelStyle: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18.0,
@@ -124,12 +138,12 @@ class ReportsTabBarView extends StatelessWidget {
                           CircularStackEntry(
                             <CircularSegmentEntry>[
                               CircularSegmentEntry(
-                                10.00,
+                                _userWinFail != null ? _userWinFail['failComplete'] : 00.0,
                                 Colors.red[200],
                                 rankKey: 'completed',
                               ),
                               CircularSegmentEntry(
-                                90.10,
+                                _userWinFail != null ? _userWinFail['failRemaining'] : 100.0,
                                 Colors.blueGrey[600],
                                 rankKey: 'remaining',
                               ),
@@ -194,7 +208,7 @@ class ReportsTabBarView extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            Text(mostPlayedAt),
+                            Text(_mostPlayedAt),
                           ],
                         ),
                         Row(
@@ -205,7 +219,7 @@ class ReportsTabBarView extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            Text(lastMatch),
+                            Text(_lastMatch),
                           ],
                         ),
                       ],

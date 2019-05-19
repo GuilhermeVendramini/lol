@@ -19,7 +19,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     String changeThemeLabel = 'Apply dark theme';
     if(Theme.of(context).brightness == Brightness.dark) {
-      changeThemeLabel = 'Apply dark light';
+      changeThemeLabel = 'Apply light theme';
     }
 
     return WillPopScope(
