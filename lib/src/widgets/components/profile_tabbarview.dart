@@ -77,67 +77,40 @@ class ProfileTabBarView extends StatelessWidget {
               SizedBox(
                 height: 60.0,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
                   Column(
                     children: <Widget>[
                       Image(
-                        height: 180,
+                        height: 160,
                         image: AssetImage(user.levelUserImage),
                       ),
                       SizedBox(
-                        height: 10.0,
-                      ),
-                      Text(
-                        'LEVEL',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.0,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10.0,
+                        height: 6.0,
                       ),
                       Text(
                         '${user.getUser.summonerLevel}',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 18.0,
                         ),
                       ),
                     ],
                   ),
-                  Column(
-                    children: <Widget>[
-                      Image(
-                        height: 180,
-                        width: 170,
-                        image: AssetImage('assets/images/icon.png'),
-                      ),
-                      SizedBox(
-                        height: 10.0,
-                      ),
-                      Text(
-                        'TOTAL GAMES',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.0,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10.0,
-                      ),
-                      Text(
-                        totalGames,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18.0,
-                        ),
-                      ),
-                    ],
-                  )
-                ],
+              SizedBox(
+                height: 60.0,
+              ),
+              Text(
+                'TOTAL GAMES',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                height: 6.0,
+              ),
+              Text(
+                totalGames,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               SizedBox(
                 height: 40.0,

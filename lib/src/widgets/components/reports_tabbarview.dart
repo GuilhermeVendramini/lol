@@ -44,6 +44,15 @@ class ReportsTabBarView extends StatelessWidget {
                 ),
               ),
               SizedBox(
+                height: 2.0,
+              ),
+              Text(
+                'of the last 10 matches',
+                style: TextStyle(
+                  fontSize: 12.0,
+                ),
+              ),
+              SizedBox(
                 height: 40.0,
               ),
               Text(
@@ -179,17 +188,6 @@ class ReportsTabBarView extends StatelessWidget {
                     padding: EdgeInsets.all(20.0),
                     child: Column(
                       children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              'Total games: ',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(totalGames),
-                          ],
-                        ),
                         Row(
                           children: <Widget>[
                             Text(
