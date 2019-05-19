@@ -14,7 +14,7 @@ class MatchesTabBarView extends StatelessWidget {
     final userMatches = Provider.of<UserMatchesService>(context);
     final userMatchesDetails = Provider.of<UserMatchesDetailsService>(context);
     UserMatchesModel _userMatches;
-    List<MatchDetailModel> _userMatchesDetails;
+    List<MatchDetailModel> _userMatchesDetails = [];
 
     if(userMatches.isMatchesLoaded == true) {
       _userMatches = userMatches.getUserMatches;
@@ -26,6 +26,9 @@ class MatchesTabBarView extends StatelessWidget {
 
     if(userMatchesDetails.isMatchesDetailsLoaded != null) {
       _userMatchesDetails = userMatchesDetails.getUserMatchesDetails;
+      _userMatchesDetails.sort((MatchDetailModel a, MatchDetailModel b) {
+        return b.timestamp.compareTo(a.timestamp);
+      });
     }
 
     return Center(
@@ -50,6 +53,8 @@ class MatchesTabBarView extends StatelessWidget {
               child: ListView.builder(
                   itemCount: _userMatchesDetails.length,
                   itemBuilder: (BuildContext context, int index) {
+                    Color colorTeamWin = _userMatchesDetails[index].userStats.teamWin == 'Win' ?
+                      Colors.cyan[600] : Colors.red[600];
                     return Card(
                       child: Container(
                         padding: EdgeInsets.all(18.0),
@@ -60,28 +65,26 @@ class MatchesTabBarView extends StatelessWidget {
                             Container(
                               padding: EdgeInsets.all(12.0),
                               decoration: BoxDecoration(
- /*                               border: Border(
-                                  right: BorderSide(color: Colors.cyan[600],
-                                  ),
-                                ),*/
-                                  border: Border.all(color: Colors.cyan[600]),
+                                  border: Border.all(color: colorTeamWin),
                               ),
                               child: Column(
                                 children: <Widget>[
+                                  //Text('${_userMatchesDetails[index].gameId}'),
                                   Container(
+                                    padding: EdgeInsets.all(4.0),
                                     child: Text(
-                                      'WIN',
+                                      _userMatchesDetails[index].userStats.teamWin,
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18.0,
-                                        color: Colors.cyan[600],
+                                        color: colorTeamWin,
                                       ),
                                     ),
                                   ),
                                   Container(
                                     padding: EdgeInsets.only(top: 2.0),
                                     child: Text(
-                                      '18',
+                                        '${_userMatchesDetails[index].userStats.champLevel}',
                                     ),
                                   ),
                                 ],
@@ -107,7 +110,7 @@ class MatchesTabBarView extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      '10 / 05 / 12',
+                                      '${_userMatchesDetails[index].userStats.kills} / ${_userMatchesDetails[index].userStats.deaths} / ${_userMatchesDetails[index].userStats.assists}',
                                       style: TextStyle(
                                         fontSize: 12.0,
                                       ),

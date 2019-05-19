@@ -14,12 +14,10 @@ class ReportsTabBarView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userMatches = Provider.of<UserMatchesService>(context);
-    String totalGames = '';
     String mostPlayedAt = '';
     String lastMatch = '';
 
     if(userMatches.isMatchesLoaded == true) {
-      totalGames = '${userMatches.getUserMatches.totalGames}';
       mostPlayedAt = userMatches.mostPlayedAt['lane'];
       lastMatch = userMatches.lastMatch;
       _playedAt = userMatches.playedAt;
