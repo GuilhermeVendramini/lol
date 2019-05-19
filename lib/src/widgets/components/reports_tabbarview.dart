@@ -94,7 +94,7 @@ class ReportsTabBarView extends StatelessWidget {
                         percentageValues: true,
                       ),
                       Text(
-                        'Won',
+                        'Win',
                         style: TextStyle(
                           fontSize: 16.0,
                         ),
@@ -135,7 +135,7 @@ class ReportsTabBarView extends StatelessWidget {
                         percentageValues: true,
                       ),
                       Text(
-                        'Lost',
+                        'Fail',
                         style: TextStyle(fontSize: 16.0),
                       ),
                     ],
@@ -146,7 +146,7 @@ class ReportsTabBarView extends StatelessWidget {
                 height: 60.0,
               ),
               Text(
-                'Lanes',
+                'Picked Lanes',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18.0,
@@ -182,7 +182,7 @@ class ReportsTabBarView extends StatelessWidget {
                         Row(
                           children: <Widget>[
                             Text(
-                              'Total games:',
+                              'Total games: ',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -193,7 +193,7 @@ class ReportsTabBarView extends StatelessWidget {
                         Row(
                           children: <Widget>[
                             Text(
-                              'Most played at:',
+                              'Most picked lane: ',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -204,7 +204,7 @@ class ReportsTabBarView extends StatelessWidget {
                         Row(
                           children: <Widget>[
                             Text(
-                              'Last match:',
+                              'Last match: ',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),

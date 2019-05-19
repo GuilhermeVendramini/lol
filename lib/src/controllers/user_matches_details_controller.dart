@@ -24,7 +24,7 @@ class UserMatchesDetails extends UserMatchesDetailsController {
 class UserMatchesDetailsService extends UserMatchesDetails {
   Future<Map<String, dynamic>> loadUserMatchesDetails(
       UserMatchesModel userMatches) async {
-    print('loadUserMatchesDetails kkkkkkkkkkkkkkkk');
+
     if (_isMatchesDetailsLoaded != null) {
       return {'success': true, 'message': 'Matches details already loaded.'};
     }

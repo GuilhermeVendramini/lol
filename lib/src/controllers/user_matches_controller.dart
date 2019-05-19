@@ -69,11 +69,11 @@ class UserMatchesService extends UserMatches {
       // Most Played At
       List<Map<String, dynamic>> lanes = [];
 
-      int countLaneJungle = matchList.where((match) => match['lane'] == 'JUNGLE').length;
-      int countLaneTop = matchList.where((match) => match['lane'] == 'TOP').length;
-      int countLaneNone = matchList.where((match) => match['lane'] == 'NONE').length;
-      int countLaneMid = matchList.where((match) => match['lane'] == 'MID').length;
-      int countLaneBottom = matchList.where((match) => match['lane'] == 'BOTTOM').length;
+      int countLaneJungle = matchList.take(10).where((match) => match['lane'] == 'JUNGLE').length;
+      int countLaneTop = matchList.take(10).where((match) => match['lane'] == 'TOP').length;
+      int countLaneNone = matchList.take(10).where((match) => match['lane'] == 'NONE').length;
+      int countLaneMid = matchList.take(10).where((match) => match['lane'] == 'MID').length;
+      int countLaneBottom = matchList.take(10).where((match) => match['lane'] == 'BOTTOM').length;
 
       lanes = [
         {'lane': 'JUNGLE', 'count': countLaneJungle},
