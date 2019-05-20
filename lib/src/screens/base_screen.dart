@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lol/src/controllers/user_champions_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:lol/src/controllers/user_controller.dart';
 import 'package:lol/src/widgets/components/profile_tabbarview.dart';
@@ -35,8 +36,8 @@ class BaseScreen extends StatelessWidget {
             children: <Widget>[
               ProfileTabBarView(),
               MatchesTabBarView(),
-              ReportsTabBarView(),
               ChampionsTabBarView(),
+              ReportsTabBarView(),
             ],
           ),
           bottomNavigationBar: TabBar(
@@ -58,17 +59,17 @@ class BaseScreen extends StatelessWidget {
               ),
               Tab(
                 icon: Icon(
-                  Icons.insert_chart,
-                  color: Theme.of(context).textTheme.body1.color,
-                ),
-                text: 'Reports',
-              ),
-              Tab(
-                icon: Icon(
                   Icons.security,
                   color: Theme.of(context).textTheme.body1.color,
                 ),
                 text: 'Champs',
+              ),
+              Tab(
+                icon: Icon(
+                  Icons.insert_chart,
+                  color: Theme.of(context).textTheme.body1.color,
+                ),
+                text: 'Reports',
               ),
             ],
           ),
@@ -81,6 +82,7 @@ class BaseScreen extends StatelessWidget {
     final user = Provider.of<UserAuth>(context);
     final userMatches = Provider.of<UserMatchesService>(context);
     final userMatchesDetails = Provider.of<UserMatchesDetailsService>(context);
+    final userChampions = Provider.of<UserChampionsService>(context);
     return Drawer(
       child: Column(
         children: <Widget>[
@@ -102,6 +104,7 @@ class BaseScreen extends StatelessWidget {
               user.userLogout();
               userMatches.clearMatchesValues;
               userMatchesDetails.clearMatchesDetailsValues;
+              userChampions.clearChampionsValues;
               Navigator.pushReplacementNamed(context, '/');
             },
           ),

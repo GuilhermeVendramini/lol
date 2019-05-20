@@ -12,6 +12,8 @@ import 'package:lol/src/controllers/user_controller.dart';
 import 'package:lol/src/controllers/user_matches_controller.dart';
 import 'package:lol/src/controllers/user_matches_details_controller.dart';
 
+import 'controllers/user_champions_controller.dart';
+
 class App extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -27,6 +29,7 @@ class _AppState extends State<App> {
         ChangeNotifierProvider<UserAuth>(builder: (_) => UserAuth()),
         ChangeNotifierProvider<UserMatchesService>(builder: (_) => UserMatchesService()),
         ChangeNotifierProvider<UserMatchesDetailsService>(builder: (_) => UserMatchesDetailsService()),
+        ChangeNotifierProvider<UserChampionsService>(builder: (_) => UserChampionsService()),
       ],
       child:  RunMaterialApp(),
     );
