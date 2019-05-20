@@ -1,48 +1,41 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:lol/src/models/champion_model.dart';
 import 'package:lol/src/models/user_champion_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:lol/src/controllers/api.dart';
 
 class UserChampionsController with ChangeNotifier {
   List<UserChampionModel> _userChampions;
-  bool _isChampionsLoaded;
+  bool _isUserChampionsLoaded;
 }
 
 class UserChampions extends UserChampionsController {
   List<UserChampionModel> get getUserChampions {
+    _userChampions.sort((UserChampionModel a, UserChampionModel b) {
+      return b.championLevel.compareTo(a.championLevel);
+    });
     return _userChampions;
   }
 
-  bool get isChampionsLoaded {
-    return _isChampionsLoaded;
+  bool get isUserChampionsLoaded {
+    return _isUserChampionsLoaded;
   }
 
-  void get clearChampionsValues {
+  void get clearUserChampionsValues {
     _userChampions = null;
-    _isChampionsLoaded = null;
+    _isUserChampionsLoaded = null;
     notifyListeners();
   }
 }
 
 class UserChampionsService extends UserChampions {
-  Future<Map<String, dynamic>> loadUserChampions(String userId) async {
-    if(_isChampionsLoaded != null) {
+  Future<Map<String, dynamic>> loadUserChampions(String userId,
+      List<ChampionModel> championList) async {
+    if(_isUserChampionsLoaded != null) {
       return {'success': true, 'message': 'Champs already loaded.'};
     }
-
-    Future<String> loadChampionsJson() async {
-      return await rootBundle.loadString('assets/champs/champs.json');
-    }
-
-    Map<String, dynamic> champions;
-    Future<String> _loadChampionsJson = loadChampionsJson();
-
-    _loadChampionsJson.then((onValue){
-      Map championsJson = jsonDecode(onValue);
-      champions = championsJson['data'];
-    });
 
     http.Response response;
     response = await http.get(
@@ -54,7 +47,7 @@ class UserChampionsService extends UserChampions {
     );
 
     if(response.statusCode != 200 && response.statusCode != 201) {
-      _isChampionsLoaded = false;
+      _isUserChampionsLoaded = false;
       notifyListeners();
       return {
         'success': false,
@@ -66,8 +59,8 @@ class UserChampionsService extends UserChampions {
     final List<dynamic> responseData = json.decode(response.body);
 
     responseData.forEach((userChampionData){
-      Iterable<dynamic> findChampion = champions.values.where(((champ) => int.parse(champ['key']) == userChampionData['championId']));
-      Map<String, dynamic> champion = {};
+      Iterable<dynamic> findChampion = championList.where(((champ) => int.parse(champ.key) == userChampionData['championId']));
+      ChampionModel champion;
       if(findChampion.isNotEmpty) {
         champion = findChampion.first;
       }
@@ -82,13 +75,13 @@ class UserChampionsService extends UserChampions {
         tokensEarned: userChampionData['tokensEarned'],
         championId: userChampionData['championId'],
         lastPlayTime: userChampionData['lastPlayTime'],
-        championName: champion['name'] != null
-            ? champion['name'] : 'unknown',
-        championImage: champion['image'] != null
-            ? 'assets/champs/images/${champion['image']['full']}'
+        championName: champion.name != null
+            ? champion.name : 'unknown',
+        championImage: champion.image != null
+            ? 'assets/champs/images/${champion.image}'
             : 'assets/champs/images/unknown.png',
       );
-      _isChampionsLoaded = true;
+      _isUserChampionsLoaded = true;
       _userChampions.add(userChampion);
       notifyListeners();
     });

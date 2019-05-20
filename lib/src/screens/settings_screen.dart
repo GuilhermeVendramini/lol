@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lol/src/controllers/campions_controller.dart';
 import 'package:lol/src/controllers/user_champions_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
@@ -97,9 +98,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Widget _buildSideDrawer(BuildContext context) {
     final user = Provider.of<UserAuth>(context);
-    final userMatches = Provider.of<UserMatchesService>(context);
-    final userMatchesDetails = Provider.of<UserMatchesDetailsService>(context);
-    final userChampions = Provider.of<UserChampionsService>(context);
     return Drawer(
       child: Column(
         children: <Widget>[
@@ -119,9 +117,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: Text('Logout'),
             onTap: () {
               user.userLogout();
-              userMatches.clearMatchesValues;
-              userMatchesDetails.clearMatchesDetailsValues;
-              userChampions.clearChampionsValues;
               Navigator.pushReplacementNamed(context, '/');
             },
           ),

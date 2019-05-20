@@ -39,6 +39,7 @@ class UserAuth extends User {
     prefs.remove('id');
     prefs.remove('revisionDate');
     prefs.remove('avatar');
+
     _isLogged = null;
     notifyListeners();
   }

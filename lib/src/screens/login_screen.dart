@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:lol/src/controllers/campions_controller.dart';
+import 'package:lol/src/controllers/user_champions_controller.dart';
 import 'package:lol/src/controllers/user_controller.dart';
+import 'package:lol/src/controllers/user_matches_controller.dart';
+import 'package:lol/src/controllers/user_matches_details_controller.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -167,6 +171,16 @@ class _LoginScreenSate extends State<LoginScreen> {
     successInformation = await userAuth.auth(_formData['userName']);
 
     if(successInformation['success']) {
+      // Clear all provider to the next user
+      final champions = Provider.of<ChampionsService>(context);
+      final userMatches = Provider.of<UserMatchesService>(context);
+      final userMatchesDetails = Provider.of<UserMatchesDetailsService>(context);
+      final userChampions = Provider.of<UserChampionsService>(context);
+
+      champions.clearChampionsValues;
+      userMatchesDetails.clearMatchesDetailsValues;
+      userMatches.clearMatchesValues;
+      userChampions.clearUserChampionsValues;
       Navigator.pushReplacementNamed(context, '/profile');
     } else {
       showDialog(context: context, builder: (BuildContext context) {

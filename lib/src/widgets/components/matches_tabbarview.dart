@@ -27,9 +27,6 @@ class MatchesTabBarView extends StatelessWidget {
 
     if(userMatchesDetails.isMatchesDetailsLoaded != null) {
       _userMatchesDetails = userMatchesDetails.getUserMatchesDetails;
-      _userMatchesDetails.sort((MatchDetailModel a, MatchDetailModel b) {
-        return b.timestamp.compareTo(a.timestamp);
-      });
     }
 
     return Center(

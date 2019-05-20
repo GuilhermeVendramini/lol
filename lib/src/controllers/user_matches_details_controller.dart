@@ -19,6 +19,9 @@ class UserMatchesDetailsController with ChangeNotifier {
 
 class UserMatchesDetails extends UserMatchesDetailsController {
   List<MatchDetailModel> get getUserMatchesDetails {
+    _userMatchesDetailsModel.sort((MatchDetailModel a, MatchDetailModel b) {
+      return b.timestamp.compareTo(a.timestamp);
+    });
     return _userMatchesDetailsModel;
   }
 

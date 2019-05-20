@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:lol/src/controllers/campions_controller.dart';
 import 'package:lol/src/controllers/user_champions_controller.dart';
 import 'package:lol/src/controllers/user_controller.dart';
+import 'package:lol/src/models/champion_model.dart';
 import 'package:lol/src/models/user_champion_model.dart';
 import 'package:provider/provider.dart';
 
@@ -8,18 +10,28 @@ class ChampionsTabBarView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final champions = Provider.of<ChampionsService>(context);
     final user = Provider.of<UserAuth>(context);
     final userChampions = Provider.of<UserChampionsService>(context);
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double targetWidth = deviceWidth > 650.0 ? 600.0 : deviceWidth * 0.95;
+    List<ChampionModel> _champions = [];
     List<UserChampionModel> _userChampions = [];
 
-    if(userChampions.isChampionsLoaded == null) {
-      userChampions.loadUserChampions(user.getUser.id);
+    if(champions.isChampionsLoaded == null) {
+      champions.loadChampions();
     }
 
-    if(userChampions.isChampionsLoaded == true) {
-      _userChampions = userChampions.getUserChampions;
+    if(champions.isChampionsLoaded == true) {
+      _champions = champions.getChampions;
+
+      if(userChampions.isUserChampionsLoaded == null) {
+        userChampions.loadUserChampions(user.getUser.id, _champions);
+      }
+
+      if(userChampions.isUserChampionsLoaded == true) {
+        _userChampions = userChampions.getUserChampions;
+      }
     }
 
     return Center(
@@ -38,8 +50,19 @@ class ChampionsTabBarView extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
+                  height: 2.0,
+                ),
+                Text(
+                  'mastery information',
+                  style: TextStyle(
+                    fontSize: 12.0,
+                  ),
+                ),
+                SizedBox(
                   height: 40.0,
                 ),
+                _userChampions.length == 0 ?
+                Text('No champion mastery information') :
                 Expanded(
                   child: GridView.builder(
                       itemCount: _userChampions.length,
@@ -47,13 +70,18 @@ class ChampionsTabBarView extends StatelessWidget {
                           crossAxisCount: 3),
                       itemBuilder: (BuildContext context, int index) {
                         return Container(
-                          //padding: EdgeInsets.all(10.0),
-                          //color: Colors.red,
                           child: Column(children: <Widget>[
                             Image(
                               image: AssetImage(_userChampions[index].championImage),
+                              height: 80.0,
                             ),
-                            Text(_userChampions[index].championName),
+                            Text(
+                              _userChampions[index].championName,
+                              style: TextStyle(fontWeight: FontWeight.bold,),
+                            ),
+                            Text(
+                              '${_userChampions[index].championLevel}',
+                            ),
                           ],),
                         );
                       }
@@ -63,5 +91,6 @@ class ChampionsTabBarView extends StatelessWidget {
             )
         )
     );
+
   }
 }

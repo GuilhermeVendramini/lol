@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lol/src/controllers/campions_controller.dart';
 import 'package:lol/src/controllers/user_champions_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:lol/src/controllers/user_controller.dart';
@@ -6,8 +7,6 @@ import 'package:lol/src/widgets/components/profile_tabbarview.dart';
 import 'package:lol/src/widgets/components/matches_tabbarview.dart';
 import 'package:lol/src/widgets/components/reports_tabbarview.dart';
 import 'package:lol/src/widgets/components/champions_tabbarview.dart';
-import 'package:lol/src/controllers/user_matches_controller.dart';
-import 'package:lol/src/controllers/user_matches_details_controller.dart';
 
 class BaseScreen extends StatelessWidget {
 
@@ -80,9 +79,6 @@ class BaseScreen extends StatelessWidget {
 
   Widget _buildSideDrawer(BuildContext context) {
     final user = Provider.of<UserAuth>(context);
-    final userMatches = Provider.of<UserMatchesService>(context);
-    final userMatchesDetails = Provider.of<UserMatchesDetailsService>(context);
-    final userChampions = Provider.of<UserChampionsService>(context);
     return Drawer(
       child: Column(
         children: <Widget>[
@@ -102,9 +98,6 @@ class BaseScreen extends StatelessWidget {
             title: Text('Logout'),
             onTap: () {
               user.userLogout();
-              userMatches.clearMatchesValues;
-              userMatchesDetails.clearMatchesDetailsValues;
-              userChampions.clearChampionsValues;
               Navigator.pushReplacementNamed(context, '/');
             },
           ),

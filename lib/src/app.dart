@@ -12,6 +12,7 @@ import 'package:lol/src/controllers/user_controller.dart';
 import 'package:lol/src/controllers/user_matches_controller.dart';
 import 'package:lol/src/controllers/user_matches_details_controller.dart';
 
+import 'controllers/campions_controller.dart';
 import 'controllers/user_champions_controller.dart';
 
 class App extends StatefulWidget {
@@ -28,6 +29,7 @@ class _AppState extends State<App> {
       providers: [
         ChangeNotifierProvider<UserAuth>(builder: (_) => UserAuth()),
         ChangeNotifierProvider<UserMatchesService>(builder: (_) => UserMatchesService()),
+        ChangeNotifierProvider<ChampionsService>(builder: (_) => ChampionsService()),
         ChangeNotifierProvider<UserMatchesDetailsService>(builder: (_) => UserMatchesDetailsService()),
         ChangeNotifierProvider<UserChampionsService>(builder: (_) => UserChampionsService()),
       ],

@@ -14,14 +14,9 @@ class ProfileTabBarView extends StatelessWidget {
     final double targetWidth = deviceWidth > 650.0 ? 600.0 : deviceWidth * 0.95;
     final user = Provider.of<UserAuth>(context);
     final userMatches = Provider.of<UserMatchesService>(context);
-    String totalGames = '';
 
     if(userMatches.isMatchesLoaded == null) {
       userMatches.loadUserMatches(user.getUser.accountId);
-    }
-
-    if(userMatches.isMatchesLoaded == true) {
-      totalGames = '${userMatches.getUserMatches.totalGames}';
     }
 
     return Center(
@@ -107,7 +102,9 @@ class ProfileTabBarView extends StatelessWidget {
                 height: 6.0,
               ),
               Text(
-                totalGames,
+                userMatches.getUserMatches != null
+                    ? '${userMatches.getUserMatches.totalGames}'
+                    : '0',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
