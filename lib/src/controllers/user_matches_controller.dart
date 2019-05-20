@@ -36,6 +36,15 @@ class UserMatches extends UserMatchesController {
   String get lastMatch {
     return _lastMatch;
   }
+
+  void get clearMatchesValues {
+    _userMatches = null;
+    _isMatchesLoaded = null;
+    _mostPlayedAt = null;
+    _playedAt = null;
+    _lastMatch = null;
+    notifyListeners();
+  }
 }
 
 class UserMatchesService extends UserMatches {

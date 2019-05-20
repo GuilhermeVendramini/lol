@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lol/src/models/user_model.dart';
 import 'package:lol/src/controllers/api.dart';
+import 'package:lol/src/controllers/user_matches_controller.dart';
 
 class UserController with ChangeNotifier {
   UserModel _authUser;
@@ -61,12 +62,12 @@ class UserAuth extends User {
       final Map<String, dynamic> responseData = json.decode(response.body);
 
       _authUser = UserModel(
-        profileIconId: prefs.getInt('profileIconId'),
-        name: prefs.getString('name'),
-        puuid: prefs.getString('puuid'),
+        profileIconId: responseData['profileIconId'],
+        name: responseData['name'],
+        puuid: responseData['puuid'],
         summonerLevel: responseData['summonerLevel'],
-        accountId: prefs.getString('accountId'),
-        id: prefs.getString('id'),
+        accountId: responseData['accountId'],
+        id: responseData['id'],
         revisionDate: responseData['revisionDate'],
         avatar: 'https://avatar.leagueoflegends.com/NA1/$userName.png',
       );
@@ -91,7 +92,7 @@ class UserAuth extends User {
     }
 
     bool success = false;
-    String message = 'Invalid Username';
+    String message = 'Invalid LoL Summoner';
     http.Response response;
 
     response = await http.get(

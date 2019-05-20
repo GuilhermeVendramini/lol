@@ -70,14 +70,14 @@ class MatchesTabBarView extends StatelessWidget {
                           alignment: WrapAlignment.spaceBetween,
                           children: <Widget>[
                             Container(
-                              padding: EdgeInsets.all(12.0),
+                              padding: EdgeInsets.all(16.0),
                               decoration: BoxDecoration(
                                   border: Border.all(color: _colorTeamWin),
                               ),
                               child: Column(
                                 children: <Widget>[
                                   Container(
-                                    padding: EdgeInsets.all(4.0),
+                                    padding: EdgeInsets.all(2.0),
                                     child: Text(
                                       _userMatchesDetails[index].userStats.teamWin,
                                       style: TextStyle(
@@ -97,7 +97,7 @@ class MatchesTabBarView extends StatelessWidget {
                               ),
                             ),
                             Container(
-                              padding: EdgeInsets.all(10.0),
+                              padding: EdgeInsets.only(top: 10.0, right: 10.0, bottom: 10.0),
                               child: Text(
                                 _userMatchesDetails[index].gameMode,
                                 style: TextStyle(
@@ -106,7 +106,7 @@ class MatchesTabBarView extends StatelessWidget {
                               ),
                             ),
                             Container(
-                                padding: EdgeInsets.all(10.0),
+                                padding: EdgeInsets.only(top: 10.0, right: 10.0, bottom: 10.0),
                                 child: Column(
                                   children: <Widget>[
                                     Text(
@@ -125,7 +125,7 @@ class MatchesTabBarView extends StatelessWidget {
                                 )
                             ),
                             Container(
-                              padding: EdgeInsets.all(10.0),
+                              padding: EdgeInsets.only(top: 10.0, right: 10.0, bottom: 10.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: <Widget>[

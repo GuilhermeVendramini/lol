@@ -103,12 +103,12 @@ class _LoginScreenSate extends State<LoginScreen> {
   Widget _userNameTextField() {
     return TextFormField(
       decoration: InputDecoration(
-          labelText: 'Username',
+          labelText: 'LoL Summoner',
           filled: true,
       ),
       validator: (String value) {
         if (value.isEmpty) {
-          return 'Username  is required';
+          return 'LoL Summoner  is required';
         }
       },
       onSaved: (String value) {

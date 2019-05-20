@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:lol/src/controllers/user_controller.dart';
+import 'package:lol/src/controllers/user_matches_controller.dart';
+import 'package:lol/src/controllers/user_matches_details_controller.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -94,6 +96,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Widget _buildSideDrawer(BuildContext context) {
     final user = Provider.of<UserAuth>(context);
+    final userMatches = Provider.of<UserMatchesService>(context);
+    final userMatchesDetails = Provider.of<UserMatchesDetailsService>(context);
     return Drawer(
       child: Column(
         children: <Widget>[
@@ -113,6 +117,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: Text('Logout'),
             onTap: () {
               user.userLogout();
+              userMatches.clearMatchesValues;
+              userMatchesDetails.clearMatchesDetailsValues;
               Navigator.pushReplacementNamed(context, '/');
             },
           ),

@@ -29,6 +29,13 @@ class UserMatchesDetails extends UserMatchesDetailsController {
   Map<String, dynamic> get userWinFail {
     return _userWinFail;
   }
+
+  void get clearMatchesDetailsValues {
+    _userMatchesDetailsModel = null;
+    _isMatchesDetailsLoaded = null;
+    _userWinFail = null;
+    notifyListeners();
+  }
 }
 
 class UserMatchesDetailsService extends UserMatchesDetails {
@@ -112,7 +119,7 @@ class UserMatchesDetailsService extends UserMatchesDetails {
               ),
             ));
 
-            if(mapUserParticipant['participantId'] == participantsData['participantId']) {
+            if(mapUserParticipant != null && mapUserParticipant['participantId'] == participantsData['participantId']) {
               Iterable<TeamModel> userTeam = teamsList.where((team) => team.teamId == participantsData['teamId']);
               userStats = ParticipantsStatsModel(
                 assists: participantsData['stats']['assists'],
