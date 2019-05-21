@@ -24,7 +24,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     return WillPopScope(
       onWillPop: () async {
-        Navigator.pop(context);
+        Navigator.pushReplacementNamed(context, '/profile');
       },
       child: DefaultTabController(
         length: 4,
