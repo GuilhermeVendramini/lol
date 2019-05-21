@@ -18,7 +18,7 @@ samples, guidance on mobile development, and a full API reference.
 # About LoL Profile
 
 LoL Profile provide a interface for the player verify your last 10 matches results,
-mastery champions information and reports in your cellphone iOS or Android.
+mastery champions information and reports in your cell phone iOS or Android.
 
 ## Screenshots
 
