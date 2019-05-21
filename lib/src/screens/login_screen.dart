@@ -100,7 +100,8 @@ class _LoginScreenSate extends State<LoginScreen> {
   Widget _lolLogo() {
     return Image(
       fit: BoxFit.contain,
-      image: AssetImage('assets/images/lol-logo.png'),
+      height: 200.0,
+      image: AssetImage('assets/images/lol-profile.png'),
     );
   }
 
