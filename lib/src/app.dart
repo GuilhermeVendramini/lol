@@ -57,6 +57,7 @@ class _RunMaterialAppState extends State<RunMaterialApp> {
     return DynamicTheme(
         defaultBrightness: Brightness.dark,
         data: (brightness) => new ThemeData(
+          appBarTheme: AppBarTheme(color: Colors.cyan[600]),
           accentColor: Colors.cyan[600],
           buttonColor: Colors.cyan[600],
           cursorColor: Colors.cyan[600],

@@ -4,10 +4,11 @@ import 'package:lol/src/controllers/user_champions_controller.dart';
 import 'package:lol/src/controllers/user_controller.dart';
 import 'package:lol/src/models/champion_model.dart';
 import 'package:lol/src/models/user_champion_model.dart';
+import 'package:lol/src/screens/champion_screen.dart';
+import 'package:lol/src/widgets/routes/route_fade.dart';
 import 'package:provider/provider.dart';
 
 class ChampionsTabBarView extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     final champions = Provider.of<ChampionsService>(context);
@@ -18,18 +19,18 @@ class ChampionsTabBarView extends StatelessWidget {
     List<ChampionModel> _champions = [];
     List<UserChampionModel> _userChampions = [];
 
-    if(champions.isChampionsLoaded == null) {
+    if (champions.isChampionsLoaded == null) {
       champions.loadChampions();
     }
 
-    if(champions.isChampionsLoaded == true) {
+    if (champions.isChampionsLoaded == true) {
       _champions = champions.getChampions;
 
-      if(userChampions.isUserChampionsLoaded == null) {
+      if (userChampions.isUserChampionsLoaded == null) {
         userChampions.loadUserChampions(user.getUser.id, _champions);
       }
 
-      if(userChampions.isUserChampionsLoaded == true) {
+      if (userChampions.isUserChampionsLoaded == true) {
         _userChampions = userChampions.getUserChampions;
       }
     }
@@ -61,36 +62,47 @@ class ChampionsTabBarView extends StatelessWidget {
                 SizedBox(
                   height: 40.0,
                 ),
-                champions.isChampionsLoaded != null && _userChampions.length == 0 ?
-                Text('No champion mastery information') :
-                Expanded(
-                  child: GridView.builder(
-                      itemCount: _userChampions.length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3),
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          child: Column(children: <Widget>[
-                            Image(
-                              image: AssetImage(_userChampions[index].championImage),
-                              height: 80.0,
-                            ),
-                            Text(
-                              _userChampions[index].championName,
-                              style: TextStyle(fontWeight: FontWeight.bold,),
-                            ),
-                            Text(
-                              '${_userChampions[index].championLevel}',
-                            ),
-                          ],),
-                        );
-                      }
-                  ),
-                ),
+                champions.isChampionsLoaded != null &&
+                    champions.isChampionsLoaded == true &&
+                        _userChampions.length == 0
+                    ? Text('No champions mastery informations')
+                    : Expanded(
+                        child: GridView.builder(
+                            itemCount: _userChampions.length,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 3),
+                            itemBuilder: (BuildContext context, int index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Route route = RouteFade(
+                                      builder: (context) => ChampionScreen(_userChampions[index].championId));
+                                  Navigator.push(context, route);
+                                },
+                                child: Container(
+                                  child: Column(
+                                    children: <Widget>[
+                                      Image(
+                                        image: AssetImage(_userChampions[index]
+                                            .championImage),
+                                        height: 80.0,
+                                      ),
+                                      Text(
+                                        _userChampions[index].championName,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        '${_userChampions[index].championLevel}',
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }),
+                      ),
               ],
-            )
-        )
-    );
-
+            )));
   }
 }

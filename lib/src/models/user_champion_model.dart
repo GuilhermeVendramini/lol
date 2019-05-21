@@ -9,7 +9,7 @@ class UserChampionModel {
   final String summonerId;
   final int tokensEarned;
   final int championId;
-  final int lastPlayTime;
+  final String lastPlayTime;
   final String championName;
   final String championImage;
 

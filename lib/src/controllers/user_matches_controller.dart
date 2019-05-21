@@ -119,7 +119,7 @@ class UserMatchesService extends UserMatches {
 
       // Last Match
       DateTime date = DateTime.fromMillisecondsSinceEpoch(lastMatch);
-      _lastMatch = DateFormat.yMd().add_jm().format(date);
+      _lastMatch = DateFormat('dd/MM/yy').add_jm().format(date);
 
       _userMatches = UserMatchesModel(
         matches: matches,

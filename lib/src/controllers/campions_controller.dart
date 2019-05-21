@@ -6,12 +6,18 @@ import 'package:lol/src/models/champion_model.dart';
 
 class ChampionsController with ChangeNotifier {
   List<ChampionModel> _champions;
+  Iterable<ChampionModel> _champion;
   bool _isChampionsLoaded;
 }
 
 class Champions extends ChampionsController {
   List<ChampionModel> get getChampions {
     return _champions;
+  }
+
+  ChampionModel getChampion(int championId) {
+    _champion = _champions.where((champ) => champ.key == championId.toString());
+    return _champion.first;
   }
 
   bool get isChampionsLoaded {

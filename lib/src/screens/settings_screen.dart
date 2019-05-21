@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lol/src/controllers/campions_controller.dart';
-import 'package:lol/src/controllers/user_champions_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:lol/src/controllers/user_controller.dart';
-import 'package:lol/src/controllers/user_matches_controller.dart';
-import 'package:lol/src/controllers/user_matches_details_controller.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -28,7 +24,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     return WillPopScope(
       onWillPop: () async {
-        Navigator.pushReplacementNamed(context, '/profile');
+        Navigator.pop(context);
       },
       child: DefaultTabController(
         length: 4,

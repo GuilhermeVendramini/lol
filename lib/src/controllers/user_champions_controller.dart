@@ -1,6 +1,6 @@
 import 'dart:convert';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:lol/src/models/champion_model.dart';
 import 'package:lol/src/models/user_champion_model.dart';
 import 'package:http/http.dart' as http;
@@ -8,6 +8,7 @@ import 'package:lol/src/controllers/api.dart';
 
 class UserChampionsController with ChangeNotifier {
   List<UserChampionModel> _userChampions;
+  Iterable<UserChampionModel> _userChampion;
   bool _isUserChampionsLoaded;
 }
 
@@ -17,6 +18,11 @@ class UserChampions extends UserChampionsController {
       return b.championLevel.compareTo(a.championLevel);
     });
     return _userChampions;
+  }
+
+  UserChampionModel getUserChampion(int championId) {
+    _userChampion = _userChampions.where((champ) => champ.championId == championId);
+    return _userChampion.first;
   }
 
   bool get isUserChampionsLoaded {
@@ -65,6 +71,9 @@ class UserChampionsService extends UserChampions {
         champion = findChampion.first;
       }
 
+      DateTime _lastPlayTime = DateTime.fromMillisecondsSinceEpoch(userChampionData['lastPlayTime']);
+      String _lastPlayTimeFormatted = DateFormat('dd/MM/yy').add_jm().format(_lastPlayTime);
+
       final UserChampionModel userChampion = UserChampionModel(
         championLevel: userChampionData['championLevel'],
         chestGranted: userChampionData['chestGranted'] == true ? 1 : 0,
@@ -74,7 +83,7 @@ class UserChampionsService extends UserChampions {
         summonerId: userChampionData['summonerId'],
         tokensEarned: userChampionData['tokensEarned'],
         championId: userChampionData['championId'],
-        lastPlayTime: userChampionData['lastPlayTime'],
+        lastPlayTime: _lastPlayTimeFormatted,
         championName: champion.name != null
             ? champion.name : 'unknown',
         championImage: champion.image != null
