@@ -22,8 +22,11 @@ mastery champions information and reports in your cellphone iOS or Android.
 
 ## Screenshots
 
-### Login
 <img src="/screenshots/login.jpg?raw=true" height="200">
-
-### Profile
 <img src="/screenshots/profile.jpg?raw=true" height="200">
+<img src="/screenshots/matches.jpg?raw=true" height="200">
+<img src="/screenshots/champions.jpg?raw=true" height="200">
+<img src="/screenshots/champion-detail.jpg?raw=true" height="200">
+<img src="/screenshots/reports.jpg?raw=true" height="200">
+<img src="/screenshots/switch-theme.jpg?raw=true" height="200">
+<img src="/screenshots/light-theme.jpg?raw=true" height="200">
