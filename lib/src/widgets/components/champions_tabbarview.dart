@@ -61,7 +61,7 @@ class ChampionsTabBarView extends StatelessWidget {
                 SizedBox(
                   height: 40.0,
                 ),
-                _userChampions.length == 0 ?
+                champions.isChampionsLoaded != null && _userChampions.length == 0 ?
                 Text('No champion mastery information') :
                 Expanded(
                   child: GridView.builder(
