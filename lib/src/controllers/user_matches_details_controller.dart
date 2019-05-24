@@ -13,6 +13,7 @@ import 'package:lol/src/controllers/api.dart';
 
 class UserMatchesDetailsController with ChangeNotifier {
   List<MatchDetailModel> _userMatchesDetailsModel;
+  Iterable<MatchDetailModel> _userMatchDetails;
   bool _isMatchesDetailsLoaded;
   Map<String, dynamic> _userWinFail;
 }
@@ -23,6 +24,11 @@ class UserMatchesDetails extends UserMatchesDetailsController {
       return b.timestamp.compareTo(a.timestamp);
     });
     return _userMatchesDetailsModel;
+  }
+
+  MatchDetailModel getMatch(int matchId) {
+    _userMatchDetails = _userMatchesDetailsModel.where((match) => match.gameId == matchId);
+    return _userMatchDetails.first;
   }
 
   bool get isMatchesDetailsLoaded {
@@ -116,9 +122,8 @@ class UserMatchesDetailsService extends UserMatchesDetails {
                 pentaKills: participantsData['stats']['pentaKills'],
                 quadraKills: participantsData['stats']['quadraKills'],
                 tripleKills: participantsData['stats']['tripleKills'],
-                win: participantsData['stats']['win']  == 'true' ? 1 : 0,
+                win: participantsData['stats']['win'],
                 champLevel: participantsData['stats']['champLevel'],
-                teamWin: null,
               ),
             ));
 
@@ -132,8 +137,7 @@ class UserMatchesDetailsService extends UserMatchesDetails {
                 pentaKills: participantsData['stats']['pentaKills'],
                 quadraKills: participantsData['stats']['quadraKills'],
                 tripleKills: participantsData['stats']['tripleKills'],
-                win: participantsData['stats']['win']  == true ? 1 : 0,
-                teamWin: userTeam.first.win,
+                win: participantsData['stats']['win'],
                 champLevel: participantsData['stats']['champLevel'],
               );
 

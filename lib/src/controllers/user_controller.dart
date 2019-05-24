@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lol/src/models/user_model.dart';
 import 'package:lol/src/controllers/api.dart';
-import 'package:lol/src/controllers/user_matches_controller.dart';
 
 class UserController with ChangeNotifier {
   UserModel _authUser;

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lol/src/controllers/campions_controller.dart';
-import 'package:lol/src/controllers/user_champions_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:lol/src/controllers/user_controller.dart';
 import 'package:lol/src/widgets/components/profile_tabbarview.dart';

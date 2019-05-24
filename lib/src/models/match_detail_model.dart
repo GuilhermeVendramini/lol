@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lol/src/models/participants_model.dart';
 import 'package:lol/src/models/participants_stats_model.dart';
 import 'package:lol/src/models/player_model.dart';
 import 'package:lol/src/models/team_model.dart';
@@ -13,7 +14,7 @@ class MatchDetailModel {
   final int mapId;
   final String gameType;
   final List<TeamModel> teams;
-  final List<dynamic> participants;
+  final List<ParticipantsModel> participants;
   final int gameDuration;
   final int gameCreation;
   final ParticipantsStatsModel userStats;
