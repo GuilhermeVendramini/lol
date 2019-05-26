@@ -124,6 +124,7 @@ class UserMatchesDetailsService extends UserMatchesDetails {
                 tripleKills: participantsData['stats']['tripleKills'],
                 win: participantsData['stats']['win'],
                 champLevel: participantsData['stats']['champLevel'],
+                goldEarned: participantsData['stats']['goldEarned'],
               ),
             ));
 
@@ -139,6 +140,7 @@ class UserMatchesDetailsService extends UserMatchesDetails {
                 tripleKills: participantsData['stats']['tripleKills'],
                 win: participantsData['stats']['win'],
                 champLevel: participantsData['stats']['champLevel'],
+                goldEarned: participantsData['stats']['goldEarned'],
               );
 
               userTeam.first.win == 'Win' ? _win++ : _fail++;

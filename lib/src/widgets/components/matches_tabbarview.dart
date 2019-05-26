@@ -126,7 +126,7 @@ class MatchesTabBarView extends StatelessWidget {
                                       child: Column(
                                         children: <Widget>[
                                           Text(
-                                            ' K     D     A',
+                                            ' K   D   A',
                                             style: TextStyle(
                                               fontSize: 12.0,
                                             ),

@@ -10,6 +10,7 @@ class ParticipantsStatsModel {
   final int pentaKills;
   final int doubleKills;
   final int champLevel;
+  final int goldEarned;
 
   ParticipantsStatsModel({
     @required this.tripleKills,
@@ -21,5 +22,6 @@ class ParticipantsStatsModel {
     @required this.pentaKills,
     @required this.doubleKills,
     @required this.champLevel,
+    @required this.goldEarned,
   });
 }

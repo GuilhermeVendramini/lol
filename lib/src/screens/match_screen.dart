@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:lol/src/controllers/campions_controller.dart';
 import 'package:lol/src/controllers/user_matches_details_controller.dart';
+import 'package:lol/src/models/champion_model.dart';
 import 'package:lol/src/models/match_detail_model.dart';
 import 'package:lol/src/models/participants_model.dart';
+import 'package:lol/src/models/player_model.dart';
 import 'package:provider/provider.dart';
 import 'package:lol/src/controllers/user_controller.dart';
 
@@ -54,36 +57,36 @@ class _MatchScreenState extends State<MatchScreen> {
           ),
           body: Center(
             heightFactor: 2.0,
-              child: Container(
-                width: targetWidth,
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(
-                      height: 40.0,
+            child: Container(
+              width: targetWidth,
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: 40.0,
+                  ),
+                  Text(
+                    _teamWin,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24.0,
+                      color: _colorTeamWin,
                     ),
-                    Text(
-                      _teamWin,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24.0,
-                        color: _colorTeamWin,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 40.0,
-                    ),
-                    Expanded(
-                      child: _team(_userMatch),
-                    ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
+                  ),
+                  SizedBox(
+                    height: 40.0,
+                  ),
+                  Expanded(
+                    child: _team(_userMatch),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
 /*                    Expanded(
                       child: _team(200),
                     ),*/
-                  ],
-                ),
+                ],
               ),
+            ),
           ),
         ),
       ),
@@ -91,27 +94,145 @@ class _MatchScreenState extends State<MatchScreen> {
   }
 
   Widget _team(MatchDetailModel userMatch) {
+    final champions = Provider.of<ChampionsService>(context);
+
+    if (champions.isChampionsLoaded == null) {
+      champions.loadChampions();
+    }
+
     return ListView.builder(
+      physics: ScrollPhysics(),
       itemBuilder: (context, index) {
-        final List<ParticipantsModel> participants = userMatch.participants.where((participant) => participant.teamId == userMatch.teams[index].teamId).toList();
-        return Padding(
-          padding: EdgeInsets.all(16.0),
+        final List<ParticipantsModel> participants = userMatch.participants
+            .where((participant) =>
+                participant.teamId == userMatch.teams[index].teamId)
+            .toList();
+
+        Color _colorTeamWin = Colors.red[600];
+        if (userMatch.teams[index].win == 'Win') {
+          _colorTeamWin = Colors.cyan[600];
+        }
+
+        return Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: _colorTeamWin),
+          ),
+          margin: EdgeInsets.only(bottom: 20.0),
+          padding: EdgeInsets.all(8.0),
           child: Column(
             children: <Widget>[
-              Text(
-                userMatch.teams[index].win,
-                style: Theme.of(context).textTheme.body2,
-              ),
               ListView.builder(
-                  shrinkWrap: true,
-                  itemBuilder: (context, indexPart) {
-                    return Padding(
-                      padding: EdgeInsets.only(top: 8.0),
-                      child: Text(participants[indexPart].participantId.toString()),
-                    );
-                  },
-                  itemCount: participants.length,
-                ),
+                physics: ScrollPhysics(),
+                shrinkWrap: true,
+                itemBuilder: (context, indexPart) {
+                  PlayerModel participantIdentities = userMatch
+                      .participantIdentities
+                      .where((participantId) =>
+                          participantId.participantId ==
+                          participants[indexPart].participantId)
+                      .first;
+
+                  ChampionModel _champion;
+                  String _championImage;
+
+                  if (champions.isChampionsLoaded == true) {
+                    _champion = champions
+                        .getChampion(participants[indexPart].championId);
+                    _championImage = 'assets/champs/images/${_champion.image}';
+                  } else {
+                    _championImage = 'assets/champs/images/unknown.png';
+                  }
+
+                  return Container(
+                    padding: EdgeInsets.all(8.0),
+                    child: Wrap(
+                      alignment: WrapAlignment.spaceBetween,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            Container(
+                              width: 70.0,
+                              height: 70.0,
+                              padding: EdgeInsets.all(8.0),
+                              alignment: AlignmentDirectional(1.0, 1.0),
+                              child: Text(
+                                '${participants[indexPart].stats.champLevel}',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  shadows: <Shadow>[
+                                    Shadow(
+                                      offset: Offset(1.0, 1.0),
+                                      blurRadius: 1.0,
+                                      color: Colors.black,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(160.0),
+                                image: DecorationImage(
+                                  image: AssetImage(_championImage),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            participantIdentities.summonerName,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(8.0),
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                ' K   D   A',
+                                style: TextStyle(
+                                  fontSize: 12.0,
+                                ),
+                              ),
+                              Text(
+                                '${participants[indexPart].stats.kills} / ${participants[indexPart].stats.deaths} / ${participants[indexPart].stats.assists}',
+                                style: TextStyle(
+                                  fontSize: 12.0,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(8.0),
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                'G',
+                                style: TextStyle(
+                                  fontSize: 12.0,
+                                ),
+                              ),
+                              Text(
+                                '${participants[indexPart].stats.goldEarned}',
+                                style: TextStyle(
+                                  fontSize: 12.0,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                itemCount: participants.length,
+              ),
             ],
           ),
         );
