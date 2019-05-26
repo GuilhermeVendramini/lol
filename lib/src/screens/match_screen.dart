@@ -7,6 +7,7 @@ import 'package:lol/src/models/participants_model.dart';
 import 'package:lol/src/models/player_model.dart';
 import 'package:provider/provider.dart';
 import 'package:lol/src/controllers/user_controller.dart';
+import 'package:lol/src/controllers/api.dart';
 
 class MatchScreen extends StatefulWidget {
   final int _matchId;
@@ -65,7 +66,7 @@ class _MatchScreenState extends State<MatchScreen> {
                     height: 40.0,
                   ),
                   Text(
-                    _teamWin,
+                    _teamWin.toUpperCase(),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 24.0,
@@ -117,8 +118,8 @@ class _MatchScreenState extends State<MatchScreen> {
           decoration: BoxDecoration(
             border: Border.all(color: _colorTeamWin),
           ),
-          margin: EdgeInsets.only(bottom: 20.0),
-          padding: EdgeInsets.all(8.0),
+          margin: EdgeInsets.only(bottom: 40.0),
+          padding: EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
           child: Column(
             children: <Widget>[
               ListView.builder(
@@ -144,17 +145,23 @@ class _MatchScreenState extends State<MatchScreen> {
                   }
 
                   return Container(
-                    padding: EdgeInsets.all(8.0),
+                    padding: EdgeInsets.only(top: 20.0, right: 8.0, left: 8.0, bottom: 20.0),
+                    //margin: EdgeInsets.only(top: 10.0),
+                    decoration: BoxDecoration(
+                      border: Border(bottom: BorderSide(color: _colorTeamWin))
+                    ),
                     child: Wrap(
                       alignment: WrapAlignment.spaceBetween,
                       crossAxisAlignment: WrapCrossAlignment.center,
+                      //direction: Axis.vertical,
                       children: <Widget>[
-                        Column(
+                        Wrap(
                           children: <Widget>[
                             Container(
-                              width: 70.0,
-                              height: 70.0,
+                              width: 80.0,
+                              height: 80.0,
                               padding: EdgeInsets.all(8.0),
+                              margin: EdgeInsets.only(right: 10.0),
                               alignment: AlignmentDirectional(1.0, 1.0),
                               child: Text(
                                 '${participants[indexPart].stats.champLevel}',
@@ -178,54 +185,262 @@ class _MatchScreenState extends State<MatchScreen> {
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                        Container(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            participantIdentities.summonerName,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
+                            Container(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                participantIdentities.summonerName.toUpperCase(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18.0,
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
+                          crossAxisAlignment: WrapCrossAlignment.center,
                         ),
-                        Container(
-                          padding: EdgeInsets.all(8.0),
-                          child: Column(
-                            children: <Widget>[
-                              Text(
-                                ' K   D   A',
-                                style: TextStyle(
-                                  fontSize: 12.0,
-                                ),
+                        Wrap(
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.all(8.0),
+                              child: Wrap(
+                                children: <Widget>[
+                                  Container(
+                                    child: Image(
+                                      image: NetworkImage(
+                                        'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item0}.png',
+                                      ),
+                                      height: 40.0,
+                                    ),
+                                    padding: EdgeInsets.only(right: 2.0),
+                                  ),
+                                  Container(
+                                    child: Image(
+                                      image: NetworkImage(
+                                        'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item1}.png',
+                                      ),
+                                      height: 40.0,
+                                    ),
+                                    padding: EdgeInsets.only(right: 2.0),
+                                  ),
+                                  Container(
+                                    child: Image(
+                                      image: NetworkImage(
+                                        'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item2}.png',
+                                      ),
+                                      height: 40.0,
+                                    ),
+                                    padding: EdgeInsets.only(right: 2.0),
+                                  ),
+                                  Container(
+                                    child: Image(
+                                      image: NetworkImage(
+                                        'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item3}.png',
+                                      ),
+                                      height: 40.0,
+                                    ),
+                                    padding: EdgeInsets.only(right: 2.0),
+                                  ),
+                                  Container(
+                                    child: Image(
+                                      image: NetworkImage(
+                                        'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item4}.png',
+                                      ),
+                                      height: 40.0,
+                                    ),
+                                    padding: EdgeInsets.only(right: 2.0),
+                                  ),
+                                  Container(
+                                    child: Image(
+                                      image: NetworkImage(
+                                        'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item5}.png',
+                                      ),
+                                      height: 40.0,
+                                    ),
+                                    padding: EdgeInsets.only(right: 2.0),
+                                  ),
+                                  Container(
+                                    child: Image(
+                                      image: NetworkImage(
+                                        'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item6}.png',
+                                      ),
+                                      height: 40.0,
+                                    ),
+                                    padding: EdgeInsets.only(right: 2.0),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                '${participants[indexPart].stats.kills} / ${participants[indexPart].stats.deaths} / ${participants[indexPart].stats.assists}',
-                                style: TextStyle(
-                                  fontSize: 12.0,
-                                ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(8.0),
+                              child: Column(
+                                children: <Widget>[
+                                  Text(
+                                    ' K   D   A',
+                                    style: TextStyle(
+                                      fontSize: 12.0,
+                                    ),
+                                  ),
+                                  Text(
+                                    '${participants[indexPart].stats.kills} / ${participants[indexPart].stats.deaths} / ${participants[indexPart].stats.assists}',
+                                    style: TextStyle(
+                                      fontSize: 12.0,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.all(8.0),
-                          child: Column(
-                            children: <Widget>[
-                              Text(
-                                'G',
-                                style: TextStyle(
-                                  fontSize: 12.0,
-                                ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(8.0),
+                              child: Column(
+                                children: <Widget>[
+                                  Text(
+                                    'G',
+                                    style: TextStyle(
+                                      fontSize: 12.0,
+                                    ),
+                                  ),
+                                  Text(
+                                    '${participants[indexPart].stats.goldEarned}',
+                                    style: TextStyle(
+                                      fontSize: 12.0,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                '${participants[indexPart].stats.goldEarned}',
-                                style: TextStyle(
-                                  fontSize: 12.0,
+                            ),
+                            /*Wrap(
+                              children: <Widget>[
+                                Container(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Wrap(
+                                      children: <Widget>[
+                                        Text(
+                                          participantIdentities.summonerName,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 2.0,
+                                        ),
+                                        Wrap(
+                                          children: <Widget>[
+                                            Container(
+                                              child: Image(
+                                                image: NetworkImage(
+                                                  'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item0}.png',
+                                                ),
+                                                height: 30.0,
+                                              ),
+                                              padding: EdgeInsets.only(right: 2.0),
+                                            ),
+                                            Container(
+                                              child: Image(
+                                                image: NetworkImage(
+                                                  'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item1}.png',
+                                                ),
+                                                height: 30.0,
+                                              ),
+                                              padding: EdgeInsets.only(right: 2.0),
+                                            ),
+                                            Container(
+                                              child: Image(
+                                                image: NetworkImage(
+                                                  'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item2}.png',
+                                                ),
+                                                height: 30.0,
+                                              ),
+                                              padding: EdgeInsets.only(right: 2.0),
+                                            ),
+                                            Container(
+                                              child: Image(
+                                                image: NetworkImage(
+                                                  'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item3}.png',
+                                                ),
+                                                height: 30.0,
+                                              ),
+                                              padding: EdgeInsets.only(right: 2.0),
+                                            ),
+                                            Container(
+                                              child: Image(
+                                                image: NetworkImage(
+                                                  'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item4}.png',
+                                                ),
+                                                height: 30.0,
+                                              ),
+                                              padding: EdgeInsets.only(right: 2.0),
+                                            ),
+                                            Container(
+                                              child: Image(
+                                                image: NetworkImage(
+                                                  'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item5}.png',
+                                                ),
+                                                height: 30.0,
+                                              ),
+                                              padding: EdgeInsets.only(right: 2.0),
+                                            ),
+                                            Container(
+                                              child: Image(
+                                                image: NetworkImage(
+                                                  'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item6}.png',
+                                                ),
+                                                height: 30.0,
+                                              ),
+                                              padding: EdgeInsets.only(right: 2.0),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                      direction: Axis.vertical,
+                                    )
                                 ),
-                              ),
-                            ],
-                          ),
+                              ],
+                            ),*/
+/*                            Wrap(
+                              children: <Widget>[
+                                Container(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Column(
+                                    children: <Widget>[
+                                      Text(
+                                        ' K   D   A',
+                                        style: TextStyle(
+                                          fontSize: 12.0,
+                                        ),
+                                      ),
+                                      Text(
+                                        '${participants[indexPart].stats.kills} / ${participants[indexPart].stats.deaths} / ${participants[indexPart].stats.assists}',
+                                        style: TextStyle(
+                                          fontSize: 12.0,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Column(
+                                    children: <Widget>[
+                                      Text(
+                                        'G',
+                                        style: TextStyle(
+                                          fontSize: 12.0,
+                                        ),
+                                      ),
+                                      Text(
+                                        '${participants[indexPart].stats.goldEarned}',
+                                        style: TextStyle(
+                                          fontSize: 12.0,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),*/
+                          ],
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          //direction: Axis.vertical,
                         ),
                       ],
                     ),

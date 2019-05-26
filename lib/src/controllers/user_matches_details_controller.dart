@@ -125,6 +125,13 @@ class UserMatchesDetailsService extends UserMatchesDetails {
                 win: participantsData['stats']['win'],
                 champLevel: participantsData['stats']['champLevel'],
                 goldEarned: participantsData['stats']['goldEarned'],
+                item0: participantsData['stats']['item0'],
+                item1: participantsData['stats']['item1'],
+                item2: participantsData['stats']['item2'],
+                item3: participantsData['stats']['item3'],
+                item4: participantsData['stats']['item4'],
+                item5: participantsData['stats']['item5'],
+                item6: participantsData['stats']['item6'],
               ),
             ));
 
@@ -141,6 +148,13 @@ class UserMatchesDetailsService extends UserMatchesDetails {
                 win: participantsData['stats']['win'],
                 champLevel: participantsData['stats']['champLevel'],
                 goldEarned: participantsData['stats']['goldEarned'],
+                item0: participantsData['stats']['item0'],
+                item1: participantsData['stats']['item1'],
+                item2: participantsData['stats']['item2'],
+                item3: participantsData['stats']['item3'],
+                item4: participantsData['stats']['item4'],
+                item5: participantsData['stats']['item5'],
+                item6: participantsData['stats']['item6'],
               );
 
               userTeam.first.win == 'Win' ? _win++ : _fail++;
