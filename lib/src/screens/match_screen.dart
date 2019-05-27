@@ -151,11 +151,13 @@ class _MatchScreenState extends State<MatchScreen> {
                       border: Border(bottom: BorderSide(color: _colorTeamWin))
                     ),
                     child: Wrap(
-                      alignment: WrapAlignment.spaceBetween,
+                      alignment: WrapAlignment.center,
                       crossAxisAlignment: WrapCrossAlignment.center,
                       //direction: Axis.vertical,
                       children: <Widget>[
                         Wrap(
+                          alignment: WrapAlignment.center,
+                          direction: Axis.vertical,
                           children: <Widget>[
                             Container(
                               width: 80.0,
@@ -199,6 +201,7 @@ class _MatchScreenState extends State<MatchScreen> {
                           crossAxisAlignment: WrapCrossAlignment.center,
                         ),
                         Wrap(
+                          alignment: WrapAlignment.center,
                           children: <Widget>[
                             Container(
                               padding: EdgeInsets.all(8.0),
@@ -211,7 +214,7 @@ class _MatchScreenState extends State<MatchScreen> {
                                       ),
                                       height: 40.0,
                                     ),
-                                    padding: EdgeInsets.only(right: 2.0),
+                                    padding: EdgeInsets.only(right: 4.0),
                                   ),
                                   Container(
                                     child: Image(
@@ -220,7 +223,7 @@ class _MatchScreenState extends State<MatchScreen> {
                                       ),
                                       height: 40.0,
                                     ),
-                                    padding: EdgeInsets.only(right: 2.0),
+                                    padding: EdgeInsets.only(right: 4.0),
                                   ),
                                   Container(
                                     child: Image(
@@ -229,7 +232,7 @@ class _MatchScreenState extends State<MatchScreen> {
                                       ),
                                       height: 40.0,
                                     ),
-                                    padding: EdgeInsets.only(right: 2.0),
+                                    padding: EdgeInsets.only(right: 4.0),
                                   ),
                                   Container(
                                     child: Image(
@@ -238,7 +241,7 @@ class _MatchScreenState extends State<MatchScreen> {
                                       ),
                                       height: 40.0,
                                     ),
-                                    padding: EdgeInsets.only(right: 2.0),
+                                    padding: EdgeInsets.only(right: 4.0),
                                   ),
                                   Container(
                                     child: Image(
@@ -247,7 +250,7 @@ class _MatchScreenState extends State<MatchScreen> {
                                       ),
                                       height: 40.0,
                                     ),
-                                    padding: EdgeInsets.only(right: 2.0),
+                                    padding: EdgeInsets.only(right: 4.0),
                                   ),
                                   Container(
                                     child: Image(
@@ -256,7 +259,7 @@ class _MatchScreenState extends State<MatchScreen> {
                                       ),
                                       height: 40.0,
                                     ),
-                                    padding: EdgeInsets.only(right: 2.0),
+                                    padding: EdgeInsets.only(right: 4.0),
                                   ),
                                   Container(
                                     child: Image(
@@ -265,7 +268,7 @@ class _MatchScreenState extends State<MatchScreen> {
                                       ),
                                       height: 40.0,
                                     ),
-                                    padding: EdgeInsets.only(right: 2.0),
+                                    padding: EdgeInsets.only(right: 4.0),
                                   ),
                                 ],
                               ),

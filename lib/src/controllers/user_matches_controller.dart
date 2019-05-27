@@ -11,7 +11,6 @@ import 'package:lol/src/controllers/api.dart';
 class UserMatchesController with ChangeNotifier {
   UserMatchesModel _userMatches;
   bool _isMatchesLoaded;
-  Map<String, dynamic> _mostPlayedAt;
   List<dynamic> _playedAt;
   String _lastMatch;
 }
@@ -25,10 +24,6 @@ class UserMatches extends UserMatchesController {
     return _isMatchesLoaded;
   }
 
-  Map<String, dynamic> get mostPlayedAt {
-    return _mostPlayedAt;
-  }
-
   List<dynamic> get playedAt {
     return _playedAt;
   }
@@ -40,7 +35,6 @@ class UserMatches extends UserMatchesController {
   void get clearMatchesValues {
     _userMatches = null;
     _isMatchesLoaded = null;
-    _mostPlayedAt = null;
     _playedAt = null;
     _lastMatch = null;
     notifyListeners();
@@ -94,11 +88,6 @@ class UserMatchesService extends UserMatches {
 
       _playedAt = lanes;
 
-      lanes.sort((left, right) {
-        return left['count'].compareTo(right['count']);
-      });
-
-      _mostPlayedAt = lanes.last;
       int lastMatch = 0;
       matchList.forEach((matchData){
         final MatchModel match = MatchModel(

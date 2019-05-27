@@ -14,6 +14,8 @@ import 'package:lol/src/controllers/api.dart';
 class UserMatchesDetailsController with ChangeNotifier {
   List<MatchDetailModel> _userMatchesDetailsModel;
   Iterable<MatchDetailModel> _userMatchDetails;
+  List<dynamic> _killSequence;
+  List<dynamic> _performance;
   bool _isMatchesDetailsLoaded;
   Map<String, dynamic> _userWinFail;
 }
@@ -39,10 +41,20 @@ class UserMatchesDetails extends UserMatchesDetailsController {
     return _userWinFail;
   }
 
+  List<dynamic> get killSequence {
+    return _killSequence;
+  }
+
+  List<dynamic> get performance {
+    return _performance;
+  }
+
   void get clearMatchesDetailsValues {
     _userMatchesDetailsModel = null;
     _isMatchesDetailsLoaded = null;
     _userWinFail = null;
+    _killSequence = null;
+    _performance = null;
     notifyListeners();
   }
 }
@@ -60,6 +72,13 @@ class UserMatchesDetailsService extends UserMatchesDetails {
     _isMatchesDetailsLoaded = true;
     _userMatchesDetailsModel = [];
     int _win = 0, _fail = 0;
+    int _countDoubleKills = 0;
+    int _countTripleKills = 0;
+    int _countQuadraKills = 0;
+    int _countPentaKills = 0;
+    int _countKills = 0;
+    int _countDeaths = 0;
+    int _countAssists = 0;
 
     if (userMatches.matches != null) {
       userMatches.matches.take(10).forEach((matchData) async {
@@ -169,6 +188,28 @@ class UserMatchesDetailsService extends UserMatchesDetails {
                 'winRemaining': 100 - _winComplete,
                 'failRemaining': 100 - _failComplete,
               };
+
+              _countDoubleKills = participantsData['stats']['doubleKills'] + _countDoubleKills;
+              _countTripleKills = participantsData['stats']['tripleKills'] + _countTripleKills;
+              _countQuadraKills = participantsData['stats']['quadraKills'] + _countQuadraKills;
+              _countPentaKills = participantsData['stats']['pentaKills'] + _countPentaKills;
+
+              _killSequence = [
+                {'sequence': 'DOUBLE', 'count': _countDoubleKills},
+                {'sequence': 'TRIPLE', 'count': _countTripleKills},
+                {'sequence': 'QUADRA', 'count': _countQuadraKills},
+                {'sequence': 'PENTA', 'count': _countPentaKills},
+              ];
+
+              _countKills = participantsData['stats']['kills'] + _countKills;
+              _countDeaths = participantsData['stats']['deaths'] + _countDeaths;
+              _countAssists = participantsData['stats']['assists'] + _countAssists;
+
+              _performance = [
+                {'performance': 'KILLS', 'count': _countKills},
+                {'performance': 'DEATHS', 'count': _countDeaths},
+                {'performance': 'ASSISTS', 'count': _countAssists},
+              ];
             }
           });
 

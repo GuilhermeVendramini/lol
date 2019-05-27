@@ -90,26 +90,6 @@ class ProfileTabBarView extends StatelessWidget {
                     ],
                   ),
               SizedBox(
-                height: 60.0,
-              ),
-              Text(
-                'TOTAL GAMES',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(
-                height: 6.0,
-              ),
-              Text(
-                userMatches.getUserMatches != null
-                    ? '${userMatches.getUserMatches.totalGames}'
-                    : '0',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(
                 height: 40.0,
               ),
             ],

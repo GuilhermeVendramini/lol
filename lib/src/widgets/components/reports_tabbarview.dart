@@ -7,6 +7,8 @@ import 'package:lol/src/controllers/user_matches_controller.dart';
 import 'package:lol/src/controllers/user_matches_details_controller.dart';
 
 List<dynamic> _playedAt = [];
+List<dynamic> _userKillSequence = [];
+List<dynamic> _performance = [];
 
 class ReportsTabBarView extends StatelessWidget {
 
@@ -18,13 +20,9 @@ class ReportsTabBarView extends StatelessWidget {
     final userMatches = Provider.of<UserMatchesService>(context);
     final userMatchesDetails = Provider.of<UserMatchesDetailsService>(context);
     UserMatchesModel _userMatches;
-    String _mostPlayedAt = '';
-    String _lastMatch = '';
     Map<String, dynamic> _userWinFail;
 
     if(userMatches.isMatchesLoaded == true) {
-      _mostPlayedAt = userMatches.mostPlayedAt['lane'];
-      _lastMatch = userMatches.lastMatch;
       _playedAt = userMatches.playedAt;
       _userMatches = userMatches.getUserMatches;
 
@@ -35,6 +33,8 @@ class ReportsTabBarView extends StatelessWidget {
 
     if(userMatchesDetails.isMatchesDetailsLoaded != null) {
       _userWinFail = userMatchesDetails.userWinFail;
+      _userKillSequence = userMatchesDetails.killSequence;
+      _performance = userMatchesDetails.performance;
     }
 
     final double deviceWidth = MediaQuery.of(context).size.width;
@@ -187,7 +187,7 @@ class ReportsTabBarView extends StatelessWidget {
                 height: 60.0,
               ),
               Text(
-                'Resume',
+                'Performance',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18.0,
@@ -195,35 +195,31 @@ class ReportsTabBarView extends StatelessWidget {
               ),
               Container(
                 padding: EdgeInsets.all(10.0),
+                height: 220.0,
                 child: Card(
                   child: Container(
                     padding: EdgeInsets.all(20.0),
-                    child: Column(
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              'Most picked lane: ',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(_mostPlayedAt),
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              'Last match: ',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(_lastMatch),
-                          ],
-                        ),
-                      ],
-                    ),
+                    child: ChartPerformance(),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 60.0,
+              ),
+              Text(
+                'Kill Sequence',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18.0,
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.all(10.0),
+                height: 220.0,
+                child: Card(
+                  child: Container(
+                    padding: EdgeInsets.all(20.0),
+                    child: ChartKillSequence(),
                   ),
                 ),
               ),
@@ -240,7 +236,7 @@ class ReportsTabBarView extends StatelessWidget {
 
 // Lanes
 class ChartLanes extends StatelessWidget {
-  final List<charts.Series> seriesList = _createSampleData();
+  final List<charts.Series> seriesList = _createData();
   final bool animate = true;
 
   @override
@@ -291,7 +287,7 @@ class ChartLanes extends StatelessWidget {
   }
 
   /// Create series list with single series
-  static List<charts.Series<OrdinalLanes, String>> _createSampleData() {
+  static List<charts.Series<OrdinalLanes, String>> _createData() {
 
     List<OrdinalLanes> globalLanesData = [];
     
@@ -320,4 +316,170 @@ class OrdinalLanes {
   final int count;
 
   OrdinalLanes(this.lane, this.count);
+}
+
+// Kill sequence
+class ChartKillSequence extends StatelessWidget {
+  final List<charts.Series> seriesList = _createData();
+  final bool animate = true;
+
+  @override
+  Widget build(BuildContext context) {
+    charts.Color colorTextChart = charts.Color.black;
+
+    if(Theme.of(context).brightness == Brightness.dark) {
+      colorTextChart = charts.Color.white;
+    }
+
+    return new charts.BarChart(
+      seriesList,
+      animate: animate,
+      vertical: false,
+      barRendererDecorator: charts.BarLabelDecorator(outsideLabelStyleSpec: charts.TextStyleSpec(color: colorTextChart)),
+
+
+      domainAxis: charts.OrdinalAxisSpec(
+        renderSpec: charts.SmallTickRendererSpec(
+          // Tick and Label styling here.
+          labelStyle: charts.TextStyleSpec(
+            fontSize: 14, // size in Pts.
+            color: charts.Color.fromOther(
+              color: colorTextChart,
+            ),
+          ),
+          labelAnchor: charts.TickLabelAnchor.centered,
+          // Change the line colors to match text color.
+          lineStyle:
+          charts.LineStyleSpec(color: charts.MaterialPalette.transparent),
+        ),
+      ),
+
+      /// Assign a custom style for the measure axis.
+      primaryMeasureAxis: charts.NumericAxisSpec(
+        renderSpec: charts.GridlineRendererSpec(
+          // Tick and Label styling here.
+          labelStyle: charts.TextStyleSpec(
+            fontSize: 12, // size in Pts.
+            color: colorTextChart,
+          ),
+          // Change the line colors to match text color.
+          //lineStyle:
+          //    charts.LineStyleSpec(color: charts.MaterialPalette.white)
+        ),
+      ),
+    );
+  }
+
+  /// Create series list with single series
+  static List<charts.Series<OrdinalKillSequence, String>> _createData() {
+
+    List<OrdinalKillSequence> globalKillSequenceData = [];
+    _userKillSequence.forEach((kills){
+      globalKillSequenceData.add(OrdinalKillSequence(kills['sequence'], kills['count']));
+    });
+
+    return [
+      charts.Series<OrdinalKillSequence, String>(
+        id: 'Kill',
+        domainFn: (OrdinalKillSequence kills, _) => kills.sequence,
+        measureFn: (OrdinalKillSequence kills, _) => kills.count,
+        data: globalKillSequenceData,
+        labelAccessorFn: (OrdinalKillSequence kills, _) => kills.count.toString(),
+        fillColorFn: (OrdinalKillSequence kills, _) {
+          final color = charts.MaterialPalette.deepOrange.shadeDefault.lighter;
+          return color;
+        },
+      ),
+    ];
+  }
+}
+
+class OrdinalKillSequence {
+  final String sequence;
+  final int count;
+
+  OrdinalKillSequence(this.sequence, this.count);
+}
+
+// Performance
+class ChartPerformance extends StatelessWidget {
+  final List<charts.Series> seriesList = _createData();
+  final bool animate = true;
+
+  @override
+  Widget build(BuildContext context) {
+    charts.Color colorTextChart = charts.Color.black;
+
+    if(Theme.of(context).brightness == Brightness.dark) {
+      colorTextChart = charts.Color.white;
+    }
+
+    return new charts.BarChart(
+      seriesList,
+      animate: animate,
+      vertical: false,
+      barRendererDecorator: charts.BarLabelDecorator(outsideLabelStyleSpec: charts.TextStyleSpec(color: colorTextChart)),
+
+
+      domainAxis: charts.OrdinalAxisSpec(
+        renderSpec: charts.SmallTickRendererSpec(
+          // Tick and Label styling here.
+          labelStyle: charts.TextStyleSpec(
+            fontSize: 14, // size in Pts.
+            color: charts.Color.fromOther(
+              color: colorTextChart,
+            ),
+          ),
+          labelAnchor: charts.TickLabelAnchor.centered,
+          // Change the line colors to match text color.
+          lineStyle:
+          charts.LineStyleSpec(color: charts.MaterialPalette.transparent),
+        ),
+      ),
+
+      /// Assign a custom style for the measure axis.
+      primaryMeasureAxis: charts.NumericAxisSpec(
+        renderSpec: charts.GridlineRendererSpec(
+          // Tick and Label styling here.
+          labelStyle: charts.TextStyleSpec(
+            fontSize: 12, // size in Pts.
+            color: colorTextChart,
+          ),
+          // Change the line colors to match text color.
+          //lineStyle:
+          //    charts.LineStyleSpec(color: charts.MaterialPalette.white)
+        ),
+      ),
+    );
+  }
+
+  /// Create series list with single series
+  static List<charts.Series<OrdinalPerformance, String>> _createData() {
+
+    List<OrdinalPerformance> globalPerformanceData = [];
+    _performance.forEach((perf){
+      globalPerformanceData.add(OrdinalPerformance(perf['performance'], perf['count']));
+    });
+
+    return [
+      charts.Series<OrdinalPerformance, String>(
+        id: 'Performance',
+        domainFn: (OrdinalPerformance perf, _) => perf.performance,
+        measureFn: (OrdinalPerformance perf, _) => perf.count,
+        data: globalPerformanceData,
+        labelAccessorFn: (OrdinalPerformance perf, _) => perf.count.toString(),
+        fillColorFn: (OrdinalPerformance perf, _) {
+          final color = charts.MaterialPalette.green.shadeDefault.lighter;
+          return color;
+        },
+      ),
+    ];
+  }
+}
+
+class OrdinalPerformance {
+  final String performance;
+  final int count;
+
+  OrdinalPerformance(this.performance, this.count);
 }
