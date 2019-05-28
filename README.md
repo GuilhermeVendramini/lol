@@ -12,5 +12,7 @@ mastery champions information and reports in your cell phone iOS or Android.
 <img src="/screenshots/champions.jpg?raw=true" height="400">
 <img src="/screenshots/champion-detail.jpg?raw=true" height="400">
 <img src="/screenshots/reports.jpg?raw=true" height="400">
+<img src="/screenshots/reports-1.jpg?raw=true" height="400">
+<img src="/screenshots/reports-2.jpg?raw=true" height="400">
 <img src="/screenshots/switch-theme.jpg?raw=true" height="400">
 <img src="/screenshots/light-theme.jpg?raw=true" height="400">
