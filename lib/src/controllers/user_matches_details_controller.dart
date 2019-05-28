@@ -61,9 +61,9 @@ class UserMatchesDetails extends UserMatchesDetailsController {
     _userMatchesDetailsModel = null;
     _isMatchesDetailsLoaded = null;
     _userWinFail = null;
-    _killSequence = null;
-    _performance = null;
-    _goldEarned = null;
+    _killSequence = [];
+    _performance = [];
+    _goldEarned = [];
     notifyListeners();
   }
 }
@@ -223,7 +223,6 @@ class UserMatchesDetailsService extends UserMatchesDetails {
               DateTime _dateMatch = DateTime.fromMillisecondsSinceEpoch(responseData['gameCreation']);
 
               _goldEarned.add({'matchTime': _dateMatch, 'gold': participantsData['stats']['goldEarned']});
-              print(_goldEarned.toList());
             }
           });
 
