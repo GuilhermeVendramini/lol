@@ -14,8 +14,9 @@ import 'package:lol/src/controllers/api.dart';
 class UserMatchesDetailsController with ChangeNotifier {
   List<MatchDetailModel> _userMatchesDetailsModel;
   Iterable<MatchDetailModel> _userMatchDetails;
-  List<dynamic> _killSequence;
-  List<dynamic> _performance;
+  List<dynamic> _killSequence = [];
+  List<dynamic> _performance = [];
+  List<dynamic> _goldEarned = [];
   bool _isMatchesDetailsLoaded;
   Map<String, dynamic> _userWinFail;
 }
@@ -49,12 +50,20 @@ class UserMatchesDetails extends UserMatchesDetailsController {
     return _performance;
   }
 
+  List<dynamic> get goldEarned {
+    _goldEarned.sort((a, b) {
+      return b['matchTime'].compareTo(a['matchTime']);
+    });
+    return _goldEarned;
+  }
+
   void get clearMatchesDetailsValues {
     _userMatchesDetailsModel = null;
     _isMatchesDetailsLoaded = null;
     _userWinFail = null;
     _killSequence = null;
     _performance = null;
+    _goldEarned = null;
     notifyListeners();
   }
 }
@@ -210,6 +219,11 @@ class UserMatchesDetailsService extends UserMatchesDetails {
                 {'performance': 'DEATHS', 'count': _countDeaths},
                 {'performance': 'ASSISTS', 'count': _countAssists},
               ];
+
+              DateTime _dateMatch = DateTime.fromMillisecondsSinceEpoch(responseData['gameCreation']);
+
+              _goldEarned.add({'matchTime': _dateMatch, 'gold': participantsData['stats']['goldEarned']});
+              print(_goldEarned.toList());
             }
           });
 

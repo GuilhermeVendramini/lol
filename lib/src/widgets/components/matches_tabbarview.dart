@@ -63,7 +63,7 @@ class MatchesTabBarView extends StatelessWidget {
                             DateTime.fromMillisecondsSinceEpoch(
                                 _userMatchesDetails[index].timestamp);
                         String _dateMatchFormatted =
-                            DateFormat('dd/MM/yy').add_jm().format(_dateMatch);
+                            DateFormat('dd/MM/yy').add_Hm().format(_dateMatch);
                         int _gameDuration = Duration(
                                 seconds:
                                     _userMatchesDetails[index].gameDuration)

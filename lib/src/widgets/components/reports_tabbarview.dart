@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_circular_chart/flutter_circular_chart.dart';
@@ -9,6 +10,7 @@ import 'package:lol/src/controllers/user_matches_details_controller.dart';
 List<dynamic> _playedAt = [];
 List<dynamic> _userKillSequence = [];
 List<dynamic> _performance = [];
+List<dynamic> _goldEarned = [];
 
 class ReportsTabBarView extends StatelessWidget {
 
@@ -35,6 +37,7 @@ class ReportsTabBarView extends StatelessWidget {
       _userWinFail = userMatchesDetails.userWinFail;
       _userKillSequence = userMatchesDetails.killSequence;
       _performance = userMatchesDetails.performance;
+      _goldEarned = userMatchesDetails.goldEarned;
     }
 
     final double deviceWidth = MediaQuery.of(context).size.width;
@@ -187,6 +190,26 @@ class ReportsTabBarView extends StatelessWidget {
                 height: 60.0,
               ),
               Text(
+                'Gold Earned',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18.0,
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.all(10.0),
+                height: 420.0,
+                child: Card(
+                  child: Container(
+                    padding: EdgeInsets.all(20.0),
+                    child: ChartGoldEarned(),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 60.0,
+              ),
+              Text(
                 'Performance',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -237,7 +260,6 @@ class ReportsTabBarView extends StatelessWidget {
 // Lanes
 class ChartLanes extends StatelessWidget {
   final List<charts.Series> seriesList = _createData();
-  final bool animate = true;
 
   @override
   Widget build(BuildContext context) {
@@ -249,10 +271,9 @@ class ChartLanes extends StatelessWidget {
 
     return new charts.BarChart(
       seriesList,
-      animate: animate,
+      animate: true,
       vertical: false,
       barRendererDecorator: charts.BarLabelDecorator(outsideLabelStyleSpec: charts.TextStyleSpec(color: colorTextChart)),
-
 
       domainAxis: charts.OrdinalAxisSpec(
         renderSpec: charts.SmallTickRendererSpec(
@@ -321,7 +342,6 @@ class OrdinalLanes {
 // Kill sequence
 class ChartKillSequence extends StatelessWidget {
   final List<charts.Series> seriesList = _createData();
-  final bool animate = true;
 
   @override
   Widget build(BuildContext context) {
@@ -333,7 +353,7 @@ class ChartKillSequence extends StatelessWidget {
 
     return new charts.BarChart(
       seriesList,
-      animate: animate,
+      animate: true,
       vertical: false,
       barRendererDecorator: charts.BarLabelDecorator(outsideLabelStyleSpec: charts.TextStyleSpec(color: colorTextChart)),
 
@@ -404,7 +424,6 @@ class OrdinalKillSequence {
 // Performance
 class ChartPerformance extends StatelessWidget {
   final List<charts.Series> seriesList = _createData();
-  final bool animate = true;
 
   @override
   Widget build(BuildContext context) {
@@ -416,7 +435,7 @@ class ChartPerformance extends StatelessWidget {
 
     return new charts.BarChart(
       seriesList,
-      animate: animate,
+      animate: true,
       vertical: false,
       barRendererDecorator: charts.BarLabelDecorator(outsideLabelStyleSpec: charts.TextStyleSpec(color: colorTextChart)),
 
@@ -482,4 +501,94 @@ class OrdinalPerformance {
   final int count;
 
   OrdinalPerformance(this.performance, this.count);
+}
+
+// goldEarned
+class ChartGoldEarned extends StatelessWidget {
+  final List<charts.Series> seriesList = _createData();
+
+  @override
+  Widget build(BuildContext context) {
+    charts.Color colorTextChart = charts.Color.black;
+
+    if(Theme.of(context).brightness == Brightness.dark) {
+      colorTextChart = charts.Color.white;
+    }
+
+    return new charts.BarChart(
+      seriesList,
+      animate: true,
+      vertical: false,
+      barRendererDecorator: charts.BarLabelDecorator(outsideLabelStyleSpec: charts.TextStyleSpec(color: colorTextChart)),
+
+      domainAxis: charts.OrdinalAxisSpec(
+        renderSpec: charts.SmallTickRendererSpec(
+          // Tick and Label styling here.
+          labelStyle: charts.TextStyleSpec(
+            fontSize: 14, // size in Pts.
+            color: charts.Color.fromOther(
+              color: colorTextChart,
+            ),
+          ),
+          labelAnchor: charts.TickLabelAnchor.centered,
+          // Change the line colors to match text color.
+          lineStyle:
+          charts.LineStyleSpec(color: charts.MaterialPalette.transparent),
+        ),
+      ),
+
+      /// Assign a custom style for the measure axis.
+      primaryMeasureAxis: charts.NumericAxisSpec(
+        renderSpec: charts.GridlineRendererSpec(
+          // Tick and Label styling here.
+          labelStyle: charts.TextStyleSpec(
+            fontSize: 12, // size in Pts.
+            color: colorTextChart,
+          ),
+          // Change the line colors to match text color.
+          //lineStyle:
+          //    charts.LineStyleSpec(color: charts.MaterialPalette.white)
+        ),
+      ),
+    );
+  }
+
+  /// Create series list with single series
+  static List<charts.Series<OrdinalGoldEarned, String>> _createData() {
+
+    List<OrdinalGoldEarned> globalGoldEarnedData = [];
+
+    _goldEarned.forEach((goldEarned){
+      String _dateMatchFormatted =
+      DateFormat('dd/MM').add_Hm().format(goldEarned['matchTime']);
+      globalGoldEarnedData.add(
+          OrdinalGoldEarned(
+            _dateMatchFormatted,
+            goldEarned['gold'],
+          )
+      );
+    });
+
+    return [
+      new charts.Series<OrdinalGoldEarned, String>(
+        id: 'GoldEarned',
+        colorFn: (_, __) => charts.MaterialPalette.yellow.shadeDefault.darker,
+        domainFn: (OrdinalGoldEarned goldEarned, _) => goldEarned.matchTime,
+        measureFn: (OrdinalGoldEarned goldEarned, _) => goldEarned.gold,
+        data: globalGoldEarnedData,
+        labelAccessorFn: (OrdinalGoldEarned goldEarned, _) => goldEarned.gold.toString(),
+        fillColorFn: (OrdinalGoldEarned goldEarned, _) {
+          final color = charts.MaterialPalette.yellow.shadeDefault.darker;
+          return color;
+        },
+      )
+    ];
+  }
+}
+
+class OrdinalGoldEarned {
+  final String matchTime;
+  final int gold;
+
+  OrdinalGoldEarned(this.matchTime, this.gold);
 }

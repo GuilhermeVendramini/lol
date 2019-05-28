@@ -33,7 +33,6 @@ class Champions extends ChampionsController {
 
 class ChampionsService extends Champions {
   Future<Map<String, dynamic>> loadChampions() async {
-    print('load champs');
     if(_isChampionsLoaded != null) {
       return {'success': true, 'message': 'Champs already loaded.'};
     }
