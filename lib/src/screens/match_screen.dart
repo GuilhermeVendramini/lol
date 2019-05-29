@@ -7,7 +7,6 @@ import 'package:lol/src/models/match_detail_model.dart';
 import 'package:lol/src/models/participants_model.dart';
 import 'package:lol/src/models/player_model.dart';
 import 'package:provider/provider.dart';
-import 'package:lol/src/controllers/user_controller.dart';
 import 'package:lol/src/controllers/api.dart';
 
 class MatchScreen extends StatefulWidget {
@@ -24,18 +23,12 @@ class MatchScreen extends StatefulWidget {
 class _MatchScreenState extends State<MatchScreen> {
   @override
   Widget build(BuildContext context) {
-    final double deviceWidth = MediaQuery.of(context).size.width;
-    final double targetWidth = deviceWidth > 650.0 ? 600.0 : deviceWidth * 0.95;
-    final user = Provider.of<UserAuth>(context);
-
     final userMatchesDetails = Provider.of<UserMatchesDetailsService>(context);
     MatchDetailModel _userMatch = userMatchesDetails.getMatch(widget._matchId);
 
-    Color _colorTeamWin = Colors.red[600];
-    String _teamWin = 'Fail';
+    String _teamWin = 'FAIL';
     if (_userMatch.userStats.win) {
-      _colorTeamWin = Colors.cyan[600];
-      _teamWin = 'Win';
+      _teamWin = 'WIN';
     }
 
     return WillPopScope(
@@ -45,48 +38,41 @@ class _MatchScreenState extends State<MatchScreen> {
       child: DefaultTabController(
         length: 4,
         child: Scaffold(
-          drawer: _buildSideDrawer(context),
-          appBar: AppBar(
-            title: Text(user.getUser.name),
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(Icons.settings),
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/settings');
-                },
-              ),
-            ],
-          ),
-          body: Center(
-            heightFactor: 2.0,
-            child: Container(
-              width: targetWidth,
-              child: Column(
-                children: <Widget>[
-                  SizedBox(
-                    height: 40.0,
-                  ),
-                  Text(
-                    _teamWin.toUpperCase(),
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24.0,
-                      color: _colorTeamWin,
+          body: NestedScrollView(
+            headerSliverBuilder:
+                (BuildContext context, bool innerBoxIsScrolled) {
+              return <Widget>[
+                SliverAppBar(
+                  expandedHeight: 200.0,
+                  floating: false,
+                  pinned: true,
+                  flexibleSpace: FlexibleSpaceBar(
+                    centerTitle: true,
+                    titlePadding: EdgeInsets.all(2.0),
+                    title: Text(_teamWin,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 34.0,
+                        )),
+                    background: Image.asset(
+                      'assets/images/background.jpg',
+                      fit: BoxFit.cover,
+                      color: Colors.black.withOpacity(0.5),
+                      colorBlendMode: BlendMode.hardLight,
                     ),
                   ),
-                  SizedBox(
-                    height: 40.0,
-                  ),
-                  Expanded(
-                    child: _team(_userMatch),
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-/*                    Expanded(
-                      child: _team(200),
-                    ),*/
-                ],
+                ),
+              ];
+            },
+            body: Center(
+              child: Container(
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: _team(_userMatch),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -104,6 +90,7 @@ class _MatchScreenState extends State<MatchScreen> {
 
     return ListView.builder(
       physics: ScrollPhysics(),
+      padding: EdgeInsets.all(0.0),
       itemBuilder: (context, index) {
         final List<ParticipantsModel> participants = userMatch.participants
             .where((participant) =>
@@ -117,13 +104,21 @@ class _MatchScreenState extends State<MatchScreen> {
 
         return Container(
           decoration: BoxDecoration(
-            border: Border.all(color: _colorTeamWin),
+            border: Border.all(color: Colors.white),
+            color: _colorTeamWin.withOpacity(0.8),
           ),
-          margin: EdgeInsets.only(bottom: 40.0),
-          padding: EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
+          padding: EdgeInsets.only(top: 20.0, right: 8.0, left: 8.0),
           child: Column(
             children: <Widget>[
+              Text(
+                'TEAM ${index + 1}',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0,
+                ),
+              ),
               ListView.builder(
+                padding: EdgeInsets.only(top: 0.0),
                 physics: ScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (context, indexPart) {
@@ -145,15 +140,15 @@ class _MatchScreenState extends State<MatchScreen> {
                   }
 
                   return Container(
-                    padding: EdgeInsets.only(top: 20.0, right: 8.0, left: 8.0, bottom: 20.0),
-                    //margin: EdgeInsets.only(top: 10.0),
+                    padding: EdgeInsets.only(
+                        top: 20.0, right: 8.0, left: 8.0, bottom: 20.0),
                     decoration: BoxDecoration(
-                      border: Border(bottom: BorderSide(color: _colorTeamWin))
-                    ),
+                        border: Border(
+                            bottom: BorderSide(
+                                color: Colors.white.withOpacity(0.4)))),
                     child: Wrap(
                       alignment: WrapAlignment.center,
                       crossAxisAlignment: WrapCrossAlignment.center,
-                      //direction: Axis.vertical,
                       children: <Widget>[
                         Wrap(
                           alignment: WrapAlignment.center,
@@ -190,7 +185,8 @@ class _MatchScreenState extends State<MatchScreen> {
                             Container(
                               padding: EdgeInsets.all(8.0),
                               child: Text(
-                                participantIdentities.summonerName.toUpperCase(),
+                                participantIdentities.summonerName
+                                    .toUpperCase(),
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18.0,
@@ -209,107 +205,114 @@ class _MatchScreenState extends State<MatchScreen> {
                                 children: <Widget>[
                                   Container(
                                     child:
-                                    participants[indexPart].stats.item0 == 0 ?
-                                    Image(
-                                      image: AssetImage('assets/images/unknown.png'),
-                                      height: 40.0,
-                                    ) :
-                                    Image(
-                                      image: NetworkImageWithRetry(
-                                        'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item0}.png',
-                                      ),
-                                      height: 40.0,
-                                    ),
+                                        participants[indexPart].stats.item0 == 0
+                                            ? Image(
+                                                image: AssetImage(
+                                                    'assets/images/unknown.png'),
+                                                height: 40.0,
+                                              )
+                                            : Image(
+                                                image: NetworkImageWithRetry(
+                                                  'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item0}.png',
+                                                ),
+                                                height: 40.0,
+                                              ),
                                     padding: EdgeInsets.only(right: 4.0),
                                   ),
                                   Container(
                                     child:
-                                    participants[indexPart].stats.item1 == 0 ?
-                                    Image(
-                                      image: AssetImage('assets/images/unknown.png'),
-                                      height: 40.0,
-                                    ) :
-                                    Image(
-                                      image: NetworkImageWithRetry(
-                                        'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item1}.png',
-                                      ),
-                                      height: 40.0,
-                                    ),
+                                        participants[indexPart].stats.item1 == 0
+                                            ? Image(
+                                                image: AssetImage(
+                                                    'assets/images/unknown.png'),
+                                                height: 40.0,
+                                              )
+                                            : Image(
+                                                image: NetworkImageWithRetry(
+                                                  'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item1}.png',
+                                                ),
+                                                height: 40.0,
+                                              ),
                                     padding: EdgeInsets.only(right: 4.0),
                                   ),
                                   Container(
                                     child:
-                                    participants[indexPart].stats.item2 == 0 ?
-                                    Image(
-                                      image: AssetImage('assets/images/unknown.png'),
-                                      height: 40.0,
-                                    ) :
-                                    Image(
-                                      image: NetworkImageWithRetry(
-                                        'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item2}.png',
-                                      ),
-                                      height: 40.0,
-                                    ),
+                                        participants[indexPart].stats.item2 == 0
+                                            ? Image(
+                                                image: AssetImage(
+                                                    'assets/images/unknown.png'),
+                                                height: 40.0,
+                                              )
+                                            : Image(
+                                                image: NetworkImageWithRetry(
+                                                  'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item2}.png',
+                                                ),
+                                                height: 40.0,
+                                              ),
                                     padding: EdgeInsets.only(right: 4.0),
                                   ),
                                   Container(
                                     child:
-                                    participants[indexPart].stats.item3 == 0 ?
-                                    Image(
-                                      image: AssetImage('assets/images/unknown.png'),
-                                      height: 40.0,
-                                    ) :
-                                    Image(
-                                      image: NetworkImageWithRetry(
-                                        'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item3}.png',
-                                      ),
-                                      height: 40.0,
-                                    ),
+                                        participants[indexPart].stats.item3 == 0
+                                            ? Image(
+                                                image: AssetImage(
+                                                    'assets/images/unknown.png'),
+                                                height: 40.0,
+                                              )
+                                            : Image(
+                                                image: NetworkImageWithRetry(
+                                                  'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item3}.png',
+                                                ),
+                                                height: 40.0,
+                                              ),
                                     padding: EdgeInsets.only(right: 4.0),
                                   ),
                                   Container(
                                     child:
-                                    participants[indexPart].stats.item4 == 0 ?
-                                    Image(
-                                      image: AssetImage('assets/images/unknown.png'),
-                                      height: 40.0,
-                                    ) :
-                                    Image(
-                                      image: NetworkImageWithRetry(
-                                        'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item4}.png',
-                                      ),
-                                      height: 40.0,
-                                    ),
+                                        participants[indexPart].stats.item4 == 0
+                                            ? Image(
+                                                image: AssetImage(
+                                                    'assets/images/unknown.png'),
+                                                height: 40.0,
+                                              )
+                                            : Image(
+                                                image: NetworkImageWithRetry(
+                                                  'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item4}.png',
+                                                ),
+                                                height: 40.0,
+                                              ),
                                     padding: EdgeInsets.only(right: 4.0),
                                   ),
                                   Container(
                                     child:
-                                    participants[indexPart].stats.item5 == 0 ?
-                                    Image(
-                                      image: AssetImage('assets/images/unknown.png'),
-                                      height: 40.0,
-                                    ) :
-                                    Image(
-                                      image: NetworkImageWithRetry(
-                                        'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item5}.png',
-                                      ),
-                                      height: 40.0,
-                                    ),
+                                        participants[indexPart].stats.item5 == 0
+                                            ? Image(
+                                                image: AssetImage(
+                                                    'assets/images/unknown.png'),
+                                                height: 40.0,
+                                              )
+                                            : Image(
+                                                image: NetworkImageWithRetry(
+                                                  'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item5}.png',
+                                                ),
+                                                height: 40.0,
+                                              ),
                                     padding: EdgeInsets.only(right: 4.0),
                                   ),
                                   Container(
                                     child:
-                                    participants[indexPart].stats.item6 == 0 ?
-                                    Image(
-                                      image: AssetImage('assets/images/unknown.png'),
-                                      height: 40.0,
-                                    ) :
-                                    Image(
-                                      image: NetworkImageWithRetry(
-                                        'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item6}.png',
-                                      ),
-                                      height: 40.0,
-                                    ),
+                                        participants[indexPart].stats.item6 == 0
+                                            ? Image(
+                                                image: AssetImage(
+                                                    'assets/images/unknown.png'),
+                                                height: 40.0,
+                                              )
+                                            : Image(
+                                                image: NetworkImageWithRetry(
+                                                  'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item6}.png',
+                                                ),
+                                                height: 40.0,
+                                              ),
                                     padding: EdgeInsets.only(right: 4.0),
                                   ),
                                 ],
@@ -367,35 +370,6 @@ class _MatchScreenState extends State<MatchScreen> {
         );
       },
       itemCount: userMatch.teams.length,
-    );
-  }
-
-  Widget _buildSideDrawer(BuildContext context) {
-    final user = Provider.of<UserAuth>(context);
-    return Drawer(
-      child: Column(
-        children: <Widget>[
-          AppBar(
-            automaticallyImplyLeading: false,
-            title: Text('Menu'),
-          ),
-          ListTile(
-            leading: Icon(Icons.person),
-            title: Text('Profile'),
-            onTap: () {
-              Navigator.pushReplacementNamed(context, '/profile');
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.exit_to_app),
-            title: Text('Logout'),
-            onTap: () {
-              user.userLogout();
-              Navigator.pushReplacementNamed(context, '/');
-            },
-          ),
-        ],
-      ),
     );
   }
 }

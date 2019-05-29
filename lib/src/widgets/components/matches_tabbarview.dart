@@ -78,10 +78,10 @@ class MatchesTabBarView extends StatelessWidget {
                       itemCount: _userMatchesDetails.length,
                       itemBuilder: (BuildContext context, int index) {
                         Color _colorTeamWin = Colors.red[600];
-                        String _teamWin = 'Fail';
+                        String _teamWin = 'FAIL';
                         if (_userMatchesDetails[index].userStats.win) {
                           _colorTeamWin = Colors.cyan[600];
-                          _teamWin = 'Win';
+                          _teamWin = 'WIN';
                         }
 
                         DateTime _dateMatch =
