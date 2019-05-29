@@ -136,7 +136,6 @@ class _MatchScreenState extends State<MatchScreen> {
 
                   ChampionModel _champion;
                   String _championImage;
-
                   if (champions.isChampionsLoaded == true) {
                     _champion = champions
                         .getChampion(participants[indexPart].championId);
@@ -209,7 +208,13 @@ class _MatchScreenState extends State<MatchScreen> {
                               child: Wrap(
                                 children: <Widget>[
                                   Container(
-                                    child: Image(
+                                    child:
+                                    participants[indexPart].stats.item0 == 0 ?
+                                    Image(
+                                      image: AssetImage('assets/images/unknown.png'),
+                                      height: 40.0,
+                                    ) :
+                                    Image(
                                       image: NetworkImageWithRetry(
                                         'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item0}.png',
                                       ),
@@ -218,7 +223,13 @@ class _MatchScreenState extends State<MatchScreen> {
                                     padding: EdgeInsets.only(right: 4.0),
                                   ),
                                   Container(
-                                    child: Image(
+                                    child:
+                                    participants[indexPart].stats.item1 == 0 ?
+                                    Image(
+                                      image: AssetImage('assets/images/unknown.png'),
+                                      height: 40.0,
+                                    ) :
+                                    Image(
                                       image: NetworkImageWithRetry(
                                         'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item1}.png',
                                       ),
@@ -227,7 +238,13 @@ class _MatchScreenState extends State<MatchScreen> {
                                     padding: EdgeInsets.only(right: 4.0),
                                   ),
                                   Container(
-                                    child: Image(
+                                    child:
+                                    participants[indexPart].stats.item2 == 0 ?
+                                    Image(
+                                      image: AssetImage('assets/images/unknown.png'),
+                                      height: 40.0,
+                                    ) :
+                                    Image(
                                       image: NetworkImageWithRetry(
                                         'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item2}.png',
                                       ),
@@ -236,7 +253,13 @@ class _MatchScreenState extends State<MatchScreen> {
                                     padding: EdgeInsets.only(right: 4.0),
                                   ),
                                   Container(
-                                    child: Image(
+                                    child:
+                                    participants[indexPart].stats.item3 == 0 ?
+                                    Image(
+                                      image: AssetImage('assets/images/unknown.png'),
+                                      height: 40.0,
+                                    ) :
+                                    Image(
                                       image: NetworkImageWithRetry(
                                         'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item3}.png',
                                       ),
@@ -245,7 +268,13 @@ class _MatchScreenState extends State<MatchScreen> {
                                     padding: EdgeInsets.only(right: 4.0),
                                   ),
                                   Container(
-                                    child: Image(
+                                    child:
+                                    participants[indexPart].stats.item4 == 0 ?
+                                    Image(
+                                      image: AssetImage('assets/images/unknown.png'),
+                                      height: 40.0,
+                                    ) :
+                                    Image(
                                       image: NetworkImageWithRetry(
                                         'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item4}.png',
                                       ),
@@ -254,7 +283,13 @@ class _MatchScreenState extends State<MatchScreen> {
                                     padding: EdgeInsets.only(right: 4.0),
                                   ),
                                   Container(
-                                    child: Image(
+                                    child:
+                                    participants[indexPart].stats.item5 == 0 ?
+                                    Image(
+                                      image: AssetImage('assets/images/unknown.png'),
+                                      height: 40.0,
+                                    ) :
+                                    Image(
                                       image: NetworkImageWithRetry(
                                         'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item5}.png',
                                       ),
@@ -263,7 +298,13 @@ class _MatchScreenState extends State<MatchScreen> {
                                     padding: EdgeInsets.only(right: 4.0),
                                   ),
                                   Container(
-                                    child: Image(
+                                    child:
+                                    participants[indexPart].stats.item6 == 0 ?
+                                    Image(
+                                      image: AssetImage('assets/images/unknown.png'),
+                                      height: 40.0,
+                                    ) :
+                                    Image(
                                       image: NetworkImageWithRetry(
                                         'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item6}.png',
                                       ),

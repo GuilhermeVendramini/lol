@@ -56,6 +56,7 @@ flutter:
     - assets/images/level-4.png
     - assets/images/level-3.png
     - assets/images/level-2.png
+    - assets/images/unknown.png
     - assets/champs/images/Aatrox.png
     - assets/champs/images/Ahri.png
     - assets/champs/images/Akali.png
