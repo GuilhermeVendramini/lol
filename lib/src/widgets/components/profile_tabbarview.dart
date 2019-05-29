@@ -27,7 +27,7 @@ class ProfileTabBarView extends StatelessWidget {
           child: Column(
             children: <Widget>[
               SizedBox(
-                height: 30.0,
+                height: 10.0,
               ),
               Container(
                   width: 160.0,
@@ -91,7 +91,7 @@ class ProfileTabBarView extends StatelessWidget {
                     ],
                   ),
               SizedBox(
-                height: 40.0,
+                height: 20.0,
               ),
             ],
           ),

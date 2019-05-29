@@ -33,7 +33,7 @@ class _MatchScreenState extends State<MatchScreen> {
 
     return WillPopScope(
       onWillPop: () async {
-        Navigator.pop(context);
+        return true;
       },
       child: DefaultTabController(
         length: 4,
@@ -48,11 +48,10 @@ class _MatchScreenState extends State<MatchScreen> {
                   pinned: true,
                   flexibleSpace: FlexibleSpaceBar(
                     centerTitle: true,
-                    titlePadding: EdgeInsets.all(2.0),
                     title: Text(_teamWin,
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 34.0,
+                          fontSize: 28.0,
                         )),
                     background: Image.asset(
                       'assets/images/background.jpg',

@@ -36,54 +36,55 @@ class _LoginScreenSate extends State<LoginScreen> {
           ),
         ),
       );
-    }
-
-    return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          image: _backgroundImage(),
-        ),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Container(
-              width: targetWidth,
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: <Widget>[
-                    _lolLogo(),
-                    SizedBox(
-                      height: 40.0,
-                    ),
-                    _userNameTextField(),
-                    SizedBox(
-                      height: 30.0,
-                    ),
-                    Text('Region/Language'),
-                    _regionDropDownButton(),
-                    _languageDropDownButton(),
-                    SizedBox(
-                      height: 40.0,
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 60.0,
-                      child: RaisedButton(
-                        child: Text('SIGN IN'),
-                        onPressed: () => _submitForm(userAuth, context),
+    } else {
+      return Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+            image: _backgroundImage(),
+          ),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Container(
+                width: targetWidth,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: <Widget>[
+                      _lolLogo(),
+                      SizedBox(
+                        height: 40.0,
                       ),
-                    ),
-                    SizedBox(
-                      height: 40.0,
-                    ),
-                  ],
+                      _userNameTextField(),
+                      SizedBox(
+                        height: 30.0,
+                      ),
+                      Text('Region/Language'),
+                      _regionDropDownButton(),
+                      _languageDropDownButton(),
+                      SizedBox(
+                        height: 40.0,
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 60.0,
+                        child: RaisedButton(
+                          child: Text('SIGN IN'),
+                          onPressed: () => _submitForm(userAuth, context),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 40.0,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    }
+
   }
 
   DecorationImage _backgroundImage() {

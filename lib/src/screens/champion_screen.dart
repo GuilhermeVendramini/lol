@@ -58,8 +58,11 @@ class _ChampionScreenState extends State<ChampionScreen> {
                     SizedBox(
                       height: 40.0,
                     ),
-                    Image(
-                      image: AssetImage(userChampion.championImage),
+                    Hero(
+                      tag: userChampion.championImage,
+                      child: Image(
+                        image: AssetImage(userChampion.championImage),
+                      ),
                     ),
                     SizedBox(
                       height: 4.0,
@@ -201,20 +204,6 @@ class _ChampionScreenState extends State<ChampionScreen> {
                               Row(
                                 children: <Widget>[
                                   Text(
-                                    'Type: ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(champion.tags.toString()),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  Text(
                                     'Attack: ',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -254,6 +243,28 @@ class _ChampionScreenState extends State<ChampionScreen> {
                                     ),
                                   ),
                                   Text('${champion.info['difficulty']}'),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  Text(
+                                    'Type: ',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: ListView.builder(
+                                      itemCount: champion.tags.length,
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, index) {
+                                        return Text(champion.tags[index]);
+                                      },
+                                    ),
+                                  ),
                                 ],
                               ),
                             ],

@@ -17,6 +17,7 @@ class MatchesTabBarView extends StatelessWidget {
     final userMatchesDetails = Provider.of<UserMatchesDetailsService>(context);
     UserMatchesModel _userMatches;
     List<MatchDetailModel> _userMatchesDetails = [];
+    bool _isLoading = true;
 
     if (userMatches.isMatchesLoaded == true) {
       _userMatches = userMatches.getUserMatches;
@@ -28,6 +29,7 @@ class MatchesTabBarView extends StatelessWidget {
 
     if (userMatchesDetails.isMatchesDetailsLoaded != null) {
       _userMatchesDetails = userMatchesDetails.getUserMatchesDetails;
+      _isLoading = false;
     }
 
     if(userMatchesDetails.resultMessage != null && userMatchesDetails.resultMessage['success'] == false) {
@@ -37,7 +39,7 @@ class MatchesTabBarView extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   SizedBox(
-                    height: 30.0,
+                    height: 10.0,
                   ),
                   Text(
                     'Matches',
@@ -47,12 +49,11 @@ class MatchesTabBarView extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 40.0,
+                    height: 20.0,
                   ),
                   Text(userMatchesDetails.resultMessage['message']),
                 ],
               )));
-
     }
 
     return Center(
@@ -61,7 +62,7 @@ class MatchesTabBarView extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 SizedBox(
-                  height: 30.0,
+                  height: 10.0,
                 ),
                 Text(
                   'Matches',
@@ -71,8 +72,10 @@ class MatchesTabBarView extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 40.0,
+                  height: 20.0,
                 ),
+                _isLoading ?
+                CircularProgressIndicator() :
                 Expanded(
                   child: ListView.builder(
                       itemCount: _userMatchesDetails.length,

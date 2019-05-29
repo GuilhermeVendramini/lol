@@ -18,6 +18,7 @@ class ChampionsTabBarView extends StatelessWidget {
     final double targetWidth = deviceWidth > 650.0 ? 600.0 : deviceWidth * 0.95;
     List<ChampionModel> _champions = [];
     List<UserChampionModel> _userChampions = [];
+    bool _isLoading = true;
 
     if (champions.isChampionsLoaded == null) {
       champions.loadChampions();
@@ -32,6 +33,7 @@ class ChampionsTabBarView extends StatelessWidget {
 
       if (userChampions.isUserChampionsLoaded == true) {
         _userChampions = userChampions.getUserChampions;
+        _isLoading = false;
       }
     }
 
@@ -42,7 +44,7 @@ class ChampionsTabBarView extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   SizedBox(
-                    height: 30.0,
+                    height: 10.0,
                   ),
                   Text(
                     'Champions',
@@ -52,12 +54,11 @@ class ChampionsTabBarView extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 40.0,
+                    height: 20.0,
                   ),
                   Text(userChampions.resultMessage['message']),
                 ],
               )));
-
     }
 
     return Center(
@@ -66,7 +67,7 @@ class ChampionsTabBarView extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 SizedBox(
-                  height: 30.0,
+                  height: 10.0,
                 ),
                 Text(
                   'Champions',
@@ -85,8 +86,10 @@ class ChampionsTabBarView extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 40.0,
+                  height: 20.0,
                 ),
+                _isLoading ?
+                CircularProgressIndicator() :
                 champions.isChampionsLoaded != null &&
                     champions.isChampionsLoaded == true &&
                         _userChampions.length == 0
@@ -107,10 +110,13 @@ class ChampionsTabBarView extends StatelessWidget {
                                 child: Container(
                                   child: Column(
                                     children: <Widget>[
-                                      Image(
-                                        image: AssetImage(_userChampions[index]
-                                            .championImage),
-                                        height: 80.0,
+                                      Hero(
+                                        tag: _userChampions[index].championImage,
+                                        child: Image(
+                                          image: AssetImage(_userChampions[index]
+                                              .championImage),
+                                          height: 80.0,
+                                        ),
                                       ),
                                       Text(
                                         _userChampions[index].championName,

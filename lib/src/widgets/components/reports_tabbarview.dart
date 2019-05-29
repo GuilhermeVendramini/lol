@@ -49,7 +49,7 @@ class ReportsTabBarView extends StatelessWidget {
           child: Column(
             children: <Widget>[
               SizedBox(
-                height: 30.0,
+                height: 10.0,
               ),
               Text(
                 'Reports',
@@ -68,7 +68,7 @@ class ReportsTabBarView extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: 40.0,
+                height: 20.0,
               ),
               Text(
                 'Results',
