@@ -7,6 +7,7 @@ import 'package:lol/src/models/champion_model.dart';
 class ChampionsController with ChangeNotifier {
   List<ChampionModel> _champions;
   Iterable<ChampionModel> _champion;
+  Map<String, dynamic> _resultMessage;
   bool _isChampionsLoaded;
 }
 
@@ -20,21 +21,27 @@ class Champions extends ChampionsController {
     return _champion.first;
   }
 
+  Map<String, dynamic> get resultMessage {
+    return _resultMessage;
+  }
+
   bool get isChampionsLoaded {
     return _isChampionsLoaded;
   }
 
   void get clearChampionsValues {
     _champions = null;
+    _resultMessage = null;
     _isChampionsLoaded = null;
     notifyListeners();
   }
 }
 
 class ChampionsService extends Champions {
-  Future<Map<String, dynamic>> loadChampions() async {
+  loadChampions() async {
     if(_isChampionsLoaded != null) {
-      return {'success': true, 'message': 'Champs already loaded.'};
+      _resultMessage = {'success': true, 'message': 'Champs already loaded.'};
+      return null;
     }
 
     Future<String> _loadChampionsJson() async {
@@ -50,15 +57,14 @@ class ChampionsService extends Champions {
         ChampionModel champion = ChampionModel.fromJson(championData);
         _champions.add(champion);
         _isChampionsLoaded = true;
+        _resultMessage = {'success': true, 'message': 'User Champions loaded.'};
         notifyListeners();
       });
     }
 
     loadChampionsList();
 
-    return {
-      'success': true,
-      'message': 'Matches details loaded.'
-    };
+    _resultMessage = {'success': true, 'message': 'Loading User Champions.'};
+    return null;
   }
 }

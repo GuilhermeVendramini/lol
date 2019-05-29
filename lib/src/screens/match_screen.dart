@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_image/network.dart';
 import 'package:lol/src/controllers/campions_controller.dart';
 import 'package:lol/src/controllers/user_matches_details_controller.dart';
 import 'package:lol/src/models/champion_model.dart';
@@ -209,7 +210,7 @@ class _MatchScreenState extends State<MatchScreen> {
                                 children: <Widget>[
                                   Container(
                                     child: Image(
-                                      image: NetworkImage(
+                                      image: NetworkImageWithRetry(
                                         'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item0}.png',
                                       ),
                                       height: 40.0,
@@ -218,7 +219,7 @@ class _MatchScreenState extends State<MatchScreen> {
                                   ),
                                   Container(
                                     child: Image(
-                                      image: NetworkImage(
+                                      image: NetworkImageWithRetry(
                                         'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item1}.png',
                                       ),
                                       height: 40.0,
@@ -227,7 +228,7 @@ class _MatchScreenState extends State<MatchScreen> {
                                   ),
                                   Container(
                                     child: Image(
-                                      image: NetworkImage(
+                                      image: NetworkImageWithRetry(
                                         'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item2}.png',
                                       ),
                                       height: 40.0,
@@ -236,7 +237,7 @@ class _MatchScreenState extends State<MatchScreen> {
                                   ),
                                   Container(
                                     child: Image(
-                                      image: NetworkImage(
+                                      image: NetworkImageWithRetry(
                                         'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item3}.png',
                                       ),
                                       height: 40.0,
@@ -245,7 +246,7 @@ class _MatchScreenState extends State<MatchScreen> {
                                   ),
                                   Container(
                                     child: Image(
-                                      image: NetworkImage(
+                                      image: NetworkImageWithRetry(
                                         'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item4}.png',
                                       ),
                                       height: 40.0,
@@ -254,7 +255,7 @@ class _MatchScreenState extends State<MatchScreen> {
                                   ),
                                   Container(
                                     child: Image(
-                                      image: NetworkImage(
+                                      image: NetworkImageWithRetry(
                                         'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item5}.png',
                                       ),
                                       height: 40.0,
@@ -263,7 +264,7 @@ class _MatchScreenState extends State<MatchScreen> {
                                   ),
                                   Container(
                                     child: Image(
-                                      image: NetworkImage(
+                                      image: NetworkImageWithRetry(
                                         'http://ddragon.leagueoflegends.com/cdn/$VERSION/img/item/${participants[indexPart].stats.item6}.png',
                                       ),
                                       height: 40.0,

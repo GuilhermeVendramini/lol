@@ -9,6 +9,7 @@ import 'package:lol/src/controllers/api.dart';
 class UserChampionsController with ChangeNotifier {
   List<UserChampionModel> _userChampions;
   Iterable<UserChampionModel> _userChampion;
+  Map<String, dynamic> _resultMessage;
   bool _isUserChampionsLoaded;
 }
 
@@ -29,18 +30,23 @@ class UserChampions extends UserChampionsController {
     return _isUserChampionsLoaded;
   }
 
+  Map<String, dynamic> get resultMessage {
+    return _resultMessage;
+  }
+
   void get clearUserChampionsValues {
-    _userChampions = null;
+    _userChampions = [];
+    _resultMessage = null;
     _isUserChampionsLoaded = null;
     notifyListeners();
   }
 }
 
 class UserChampionsService extends UserChampions {
-  Future<Map<String, dynamic>> loadUserChampions(String userId,
-      List<ChampionModel> championList) async {
+  loadUserChampions(String userId, List<ChampionModel> championList) async {
     if(_isUserChampionsLoaded != null) {
-      return {'success': true, 'message': 'Champs already loaded.'};
+      _resultMessage = {'success': true, 'message': 'Champs already loaded.'};
+      return null;
     }
 
     http.Response response;
@@ -50,20 +56,23 @@ class UserChampionsService extends UserChampions {
         'Accept-Charset': 'application/x-www-form-urlencoded; charset=UTF-8',
         'X-Riot-Token': '$API_KEY',
       },
-    );
+    ).catchError((onError){
+      _resultMessage = {'success': false, 'message': 'Was not possible to connect with the Server. Please try again in an hour.'};
+    });
 
-    if(response.statusCode != 200 && response.statusCode != 201) {
-      _isUserChampionsLoaded = false;
+    _isUserChampionsLoaded = false;
+
+    if(response == null) {
       notifyListeners();
-      return {
-        'success': false,
-        'message': 'Error load user champions.'
-      };
+      return null;
+    } else if(response.statusCode != 200 && response.statusCode != 201) {
+      _resultMessage = {'success': false, 'message': 'Was not possible load the Champions. Please try again later.'};
+      notifyListeners();
+      return null;
     }
 
-    _userChampions = [];
     final List<dynamic> responseData = json.decode(response.body);
-
+    _userChampions = [];
     responseData.forEach((userChampionData){
       Iterable<dynamic> findChampion = championList.where(((champ) => int.parse(champ.key) == userChampionData['championId']));
       ChampionModel champion;
@@ -92,12 +101,10 @@ class UserChampionsService extends UserChampions {
       );
       _isUserChampionsLoaded = true;
       _userChampions.add(userChampion);
+      _resultMessage = {'success': true, 'message': 'User Champions loaded.'};
       notifyListeners();
     });
-
-    return {
-      'success': true,
-      'message': 'Matches details loaded.'
-    };
+    _resultMessage = {'success': true, 'message': 'Loading User Champions.'};
+    return null;
   }
 }

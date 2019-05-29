@@ -35,6 +35,31 @@ class ChampionsTabBarView extends StatelessWidget {
       }
     }
 
+    if(userChampions.resultMessage != null && userChampions.resultMessage['success'] == false) {
+      return Center(
+          child: Container(
+              width: targetWidth,
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  Text(
+                    'Champions',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24.0,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 40.0,
+                  ),
+                  Text(userChampions.resultMessage['message']),
+                ],
+              )));
+
+    }
+
     return Center(
         child: Container(
             width: targetWidth,

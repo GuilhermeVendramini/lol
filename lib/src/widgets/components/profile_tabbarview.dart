@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_image/network.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_circular_chart/flutter_circular_chart.dart';
 import 'package:lol/src/controllers/user_matches_controller.dart';
@@ -34,7 +35,7 @@ class ProfileTabBarView extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(160.0),
                     image: DecorationImage(
-                      image: NetworkImage(user.getUser.avatar),
+                      image: NetworkImageWithRetry(user.getUser.avatar),
                       fit: BoxFit.cover,
                     ),
                   ),

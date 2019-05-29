@@ -30,6 +30,31 @@ class MatchesTabBarView extends StatelessWidget {
       _userMatchesDetails = userMatchesDetails.getUserMatchesDetails;
     }
 
+    if(userMatchesDetails.resultMessage != null && userMatchesDetails.resultMessage['success'] == false) {
+      return Center(
+          child: Container(
+              width: targetWidth,
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  Text(
+                    'Matches',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24.0,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 40.0,
+                  ),
+                  Text(userMatchesDetails.resultMessage['message']),
+                ],
+              )));
+
+    }
+
     return Center(
         child: Container(
             width: targetWidth,

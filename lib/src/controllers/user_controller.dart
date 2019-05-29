@@ -57,7 +57,14 @@ class UserAuth extends User {
           'Accept-Charset': 'application/x-www-form-urlencoded; charset=UTF-8',
           'X-Riot-Token': '$API_KEY',
         },
-      );
+      ).catchError((onError){
+        userLogout();
+      });
+
+      if(response == null || (response.statusCode != 200 && response.statusCode != 201)) {
+        userLogout();
+        return false;
+      }
 
       final Map<String, dynamic> responseData = json.decode(response.body);
 
@@ -101,7 +108,21 @@ class UserAuth extends User {
         'Accept-Charset': 'application/x-www-form-urlencoded; charset=UTF-8',
         'X-Riot-Token': '$API_KEY',
       },
-    );
+    ).catchError((onError){
+      message = 'Was not possible to connect. Please check your connection and try again.';
+    });
+
+    if(response == null) {
+      return {'success': success, 'message': message};
+    }
+
+    switch(response.statusCode) {
+      case 403:
+      case 404:{
+        message = 'Was not possible to connect with the Server. Please try again in an hour.';
+      }
+      break;
+    }
 
     final Map<String, dynamic> responseData = json.decode(response.body);
 

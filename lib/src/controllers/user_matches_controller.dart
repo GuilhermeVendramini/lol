@@ -1,8 +1,6 @@
-import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 import 'package:lol/src/models/match_model.dart';
 import 'package:lol/src/models/user_matches_model.dart';
 import 'package:lol/src/controllers/api.dart';
@@ -12,7 +10,7 @@ class UserMatchesController with ChangeNotifier {
   UserMatchesModel _userMatches;
   bool _isMatchesLoaded;
   List<dynamic> _playedAt;
-  String _lastMatch;
+  Map<String, dynamic> _resultMessage;
 }
 
 class UserMatches extends UserMatchesController {
@@ -28,28 +26,27 @@ class UserMatches extends UserMatchesController {
     return _playedAt;
   }
 
-  String get lastMatch {
-    return _lastMatch;
+  Map<String, dynamic> get resultMessage {
+    return _resultMessage;
   }
 
   void get clearMatchesValues {
     _userMatches = null;
     _isMatchesLoaded = null;
     _playedAt = null;
-    _lastMatch = null;
+    _resultMessage = null;
     notifyListeners();
   }
 }
 
 class UserMatchesService extends UserMatches {
-  Future<Map<String, dynamic>> loadUserMatches(String accountId) async {
+  loadUserMatches(String accountId) async {
 
     if(_isMatchesLoaded != null) {
-      return {'success': true, 'message': 'Matches already loaded.'};
+      _resultMessage = {'success': true, 'message': 'Matches already loaded.'};
+      return null;
     }
 
-    bool success = false;
-    String message = 'Error load matches';
     http.Response response;
 
     response = await http.get(
@@ -58,14 +55,22 @@ class UserMatchesService extends UserMatches {
         'Accept-Charset': 'application/x-www-form-urlencoded; charset=UTF-8',
         'X-Riot-Token': '$API_KEY',
       },
-    );
+    ).catchError((onError){
+      _resultMessage = {'success': false, 'message': 'Was not possible to connect with the Server. Please try again in an hour.'};
+    });
+
+    if(response == null) {
+      notifyListeners();
+      return null;
+    } else if(response.statusCode != 200 && response.statusCode != 201) {
+      _resultMessage = {'success': false, 'message': 'Was not possible load the matches. Please try again later.'};
+      notifyListeners();
+      return null;
+    }
 
     final Map<String, dynamic> responseData = json.decode(response.body);
 
     if(responseData.containsKey('endIndex')) {
-      success = true;
-      message = 'Loaded matches successfully';
-
       final List<MatchModel> matches = [];
       List<dynamic> matchList = responseData['matches'];
 
@@ -106,10 +111,6 @@ class UserMatchesService extends UserMatches {
             ? matchData['timestamp'] : lastMatch;
       });
 
-      // Last Match
-      DateTime date = DateTime.fromMillisecondsSinceEpoch(lastMatch);
-      _lastMatch = DateFormat('dd/MM/yy').add_jm().format(date);
-
       _userMatches = UserMatchesModel(
         matches: matches,
         endIndex: responseData['endIndex'],
@@ -117,8 +118,9 @@ class UserMatchesService extends UserMatches {
         totalGames: responseData['totalGames'],
       );
       _isMatchesLoaded = true;
+      _resultMessage = {'success': true, 'message': 'Loaded matches successfully.'};
     }
     notifyListeners();
-    return {'success': success, 'message': message};
+    return null;
   }
 }

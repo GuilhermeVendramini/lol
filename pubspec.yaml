@@ -29,6 +29,7 @@ dependencies:
   flutter_circular_chart: ^0.1.0
   charts_flutter: ^0.6.0
   dynamic_theme: ^1.0.1
+  flutter_image: ^1.0.0
 
 dev_dependencies:
   flutter_test:

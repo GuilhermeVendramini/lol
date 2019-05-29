@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -17,6 +16,7 @@ class UserMatchesDetailsController with ChangeNotifier {
   List<dynamic> _killSequence = [];
   List<dynamic> _performance = [];
   List<dynamic> _goldEarned = [];
+  Map<String, dynamic> _resultMessage;
   bool _isMatchesDetailsLoaded;
   Map<String, dynamic> _userWinFail;
 }
@@ -57,10 +57,15 @@ class UserMatchesDetails extends UserMatchesDetailsController {
     return _goldEarned;
   }
 
+  Map<String, dynamic> get resultMessage {
+    return _resultMessage;
+  }
+
   void get clearMatchesDetailsValues {
     _userMatchesDetailsModel = null;
     _isMatchesDetailsLoaded = null;
     _userWinFail = null;
+    _resultMessage = null;
     _killSequence = [];
     _performance = [];
     _goldEarned = [];
@@ -69,16 +74,15 @@ class UserMatchesDetails extends UserMatchesDetailsController {
 }
 
 class UserMatchesDetailsService extends UserMatchesDetails {
-  Future<Map<String, dynamic>> loadUserMatchesDetails(
+  loadUserMatchesDetails(
       UserMatchesModel userMatches) async {
 
     if (_isMatchesDetailsLoaded != null) {
-      return {'success': true, 'message': 'Matches details already loaded.'};
+      _resultMessage = {'success': true, 'message': 'Matches details already loaded.'};
+      return null;
     }
 
-    int error = 0;
-    bool success = false;
-    _isMatchesDetailsLoaded = true;
+    _isMatchesDetailsLoaded = false;
     _userMatchesDetailsModel = [];
     int _win = 0, _fail = 0;
     int _countDoubleKills = 0;
@@ -90,7 +94,7 @@ class UserMatchesDetailsService extends UserMatchesDetails {
     int _countAssists = 0;
 
     if (userMatches.matches != null) {
-      userMatches.matches.take(10).forEach((matchData) async {
+      userMatches.matches.take(2).forEach((matchData) async {
         http.Response response;
         response = await http.get(
           'https://na1.api.riotgames.com/lol/match/v4/matches/${matchData.gameId}',
@@ -99,13 +103,23 @@ class UserMatchesDetailsService extends UserMatchesDetails {
                 'application/x-www-form-urlencoded; charset=UTF-8',
             'X-Riot-Token': '$API_KEY',
           },
-        );
+        ).catchError((onError){
+          _resultMessage = {'success': false, 'message': 'Was not possible to connect with the Server. Please try again in an hour.'};
+        });
+
+        if(response == null) {
+          notifyListeners();
+          return null;
+        } else if(response.statusCode != 200 && response.statusCode != 201) {
+          _resultMessage = {'success': false, 'message': 'Was not possible load the matches. Please try again later.'};
+          notifyListeners();
+          return null;
+        }
 
         final Map<String, dynamic> responseData = json.decode(response.body);
 
         if (responseData.containsKey('gameId')) {
-          success = true;
-
+          _isMatchesDetailsLoaded = true;
           final SharedPreferences prefs = await SharedPreferences.getInstance();
           Map<String, dynamic> mapUserParticipant;
           final accountId = prefs.getString('accountId');
@@ -244,16 +258,12 @@ class UserMatchesDetailsService extends UserMatchesDetails {
           );
 
           _userMatchesDetailsModel.add(matchDetail);
+          _resultMessage = {'success': true, 'message': 'Matches loaded.'};
           notifyListeners();
-        } else {
-          error++;
         }
       });
+      _resultMessage = {'success': true, 'message': 'Loading Matches.'};
     }
-
-    return {
-      'success': success,
-      'message': 'Matches details loaded with $error errors.'
-    };
+    return null;
   }
 }
