@@ -94,10 +94,13 @@ class UserMatchesDetailsService extends UserMatchesDetails {
     int _countAssists = 0;
 
     if (userMatches.matches != null) {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String userRegion = prefs.getString('userRegion');
+
       userMatches.matches.take(2).forEach((matchData) async {
         http.Response response;
         response = await http.get(
-          'https://na1.api.riotgames.com/lol/match/v4/matches/${matchData.gameId}',
+          'https://$userRegion.api.riotgames.com/lol/match/v4/matches/${matchData.gameId}',
           headers: {
             'Accept-Charset':
                 'application/x-www-form-urlencoded; charset=UTF-8',

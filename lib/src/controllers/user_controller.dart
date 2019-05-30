@@ -30,6 +30,7 @@ class UserAuth extends User {
 
   void userLogout() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('userRgion');
     prefs.remove('profileIconId');
     prefs.remove('name');
     prefs.remove('puuid');
@@ -93,7 +94,7 @@ class UserAuth extends User {
     return false;
   }
 
-  Future<Map<String, dynamic>> auth(String userName) async {
+  Future<Map<String, dynamic>> auth(String userName, String userRegion) async {
     if(_isLogged != null && _isLogged) {
       return {'success': true, 'message': 'Authenticated successfully'};
     }
@@ -103,7 +104,7 @@ class UserAuth extends User {
     http.Response response;
 
     response = await http.get(
-      'https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/$userName',
+      'https://$userRegion.api.riotgames.com/lol/summoner/v4/summoners/by-name/$userName',
       headers: {
         'Accept-Charset': 'application/x-www-form-urlencoded; charset=UTF-8',
         'X-Riot-Token': '$API_KEY',
@@ -148,6 +149,7 @@ class UserAuth extends User {
 
       // Set local User data
       final SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('userRegion', userRegion);
       prefs.setInt('profileIconId', _authUser.profileIconId);
       prefs.setString('name', _authUser.name);
       prefs.setString('puuid', _authUser.puuid);

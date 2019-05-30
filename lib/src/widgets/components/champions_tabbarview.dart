@@ -29,11 +29,12 @@ class ChampionsTabBarView extends StatelessWidget {
 
       if (userChampions.isUserChampionsLoaded == null) {
         userChampions.loadUserChampions(user.getUser.id, _champions);
+      } else {
+        _isLoading = false;
       }
 
       if (userChampions.isUserChampionsLoaded == true) {
         _userChampions = userChampions.getUserChampions;
-        _isLoading = false;
       }
     }
 

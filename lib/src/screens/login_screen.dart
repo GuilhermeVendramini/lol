@@ -16,6 +16,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenSate extends State<LoginScreen> {
   final Map<String, dynamic> _formData = {
     'userName': null,
+    'userRegion': 'na1',
   };
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -60,7 +61,7 @@ class _LoginScreenSate extends State<LoginScreen> {
                       ),
                       Text('Region/Language'),
                       _regionDropDownButton(),
-                      _languageDropDownButton(),
+                      // _languageDropDownButton(),
                       SizedBox(
                         height: 40.0,
                       ),
@@ -123,30 +124,40 @@ class _LoginScreenSate extends State<LoginScreen> {
     );
   }
 
-  String regionValue = 'North America';
+  Map<String, String> region = {'value': 'na1', 'label': 'North America'};
+  List<Map<String, String>> regionItems = [
+    {'value': 'br1', 'label': 'Brazil'},
+    {'value': 'eun1', 'label': 'EU Nordic and East'},
+    {'value': 'euw1', 'label': 'EU West'},
+    {'value': 'jp1', 'label': 'Japan'},
+    {'value': 'la1', 'label': 'Latinoamérica Norte'},
+    {'value': 'la2', 'label': 'Latinoamérica Sul'},
+    {'value': 'na1', 'label': 'North America'},
+    {'value': 'na', 'label': 'North America (old)'},
+    {'value': 'oc1', 'label': 'Oceania'},
+    {'value': 'ru', 'label': 'Russia'},
+    {'value': 'tr1', 'label': 'Turkey'},
+  ];
 
   Widget _regionDropDownButton() {
     return DropdownButton<String>(
-      value: regionValue,
-      onChanged: (String newValue) {
+      value: region['value'],
+      onChanged: (String newRegional) {
         setState(() {
-          regionValue = newValue;
+          region['value'] = newRegional;
+          _formData['userRegion'] = newRegional;
         });
       },
-      items: <String>[
-        'North America',
-        'Brazil',
-        'Japan',
-      ].map<DropdownMenuItem<String>>((String value) {
+      items: regionItems.map<DropdownMenuItem<String>>((Map<String, String> item) {
         return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
+          value: item['value'],
+          child: Text(item['label']),
         );
       }).toList(),
     );
   }
 
-  String languageValue = 'English';
+/*  String languageValue = 'English';
 
   Widget _languageDropDownButton() {
     return DropdownButton<String>(
@@ -165,12 +176,12 @@ class _LoginScreenSate extends State<LoginScreen> {
         );
       }).toList(),
     );
-  }
+  }*/
 
   void _submitForm(UserAuth userAuth, BuildContext context) async {
     _formKey.currentState.save();
     Map<String, dynamic> successInformation;
-    successInformation = await userAuth.auth(_formData['userName']);
+    successInformation = await userAuth.auth(_formData['userName'], _formData['userRegion']);
 
     if(successInformation['success']) {
       // Clear all provider to the next user

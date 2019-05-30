@@ -5,6 +5,7 @@ import 'package:lol/src/models/champion_model.dart';
 import 'package:lol/src/models/user_champion_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:lol/src/controllers/api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserChampionsController with ChangeNotifier {
   List<UserChampionModel> _userChampions;
@@ -49,9 +50,12 @@ class UserChampionsService extends UserChampions {
       return null;
     }
 
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String userRegion = prefs.getString('userRegion');
+
     http.Response response;
     response = await http.get(
-      'https://na1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/$userId',
+      'https://$userRegion.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/$userId',
       headers: {
         'Accept-Charset': 'application/x-www-form-urlencoded; charset=UTF-8',
         'X-Riot-Token': '$API_KEY',

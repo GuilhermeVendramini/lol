@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:lol/src/models/match_model.dart';
 import 'package:lol/src/models/user_matches_model.dart';
 import 'package:lol/src/controllers/api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class UserMatchesController with ChangeNotifier {
@@ -47,10 +48,12 @@ class UserMatchesService extends UserMatches {
       return null;
     }
 
-    http.Response response;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String userRegion = prefs.getString('userRegion');
 
+    http.Response response;
     response = await http.get(
-      'https://na1.api.riotgames.com/lol/match/v4/matchlists/by-account/$accountId',
+      'https://$userRegion.api.riotgames.com/lol/match/v4/matchlists/by-account/$accountId',
       headers: {
         'Accept-Charset': 'application/x-www-form-urlencoded; charset=UTF-8',
         'X-Riot-Token': '$API_KEY',
