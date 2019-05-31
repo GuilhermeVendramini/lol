@@ -80,7 +80,8 @@ class ReportsTabBarView extends StatelessWidget {
               SizedBox(
                 height: 20.0,
               ),
-              Row(
+              _chartResult(context, _userWinFail),
+              /*Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -165,7 +166,7 @@ class ReportsTabBarView extends StatelessWidget {
                     ],
                   ),
                 ],
-              ),
+              ),*/
               SizedBox(
                 height: 60.0,
               ),
@@ -253,6 +254,95 @@ class ReportsTabBarView extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _chartResult(BuildContext context, Map<String, dynamic> _userWinFail) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Column(
+          children: <Widget>[
+            AnimatedCircularChart(
+              key: _chartWonKey,
+              size: const Size(160.0, 160.0),
+              holeLabel: _userWinFail != null ? '${_userWinFail['win']}' : '',
+              labelStyle: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18.0,
+                color: Theme.of(context).textTheme.body1.color,
+              ),
+              duration: Duration(seconds: 1),
+              initialChartData: <CircularStackEntry>[
+                CircularStackEntry(
+                  <CircularSegmentEntry>[
+                    CircularSegmentEntry(
+                      _userWinFail != null ? _userWinFail['winComplete'] : 00.0,
+                      Colors.green[200],
+                      rankKey: 'completed',
+                    ),
+                    CircularSegmentEntry(
+                      _userWinFail != null ? _userWinFail['winRemaining'] : 100.0,
+                      Colors.blueGrey[600],
+                      rankKey: 'remaining',
+                    ),
+                  ],
+                  rankKey: 'progress',
+                ),
+              ],
+              chartType: CircularChartType.Radial,
+              edgeStyle: SegmentEdgeStyle.round,
+              percentageValues: true,
+            ),
+            Text(
+              'Win',
+              style: TextStyle(
+                fontSize: 16.0,
+              ),
+            ),
+          ],
+        ),
+        Column(
+          children: <Widget>[
+            AnimatedCircularChart(
+              key: _chartLostKey,
+              size: const Size(160.0, 160.0),
+              holeLabel: _userWinFail != null ? '${_userWinFail['fail']}' : '',
+              labelStyle: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18.0,
+                color: Theme.of(context).textTheme.body1.color,
+              ),
+              duration: Duration(seconds: 1),
+              initialChartData: <CircularStackEntry>[
+                CircularStackEntry(
+                  <CircularSegmentEntry>[
+                    CircularSegmentEntry(
+                      _userWinFail != null ? _userWinFail['failComplete'] : 00.0,
+                      Colors.red[200],
+                      rankKey: 'completed',
+                    ),
+                    CircularSegmentEntry(
+                      _userWinFail != null ? _userWinFail['failRemaining'] : 100.0,
+                      Colors.blueGrey[600],
+                      rankKey: 'remaining',
+                    ),
+                  ],
+                  rankKey: 'progress',
+                ),
+              ],
+              chartType: CircularChartType.Radial,
+              edgeStyle: SegmentEdgeStyle.round,
+              percentageValues: true,
+            ),
+            Text(
+              'Fail',
+              style: TextStyle(fontSize: 16.0),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

@@ -26,7 +26,7 @@ class _LoginScreenSate extends State<LoginScreen> {
     final double targetWidth = deviceWidth > 650.0 ? 600.0 : deviceWidth * 0.95;
     final userAuth = Provider.of<UserAuth>(context);
 
-    if(userAuth.isLogged == null) {
+    if (userAuth.isLogged == null) {
       return Scaffold(
         body: Container(
           decoration: BoxDecoration(
@@ -85,16 +85,13 @@ class _LoginScreenSate extends State<LoginScreen> {
         ),
       );
     }
-
   }
 
   DecorationImage _backgroundImage() {
     return DecorationImage(
       fit: BoxFit.cover,
-      colorFilter: ColorFilter.mode(
-          Colors.black.withOpacity(0.2),
-          BlendMode.dstATop
-      ),
+      colorFilter:
+          ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.dstATop),
       image: AssetImage('assets/images/background.jpg'),
     );
   }
@@ -110,8 +107,8 @@ class _LoginScreenSate extends State<LoginScreen> {
   Widget _userNameTextField() {
     return TextFormField(
       decoration: InputDecoration(
-          labelText: 'LoL Summoner',
-          filled: true,
+        labelText: 'LoL Summoner',
+        filled: true,
       ),
       validator: (String value) {
         if (value.isEmpty) {
@@ -148,7 +145,8 @@ class _LoginScreenSate extends State<LoginScreen> {
           _formData['userRegion'] = newRegional;
         });
       },
-      items: regionItems.map<DropdownMenuItem<String>>((Map<String, String> item) {
+      items:
+          regionItems.map<DropdownMenuItem<String>>((Map<String, String> item) {
         return DropdownMenuItem<String>(
           value: item['value'],
           child: Text(item['label']),
@@ -181,13 +179,15 @@ class _LoginScreenSate extends State<LoginScreen> {
   void _submitForm(UserAuth userAuth, BuildContext context) async {
     _formKey.currentState.save();
     Map<String, dynamic> successInformation;
-    successInformation = await userAuth.auth(_formData['userName'], _formData['userRegion']);
+    successInformation =
+        await userAuth.auth(_formData['userName'], _formData['userRegion']);
 
-    if(successInformation['success']) {
+    if (successInformation['success']) {
       // Clear all provider to the next user
       final champions = Provider.of<ChampionsService>(context);
       final userMatches = Provider.of<UserMatchesService>(context);
-      final userMatchesDetails = Provider.of<UserMatchesDetailsService>(context);
+      final userMatchesDetails =
+          Provider.of<UserMatchesDetailsService>(context);
       final userChampions = Provider.of<UserChampionsService>(context);
 
       champions.clearChampionsValues;
@@ -196,21 +196,22 @@ class _LoginScreenSate extends State<LoginScreen> {
       userChampions.clearUserChampionsValues;
       Navigator.pushReplacementNamed(context, '/profile');
     } else {
-      showDialog(context: context, builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Login'),
-          content: Text(successInformation['message']),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('OK'),
-              onPressed: (){
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      });
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Login'),
+              content: Text(successInformation['message']),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
     }
   }
-
 }

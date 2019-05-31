@@ -94,88 +94,7 @@ class _ChampionScreenState extends State<ChampionScreen> {
                         fontSize: 18.0,
                       ),
                     ),
-                    Container(
-                      padding: EdgeInsets.all(10.0),
-                      child: Card(
-                        child: Container(
-                          padding: EdgeInsets.all(20.0),
-                          child: Column(
-                            children: <Widget>[
-                              Row(
-                                children: <Widget>[
-                                  Text(
-                                    'Points: ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text('${userChampion.championPoints}'),
-                                ],
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  Text(
-                                    'Points to the next level: ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                      '${userChampion.championPointsUntilNextLevel}'),
-                                ],
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  Text(
-                                    'Current level points: ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                      '${userChampion.championPointsSinceLastLevel}'),
-                                ],
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  Text(
-                                    'Season chest: ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  userChampion.chestGranted == 1
-                                      ? Text('Yes')
-                                      : Text('No'),
-                                ],
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  Text(
-                                    'Tokens earned: ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text('${userChampion.tokensEarned}'),
-                                ],
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  Text(
-                                    'Last time played: ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(userChampion.lastPlayTime),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                    _buildChampsInfo(userChampion),
                     SizedBox(
                       height: 40.0,
                     ),
@@ -186,96 +105,185 @@ class _ChampionScreenState extends State<ChampionScreen> {
                         fontSize: 18.0,
                       ),
                     ),
-                    Container(
-                      padding: EdgeInsets.all(10.0),
-                      child: Card(
-                        child: Container(
-                          padding: EdgeInsets.all(20.0),
-                          child: Column(
-                            children: <Widget>[
-                              Text(champion.title),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Text(champion.blurb),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  Text(
-                                    'Attack: ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text('${champion.info['attack']}'),
-                                ],
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  Text(
-                                    'Defense: ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text('${champion.info['defense']}'),
-                                ],
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  Text(
-                                    'Magic: ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text('${champion.info['magic']}'),
-                                ],
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  Text(
-                                    'Difficulty: ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text('${champion.info['difficulty']}'),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  Text(
-                                    'Type: ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: ListView.builder(
-                                      itemCount: champion.tags.length,
-                                      shrinkWrap: true,
-                                      itemBuilder: (context, index) {
-                                        return Text(champion.tags[index]);
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                    _buildChampsProfile(champion),
                   ],
                 ),
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildChampsInfo(UserChampionModel userChampion) {
+    return Container(
+      padding: EdgeInsets.all(10.0),
+      child: Card(
+        child: Container(
+          padding: EdgeInsets.all(20.0),
+          child: Column(
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Text(
+                    'Points: ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text('${userChampion.championPoints}'),
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Text(
+                    'Points to the next level: ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                      '${userChampion.championPointsUntilNextLevel}'),
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Text(
+                    'Current level points: ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                      '${userChampion.championPointsSinceLastLevel}'),
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Text(
+                    'Season chest: ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  userChampion.chestGranted == 1
+                      ? Text('Yes')
+                      : Text('No'),
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Text(
+                    'Tokens earned: ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text('${userChampion.tokensEarned}'),
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Text(
+                    'Last time played: ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(userChampion.lastPlayTime),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildChampsProfile(ChampionModel champion) {
+    return Container(
+      padding: EdgeInsets.all(10.0),
+      child: Card(
+        child: Container(
+          padding: EdgeInsets.all(20.0),
+          child: Column(
+            children: <Widget>[
+              Text(champion.title),
+              SizedBox(
+                height: 10.0,
+              ),
+              Text(champion.blurb),
+              SizedBox(
+                height: 10.0,
+              ),
+              Row(
+                children: <Widget>[
+                  Text(
+                    'Attack: ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text('${champion.info['attack']}'),
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Text(
+                    'Defense: ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text('${champion.info['defense']}'),
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Text(
+                    'Magic: ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text('${champion.info['magic']}'),
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Text(
+                    'Difficulty: ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text('${champion.info['difficulty']}'),
+                ],
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Row(
+                children: <Widget>[
+                  Text(
+                    'Type: ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: champion.tags.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return Text(champion.tags[index]);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),

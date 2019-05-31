@@ -7,13 +7,13 @@ import 'package:lol/src/widgets/components/reports_tabbarview.dart';
 import 'package:lol/src/widgets/components/champions_tabbarview.dart';
 
 class BaseScreen extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserAuth>(context);
-    return WillPopScope(onWillPop: () async {
-      return false;
-    },
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
       child: DefaultTabController(
         length: 4,
         child: Scaffold(
@@ -37,41 +37,45 @@ class BaseScreen extends StatelessWidget {
               ReportsTabBarView(),
             ],
           ),
-          bottomNavigationBar: TabBar(
-            labelColor: Theme.of(context).textTheme.body1.color,
-            tabs: <Widget>[
-              Tab(
-                icon: Icon(
-                  Icons.person,
-                  color: Theme.of(context).textTheme.body1.color,
-                ),
-                text: 'Profile',
-              ),
-              Tab(
-                icon: Icon(
-                  Icons.games,
-                  color: Theme.of(context).textTheme.body1.color,
-                ),
-                text: 'Matches',
-              ),
-              Tab(
-                icon: Icon(
-                  Icons.security,
-                  color: Theme.of(context).textTheme.body1.color,
-                ),
-                text: 'Champs',
-              ),
-              Tab(
-                icon: Icon(
-                  Icons.insert_chart,
-                  color: Theme.of(context).textTheme.body1.color,
-                ),
-                text: 'Reports',
-              ),
-            ],
-          ),
+          bottomNavigationBar: _buildTabBar(context),
         ),
       ),
+    );
+  }
+
+  Widget _buildTabBar(BuildContext context) {
+    return TabBar(
+      labelColor: Theme.of(context).textTheme.body1.color,
+      tabs: <Widget>[
+        Tab(
+          icon: Icon(
+            Icons.person,
+            color: Theme.of(context).textTheme.body1.color,
+          ),
+          text: 'Profile',
+        ),
+        Tab(
+          icon: Icon(
+            Icons.games,
+            color: Theme.of(context).textTheme.body1.color,
+          ),
+          text: 'Matches',
+        ),
+        Tab(
+          icon: Icon(
+            Icons.security,
+            color: Theme.of(context).textTheme.body1.color,
+          ),
+          text: 'Champs',
+        ),
+        Tab(
+          icon: Icon(
+            Icons.insert_chart,
+            color: Theme.of(context).textTheme.body1.color,
+          ),
+          text: 'Reports',
+        ),
+      ],
     );
   }
 
@@ -103,5 +107,4 @@ class BaseScreen extends StatelessWidget {
       ),
     );
   }
-
 }

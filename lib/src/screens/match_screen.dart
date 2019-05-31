@@ -42,25 +42,7 @@ class _MatchScreenState extends State<MatchScreen> {
             headerSliverBuilder:
                 (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
-                SliverAppBar(
-                  expandedHeight: 200.0,
-                  floating: false,
-                  pinned: true,
-                  flexibleSpace: FlexibleSpaceBar(
-                    centerTitle: true,
-                    title: Text(_teamWin,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 28.0,
-                        )),
-                    background: Image.asset(
-                      'assets/images/background.jpg',
-                      fit: BoxFit.cover,
-                      color: Colors.black.withOpacity(0.5),
-                      colorBlendMode: BlendMode.hardLight,
-                    ),
-                  ),
-                ),
+                _buildSliverAppBar(_teamWin),
               ];
             },
             body: Center(
@@ -75,6 +57,28 @@ class _MatchScreenState extends State<MatchScreen> {
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSliverAppBar(String _teamWin) {
+    return SliverAppBar(
+      expandedHeight: 200.0,
+      floating: false,
+      pinned: true,
+      flexibleSpace: FlexibleSpaceBar(
+        centerTitle: true,
+        title: Text(_teamWin,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 28.0,
+            )),
+        background: Image.asset(
+          'assets/images/background.jpg',
+          fit: BoxFit.cover,
+          color: Colors.black.withOpacity(0.5),
+          colorBlendMode: BlendMode.hardLight,
         ),
       ),
     );

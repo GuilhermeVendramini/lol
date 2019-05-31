@@ -6,7 +6,6 @@ import 'package:lol/src/controllers/user_matches_controller.dart';
 import 'package:lol/src/controllers/user_controller.dart';
 
 class ProfileTabBarView extends StatelessWidget {
-
   final GlobalKey<FormState> _chartLevelKey = GlobalKey<FormState>();
 
   @override
@@ -16,7 +15,7 @@ class ProfileTabBarView extends StatelessWidget {
     final user = Provider.of<UserAuth>(context);
     final userMatches = Provider.of<UserMatchesService>(context);
 
-    if(userMatches.isMatchesLoaded == null) {
+    if (userMatches.isMatchesLoaded == null) {
       userMatches.loadUserMatches(user.getUser.accountId);
     }
 
@@ -30,34 +29,34 @@ class ProfileTabBarView extends StatelessWidget {
                 height: 10.0,
               ),
               Container(
-                  width: 160.0,
-                  height: 160.0,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(160.0),
-                    image: DecorationImage(
-                      image: NetworkImageWithRetry(user.getUser.avatar),
-                      fit: BoxFit.cover,
+                width: 160.0,
+                height: 160.0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(160.0),
+                  image: DecorationImage(
+                    image: NetworkImageWithRetry(user.getUser.avatar),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: AnimatedCircularChart(
+                  key: _chartLevelKey,
+                  size: const Size(200.0, 200.0),
+                  initialChartData: <CircularStackEntry>[
+                    CircularStackEntry(
+                      <CircularSegmentEntry>[
+                        CircularSegmentEntry(
+                          100.00,
+                          Colors.cyan[600],
+                          rankKey: 'completed',
+                        ),
+                      ],
+                      rankKey: 'progress',
                     ),
-                  ),
-                  child: AnimatedCircularChart(
-                    key: _chartLevelKey,
-                    size: const Size(200.0, 200.0),
-                    initialChartData: <CircularStackEntry>[
-                      CircularStackEntry(
-                        <CircularSegmentEntry>[
-                          CircularSegmentEntry(
-                            100.00,
-                            Colors.cyan[600],
-                            rankKey: 'completed',
-                          ),
-                        ],
-                        rankKey: 'progress',
-                      ),
-                    ],
-                    chartType: CircularChartType.Radial,
-                    edgeStyle: SegmentEdgeStyle.round,
-                    percentageValues: true,
-                  ),
+                  ],
+                  chartType: CircularChartType.Radial,
+                  edgeStyle: SegmentEdgeStyle.round,
+                  percentageValues: true,
+                ),
               ),
               SizedBox(
                 height: 10.0,
@@ -73,23 +72,23 @@ class ProfileTabBarView extends StatelessWidget {
               SizedBox(
                 height: 60.0,
               ),
-                  Column(
-                    children: <Widget>[
-                      Image(
-                        height: 160,
-                        image: AssetImage(user.levelUserImage),
-                      ),
-                      SizedBox(
-                        height: 6.0,
-                      ),
-                      Text(
-                        '${user.getUser.summonerLevel}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
+              Column(
+                children: <Widget>[
+                  Image(
+                    height: 160,
+                    image: AssetImage(user.levelUserImage),
                   ),
+                  SizedBox(
+                    height: 6.0,
+                  ),
+                  Text(
+                    '${user.getUser.summonerLevel}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
               SizedBox(
                 height: 20.0,
               ),

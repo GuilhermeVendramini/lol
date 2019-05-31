@@ -109,6 +109,7 @@ class UserChampionsService extends UserChampions {
       notifyListeners();
     });
     _resultMessage = {'success': true, 'message': 'Loading User Champions.'};
+    notifyListeners();
     return null;
   }
 }

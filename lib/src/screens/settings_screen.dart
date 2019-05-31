@@ -18,7 +18,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final user = Provider.of<UserAuth>(context);
 
     String changeThemeLabel = 'Apply dark theme';
-    if(Theme.of(context).brightness == Brightness.dark) {
+    if (Theme.of(context).brightness == Brightness.dark) {
       changeThemeLabel = 'Apply light theme';
     }
 
@@ -87,8 +87,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     DynamicTheme.of(context).setBrightness(
         Theme.of(context).brightness == Brightness.dark
             ? Brightness.light
-            : Brightness.dark
-    );
+            : Brightness.dark);
     Navigator.pushReplacementNamed(context, '/profile');
   }
 

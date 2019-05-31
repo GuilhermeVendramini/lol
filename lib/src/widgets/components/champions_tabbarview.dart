@@ -38,30 +38,6 @@ class ChampionsTabBarView extends StatelessWidget {
       }
     }
 
-    if(userChampions.resultMessage != null && userChampions.resultMessage['success'] == false) {
-      return Center(
-          child: Container(
-              width: targetWidth,
-              child: Column(
-                children: <Widget>[
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  Text(
-                    'Champions',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24.0,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Text(userChampions.resultMessage['message']),
-                ],
-              )));
-    }
-
     return Center(
         child: Container(
             width: targetWidth,
@@ -89,52 +65,59 @@ class ChampionsTabBarView extends StatelessWidget {
                 SizedBox(
                   height: 20.0,
                 ),
-                _isLoading ?
-                CircularProgressIndicator() :
-                champions.isChampionsLoaded != null &&
-                    champions.isChampionsLoaded == true &&
-                        _userChampions.length == 0
-                    ? Text('No champions mastery informations')
-                    : Expanded(
-                        child: GridView.builder(
-                            itemCount: _userChampions.length,
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 3),
-                            itemBuilder: (BuildContext context, int index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  Route route = RouteFade(
-                                      builder: (context) => ChampionScreen(_userChampions[index].championId));
-                                  Navigator.push(context, route);
-                                },
-                                child: Container(
-                                  child: Column(
-                                    children: <Widget>[
-                                      Hero(
-                                        tag: _userChampions[index].championImage,
-                                        child: Image(
-                                          image: AssetImage(_userChampions[index]
-                                              .championImage),
-                                          height: 80.0,
-                                        ),
-                                      ),
-                                      Text(
-                                        _userChampions[index].championName,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text(
-                                        '${_userChampions[index].championLevel}',
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }),
-                      ),
+                userChampions.resultMessage != null &&
+                        userChampions.resultMessage['success'] == false
+                    ? Text(userChampions.resultMessage['message'])
+                    : _isLoading
+                        ? CircularProgressIndicator()
+                        : champions.isChampionsLoaded != null &&
+                                champions.isChampionsLoaded == true &&
+                                _userChampions.length == 0
+                            ? Text('No champions mastery informations')
+                            : _champsGrid(context, _userChampions),
               ],
             )));
+  }
+
+  Widget _champsGrid(
+      BuildContext context, List<UserChampionModel> _userChampions) {
+    return Expanded(
+      child: GridView.builder(
+          itemCount: _userChampions.length,
+          gridDelegate:
+              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+          itemBuilder: (BuildContext context, int index) {
+            return GestureDetector(
+              onTap: () {
+                Route route = RouteFade(
+                    builder: (context) =>
+                        ChampionScreen(_userChampions[index].championId));
+                Navigator.push(context, route);
+              },
+              child: Container(
+                child: Column(
+                  children: <Widget>[
+                    Hero(
+                      tag: _userChampions[index].championImage,
+                      child: Image(
+                        image: AssetImage(_userChampions[index].championImage),
+                        height: 80.0,
+                      ),
+                    ),
+                    Text(
+                      _userChampions[index].championName,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      '${_userChampions[index].championLevel}',
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }),
+    );
   }
 }
