@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
+import 'package:flutter/material.dart';
 import 'package:lol/src/controllers/user_controller.dart';
+import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -72,6 +72,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       padding: EdgeInsets.all(18.0),
                       onPressed: changeBrightness,
                       child: Text(changeThemeLabel),
+                    ),
+                    SizedBox(
+                      height: 60.0,
+                    ),
+                    Text(
+                      'About',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24.0,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(20.0),
+                      child: Text(
+                          "LOL Profile isn’t endorsed by Riot Games and doesn’t reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc."),
                     ),
                   ],
                 ),

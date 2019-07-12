@@ -1,12 +1,12 @@
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:lol/src/screens/match_screen.dart';
-import 'package:provider/provider.dart';
-import 'package:lol/src/widgets/routes/route_fade.dart';
-import 'package:lol/src/models/user_matches_model.dart';
-import 'package:lol/src/models/match_detail_model.dart';
-import 'package:lol/src/controllers/user_matches_details_controller.dart';
+import 'package:intl/intl.dart';
 import 'package:lol/src/controllers/user_matches_controller.dart';
+import 'package:lol/src/controllers/user_matches_details_controller.dart';
+import 'package:lol/src/models/match_detail_model.dart';
+import 'package:lol/src/models/user_matches_model.dart';
+import 'package:lol/src/screens/match_screen.dart';
+import 'package:lol/src/widgets/routes/route_fade.dart';
+import 'package:provider/provider.dart';
 
 class MatchesTabBarView extends StatelessWidget {
   @override

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_image/network.dart';
+import 'package:lol/src/controllers/api.dart';
 import 'package:lol/src/controllers/campions_controller.dart';
 import 'package:lol/src/controllers/user_matches_details_controller.dart';
 import 'package:lol/src/models/champion_model.dart';
@@ -7,7 +8,6 @@ import 'package:lol/src/models/match_detail_model.dart';
 import 'package:lol/src/models/participants_model.dart';
 import 'package:lol/src/models/player_model.dart';
 import 'package:provider/provider.dart';
-import 'package:lol/src/controllers/api.dart';
 
 class MatchScreen extends StatefulWidget {
   final int _matchId;

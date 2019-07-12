@@ -1,11 +1,11 @@
-import 'package:intl/intl.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_circular_chart/flutter_circular_chart.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:lol/src/models/user_matches_model.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_circular_chart/flutter_circular_chart.dart';
+import 'package:intl/intl.dart';
 import 'package:lol/src/controllers/user_matches_controller.dart';
 import 'package:lol/src/controllers/user_matches_details_controller.dart';
+import 'package:lol/src/models/user_matches_model.dart';
+import 'package:provider/provider.dart';
 
 List<dynamic> _playedAt = [];
 List<dynamic> _userKillSequence = [];
@@ -13,7 +13,6 @@ List<dynamic> _performance = [];
 List<dynamic> _goldEarned = [];
 
 class ReportsTabBarView extends StatelessWidget {
-
   final GlobalKey<FormState> _chartWonKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _chartLostKey = GlobalKey<FormState>();
 
@@ -24,16 +23,16 @@ class ReportsTabBarView extends StatelessWidget {
     UserMatchesModel _userMatches;
     Map<String, dynamic> _userWinFail;
 
-    if(userMatches.isMatchesLoaded == true) {
+    if (userMatches.isMatchesLoaded == true) {
       _playedAt = userMatches.playedAt;
       _userMatches = userMatches.getUserMatches;
 
-      if(userMatchesDetails.isMatchesDetailsLoaded == null) {
+      if (userMatchesDetails.isMatchesDetailsLoaded == null) {
         userMatchesDetails.loadUserMatchesDetails(_userMatches);
       }
     }
 
-    if(userMatchesDetails.isMatchesDetailsLoaded != null) {
+    if (userMatchesDetails.isMatchesDetailsLoaded != null) {
       _userWinFail = userMatchesDetails.userWinFail;
       _userKillSequence = userMatchesDetails.killSequence;
       _performance = userMatchesDetails.performance;
@@ -283,7 +282,9 @@ class ReportsTabBarView extends StatelessWidget {
                       rankKey: 'completed',
                     ),
                     CircularSegmentEntry(
-                      _userWinFail != null ? _userWinFail['winRemaining'] : 100.0,
+                      _userWinFail != null
+                          ? _userWinFail['winRemaining']
+                          : 100.0,
                       Colors.blueGrey[600],
                       rankKey: 'remaining',
                     ),
@@ -319,12 +320,16 @@ class ReportsTabBarView extends StatelessWidget {
                 CircularStackEntry(
                   <CircularSegmentEntry>[
                     CircularSegmentEntry(
-                      _userWinFail != null ? _userWinFail['failComplete'] : 00.0,
+                      _userWinFail != null
+                          ? _userWinFail['failComplete']
+                          : 00.0,
                       Colors.red[200],
                       rankKey: 'completed',
                     ),
                     CircularSegmentEntry(
-                      _userWinFail != null ? _userWinFail['failRemaining'] : 100.0,
+                      _userWinFail != null
+                          ? _userWinFail['failRemaining']
+                          : 100.0,
                       Colors.blueGrey[600],
                       rankKey: 'remaining',
                     ),
@@ -355,7 +360,7 @@ class ChartLanes extends StatelessWidget {
   Widget build(BuildContext context) {
     charts.Color colorTextChart = charts.Color.black;
 
-    if(Theme.of(context).brightness == Brightness.dark) {
+    if (Theme.of(context).brightness == Brightness.dark) {
       colorTextChart = charts.Color.white;
     }
 
@@ -363,7 +368,8 @@ class ChartLanes extends StatelessWidget {
       seriesList,
       animate: true,
       vertical: false,
-      barRendererDecorator: charts.BarLabelDecorator(outsideLabelStyleSpec: charts.TextStyleSpec(color: colorTextChart)),
+      barRendererDecorator: charts.BarLabelDecorator(
+          outsideLabelStyleSpec: charts.TextStyleSpec(color: colorTextChart)),
 
       domainAxis: charts.OrdinalAxisSpec(
         renderSpec: charts.SmallTickRendererSpec(
@@ -377,7 +383,7 @@ class ChartLanes extends StatelessWidget {
           labelAnchor: charts.TickLabelAnchor.centered,
           // Change the line colors to match text color.
           lineStyle:
-          charts.LineStyleSpec(color: charts.MaterialPalette.transparent),
+              charts.LineStyleSpec(color: charts.MaterialPalette.transparent),
         ),
       ),
 
@@ -399,13 +405,12 @@ class ChartLanes extends StatelessWidget {
 
   /// Create series list with single series
   static List<charts.Series<OrdinalLanes, String>> _createData() {
-
     List<OrdinalLanes> globalLanesData = [];
-    
-    _playedAt.forEach((lanes){
+
+    _playedAt.forEach((lanes) {
       globalLanesData.add(OrdinalLanes(lanes['lane'], lanes['count']));
     });
-    
+
     return [
       charts.Series<OrdinalLanes, String>(
         id: 'Lane',
@@ -437,7 +442,7 @@ class ChartKillSequence extends StatelessWidget {
   Widget build(BuildContext context) {
     charts.Color colorTextChart = charts.Color.black;
 
-    if(Theme.of(context).brightness == Brightness.dark) {
+    if (Theme.of(context).brightness == Brightness.dark) {
       colorTextChart = charts.Color.white;
     }
 
@@ -445,8 +450,8 @@ class ChartKillSequence extends StatelessWidget {
       seriesList,
       animate: true,
       vertical: false,
-      barRendererDecorator: charts.BarLabelDecorator(outsideLabelStyleSpec: charts.TextStyleSpec(color: colorTextChart)),
-
+      barRendererDecorator: charts.BarLabelDecorator(
+          outsideLabelStyleSpec: charts.TextStyleSpec(color: colorTextChart)),
 
       domainAxis: charts.OrdinalAxisSpec(
         renderSpec: charts.SmallTickRendererSpec(
@@ -460,7 +465,7 @@ class ChartKillSequence extends StatelessWidget {
           labelAnchor: charts.TickLabelAnchor.centered,
           // Change the line colors to match text color.
           lineStyle:
-          charts.LineStyleSpec(color: charts.MaterialPalette.transparent),
+              charts.LineStyleSpec(color: charts.MaterialPalette.transparent),
         ),
       ),
 
@@ -482,10 +487,10 @@ class ChartKillSequence extends StatelessWidget {
 
   /// Create series list with single series
   static List<charts.Series<OrdinalKillSequence, String>> _createData() {
-
     List<OrdinalKillSequence> globalKillSequenceData = [];
-    _userKillSequence.forEach((kills){
-      globalKillSequenceData.add(OrdinalKillSequence(kills['sequence'], kills['count']));
+    _userKillSequence.forEach((kills) {
+      globalKillSequenceData
+          .add(OrdinalKillSequence(kills['sequence'], kills['count']));
     });
 
     return [
@@ -494,7 +499,8 @@ class ChartKillSequence extends StatelessWidget {
         domainFn: (OrdinalKillSequence kills, _) => kills.sequence,
         measureFn: (OrdinalKillSequence kills, _) => kills.count,
         data: globalKillSequenceData,
-        labelAccessorFn: (OrdinalKillSequence kills, _) => kills.count.toString(),
+        labelAccessorFn: (OrdinalKillSequence kills, _) =>
+            kills.count.toString(),
         fillColorFn: (OrdinalKillSequence kills, _) {
           final color = charts.MaterialPalette.deepOrange.shadeDefault.lighter;
           return color;
@@ -519,7 +525,7 @@ class ChartPerformance extends StatelessWidget {
   Widget build(BuildContext context) {
     charts.Color colorTextChart = charts.Color.black;
 
-    if(Theme.of(context).brightness == Brightness.dark) {
+    if (Theme.of(context).brightness == Brightness.dark) {
       colorTextChart = charts.Color.white;
     }
 
@@ -527,8 +533,8 @@ class ChartPerformance extends StatelessWidget {
       seriesList,
       animate: true,
       vertical: false,
-      barRendererDecorator: charts.BarLabelDecorator(outsideLabelStyleSpec: charts.TextStyleSpec(color: colorTextChart)),
-
+      barRendererDecorator: charts.BarLabelDecorator(
+          outsideLabelStyleSpec: charts.TextStyleSpec(color: colorTextChart)),
 
       domainAxis: charts.OrdinalAxisSpec(
         renderSpec: charts.SmallTickRendererSpec(
@@ -542,7 +548,7 @@ class ChartPerformance extends StatelessWidget {
           labelAnchor: charts.TickLabelAnchor.centered,
           // Change the line colors to match text color.
           lineStyle:
-          charts.LineStyleSpec(color: charts.MaterialPalette.transparent),
+              charts.LineStyleSpec(color: charts.MaterialPalette.transparent),
         ),
       ),
 
@@ -564,10 +570,10 @@ class ChartPerformance extends StatelessWidget {
 
   /// Create series list with single series
   static List<charts.Series<OrdinalPerformance, String>> _createData() {
-
     List<OrdinalPerformance> globalPerformanceData = [];
-    _performance.forEach((perf){
-      globalPerformanceData.add(OrdinalPerformance(perf['performance'], perf['count']));
+    _performance.forEach((perf) {
+      globalPerformanceData
+          .add(OrdinalPerformance(perf['performance'], perf['count']));
     });
 
     return [
@@ -601,7 +607,7 @@ class ChartGoldEarned extends StatelessWidget {
   Widget build(BuildContext context) {
     charts.Color colorTextChart = charts.Color.black;
 
-    if(Theme.of(context).brightness == Brightness.dark) {
+    if (Theme.of(context).brightness == Brightness.dark) {
       colorTextChart = charts.Color.white;
     }
 
@@ -609,7 +615,8 @@ class ChartGoldEarned extends StatelessWidget {
       seriesList,
       animate: true,
       vertical: false,
-      barRendererDecorator: charts.BarLabelDecorator(outsideLabelStyleSpec: charts.TextStyleSpec(color: colorTextChart)),
+      barRendererDecorator: charts.BarLabelDecorator(
+          outsideLabelStyleSpec: charts.TextStyleSpec(color: colorTextChart)),
 
       domainAxis: charts.OrdinalAxisSpec(
         renderSpec: charts.SmallTickRendererSpec(
@@ -623,7 +630,7 @@ class ChartGoldEarned extends StatelessWidget {
           labelAnchor: charts.TickLabelAnchor.centered,
           // Change the line colors to match text color.
           lineStyle:
-          charts.LineStyleSpec(color: charts.MaterialPalette.transparent),
+              charts.LineStyleSpec(color: charts.MaterialPalette.transparent),
         ),
       ),
 
@@ -645,18 +652,15 @@ class ChartGoldEarned extends StatelessWidget {
 
   /// Create series list with single series
   static List<charts.Series<OrdinalGoldEarned, String>> _createData() {
-
     List<OrdinalGoldEarned> globalGoldEarnedData = [];
 
-    _goldEarned.forEach((goldEarned){
+    _goldEarned.forEach((goldEarned) {
       String _dateMatchFormatted =
-      DateFormat('dd/MM').add_Hm().format(goldEarned['matchTime']);
-      globalGoldEarnedData.add(
-          OrdinalGoldEarned(
-            _dateMatchFormatted,
-            goldEarned['gold'],
-          )
-      );
+          DateFormat('dd/MM').add_Hm().format(goldEarned['matchTime']);
+      globalGoldEarnedData.add(OrdinalGoldEarned(
+        _dateMatchFormatted,
+        goldEarned['gold'],
+      ));
     });
 
     return [
@@ -666,7 +670,8 @@ class ChartGoldEarned extends StatelessWidget {
         domainFn: (OrdinalGoldEarned goldEarned, _) => goldEarned.matchTime,
         measureFn: (OrdinalGoldEarned goldEarned, _) => goldEarned.gold,
         data: globalGoldEarnedData,
-        labelAccessorFn: (OrdinalGoldEarned goldEarned, _) => goldEarned.gold.toString(),
+        labelAccessorFn: (OrdinalGoldEarned goldEarned, _) =>
+            goldEarned.gold.toString(),
         fillColorFn: (OrdinalGoldEarned goldEarned, _) {
           final color = charts.MaterialPalette.yellow.shadeDefault.darker;
           return color;

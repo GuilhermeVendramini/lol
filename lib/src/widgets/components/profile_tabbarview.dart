@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_image/network.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_circular_chart/flutter_circular_chart.dart';
-import 'package:lol/src/controllers/user_matches_controller.dart';
+import 'package:flutter_image/network.dart';
 import 'package:lol/src/controllers/user_controller.dart';
+import 'package:lol/src/controllers/user_matches_controller.dart';
+import 'package:provider/provider.dart';
 
 class ProfileTabBarView extends StatelessWidget {
   final GlobalKey<FormState> _chartLevelKey = GlobalKey<FormState>();

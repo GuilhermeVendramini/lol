@@ -29,7 +29,7 @@ dependencies:
   flutter_circular_chart: ^0.1.0
   charts_flutter: ^0.6.0
   dynamic_theme: ^1.0.1
-  flutter_image: ^1.0.0
+  flutter_image: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -145,6 +145,7 @@ flutter:
     - assets/champs/images/Pantheon.png
     - assets/champs/images/Poppy.png
     - assets/champs/images/Pyke.png
+    - assets/champs/images/Qiyana.png
     - assets/champs/images/Quinn.png
     - assets/champs/images/Rakan.png
     - assets/champs/images/Rammus.png

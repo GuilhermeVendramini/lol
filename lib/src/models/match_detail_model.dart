@@ -37,4 +37,3 @@ class MatchDetailModel {
     @required this.timestamp,
   });
 }
-

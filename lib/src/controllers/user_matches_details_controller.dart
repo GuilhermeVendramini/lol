@@ -1,14 +1,15 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lol/src/controllers/api.dart';
+import 'package:lol/src/models/match_detail_model.dart';
 import 'package:lol/src/models/participants_model.dart';
 import 'package:lol/src/models/participants_stats_model.dart';
 import 'package:lol/src/models/player_model.dart';
 import 'package:lol/src/models/team_model.dart';
 import 'package:lol/src/models/user_matches_model.dart';
-import 'package:lol/src/models/match_detail_model.dart';
-import 'package:lol/src/controllers/api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserMatchesDetailsController with ChangeNotifier {
   List<MatchDetailModel> _userMatchesDetailsModel;
@@ -30,7 +31,8 @@ class UserMatchesDetails extends UserMatchesDetailsController {
   }
 
   MatchDetailModel getMatch(int matchId) {
-    _userMatchDetails = _userMatchesDetailsModel.where((match) => match.gameId == matchId);
+    _userMatchDetails =
+        _userMatchesDetailsModel.where((match) => match.gameId == matchId);
     return _userMatchDetails.first;
   }
 
@@ -74,11 +76,12 @@ class UserMatchesDetails extends UserMatchesDetailsController {
 }
 
 class UserMatchesDetailsService extends UserMatchesDetails {
-  loadUserMatchesDetails(
-      UserMatchesModel userMatches) async {
-
+  loadUserMatchesDetails(UserMatchesModel userMatches) async {
     if (_isMatchesDetailsLoaded != null) {
-      _resultMessage = {'success': true, 'message': 'Matches details already loaded.'};
+      _resultMessage = {
+        'success': true,
+        'message': 'Matches details already loaded.'
+      };
       return null;
     }
 
@@ -106,15 +109,23 @@ class UserMatchesDetailsService extends UserMatchesDetails {
                 'application/x-www-form-urlencoded; charset=UTF-8',
             'X-Riot-Token': '$API_KEY',
           },
-        ).catchError((onError){
-          _resultMessage = {'success': false, 'message': 'Was not possible to connect with the Server. Please try again in an hour.'};
+        ).catchError((onError) {
+          _resultMessage = {
+            'success': false,
+            'message':
+                'Was not possible to connect with the Server. Please try again in an hour.'
+          };
         });
 
-        if(response == null) {
+        if (response == null) {
           notifyListeners();
           return null;
-        } else if(response.statusCode != 200 && response.statusCode != 201) {
-          _resultMessage = {'success': false, 'message': 'Was not possible load the matches. Please try again later.'};
+        } else if (response.statusCode != 200 && response.statusCode != 201) {
+          _resultMessage = {
+            'success': false,
+            'message':
+                'Was not possible load the matches. Please try again later.'
+          };
           notifyListeners();
           return null;
         }
@@ -129,8 +140,7 @@ class UserMatchesDetailsService extends UserMatchesDetails {
 
           List<PlayerModel> participantIdList = [];
           responseData['participantIdentities'].forEach((participantIdData) {
-
-            if(accountId == participantIdData['player']['accountId']) {
+            if (accountId == participantIdData['player']['accountId']) {
               mapUserParticipant = {
                 'accountId': accountId,
                 'participantId': participantIdData['participantId'],
@@ -180,8 +190,11 @@ class UserMatchesDetailsService extends UserMatchesDetails {
               ),
             ));
 
-            if(mapUserParticipant != null && mapUserParticipant['participantId'] == participantsData['participantId']) {
-              Iterable<TeamModel> userTeam = teamsList.where((team) => team.teamId == participantsData['teamId']);
+            if (mapUserParticipant != null &&
+                mapUserParticipant['participantId'] ==
+                    participantsData['participantId']) {
+              Iterable<TeamModel> userTeam = teamsList
+                  .where((team) => team.teamId == participantsData['teamId']);
               userStats = ParticipantsStatsModel(
                 assists: participantsData['stats']['assists'],
                 deaths: participantsData['stats']['deaths'],
@@ -205,9 +218,9 @@ class UserMatchesDetailsService extends UserMatchesDetails {
               userTeam.first.win == 'Win' ? _win++ : _fail++;
               int _total = _win + _fail;
               double _winComplete = _win / _total * 100;
-              double _failComplete =  _fail / _total * 100;
+              double _failComplete = _fail / _total * 100;
               _userWinFail = {
-                'win':_win,
+                'win': _win,
                 'fail': _fail,
                 'winComplete': _winComplete,
                 'failComplete': _failComplete,
@@ -215,10 +228,14 @@ class UserMatchesDetailsService extends UserMatchesDetails {
                 'failRemaining': 100 - _failComplete,
               };
 
-              _countDoubleKills = participantsData['stats']['doubleKills'] + _countDoubleKills;
-              _countTripleKills = participantsData['stats']['tripleKills'] + _countTripleKills;
-              _countQuadraKills = participantsData['stats']['quadraKills'] + _countQuadraKills;
-              _countPentaKills = participantsData['stats']['pentaKills'] + _countPentaKills;
+              _countDoubleKills =
+                  participantsData['stats']['doubleKills'] + _countDoubleKills;
+              _countTripleKills =
+                  participantsData['stats']['tripleKills'] + _countTripleKills;
+              _countQuadraKills =
+                  participantsData['stats']['quadraKills'] + _countQuadraKills;
+              _countPentaKills =
+                  participantsData['stats']['pentaKills'] + _countPentaKills;
 
               _killSequence = [
                 {'sequence': 'DOUBLE', 'count': _countDoubleKills},
@@ -229,7 +246,8 @@ class UserMatchesDetailsService extends UserMatchesDetails {
 
               _countKills = participantsData['stats']['kills'] + _countKills;
               _countDeaths = participantsData['stats']['deaths'] + _countDeaths;
-              _countAssists = participantsData['stats']['assists'] + _countAssists;
+              _countAssists =
+                  participantsData['stats']['assists'] + _countAssists;
 
               _performance = [
                 {'performance': 'KILLS', 'count': _countKills},
@@ -237,9 +255,13 @@ class UserMatchesDetailsService extends UserMatchesDetails {
                 {'performance': 'ASSISTS', 'count': _countAssists},
               ];
 
-              DateTime _dateMatch = DateTime.fromMillisecondsSinceEpoch(responseData['gameCreation']);
+              DateTime _dateMatch = DateTime.fromMillisecondsSinceEpoch(
+                  responseData['gameCreation']);
 
-              _goldEarned.add({'matchTime': _dateMatch, 'gold': participantsData['stats']['goldEarned']});
+              _goldEarned.add({
+                'matchTime': _dateMatch,
+                'gold': participantsData['stats']['goldEarned']
+              });
             }
           });
 

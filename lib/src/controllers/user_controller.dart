@@ -1,10 +1,11 @@
-import 'dart:convert';
 import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:lol/src/models/user_model.dart';
 import 'package:lol/src/controllers/api.dart';
+import 'package:lol/src/models/user_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserController with ChangeNotifier {
   UserModel _authUser;
@@ -27,7 +28,6 @@ class User extends UserController {
 }
 
 class UserAuth extends User {
-
   void userLogout() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('userRgion');
@@ -47,8 +47,7 @@ class UserAuth extends User {
   Future<bool> verifyLogged() async {
     // Get local User data
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    if(prefs.getString('name') != null && prefs.getString('name').isNotEmpty) {
-
+    if (prefs.getString('name') != null && prefs.getString('name').isNotEmpty) {
       final String userName = prefs.getString('name');
       http.Response response;
 
@@ -58,11 +57,12 @@ class UserAuth extends User {
           'Accept-Charset': 'application/x-www-form-urlencoded; charset=UTF-8',
           'X-Riot-Token': '$API_KEY',
         },
-      ).catchError((onError){
+      ).catchError((onError) {
         userLogout();
       });
 
-      if(response == null || (response.statusCode != 200 && response.statusCode != 201)) {
+      if (response == null ||
+          (response.statusCode != 200 && response.statusCode != 201)) {
         userLogout();
         return false;
       }
@@ -81,8 +81,10 @@ class UserAuth extends User {
       );
 
       _levelUserImage = 'assets/images/level-5.png';
-      if(responseData['summonerLevel']!= null && responseData['summonerLevel'] < 5) {
-        _levelUserImage = 'assets/images/level-${responseData['summonerLevel']}.png';
+      if (responseData['summonerLevel'] != null &&
+          responseData['summonerLevel'] < 5) {
+        _levelUserImage =
+            'assets/images/level-${responseData['summonerLevel']}.png';
       }
 
       _isLogged = true;
@@ -95,7 +97,7 @@ class UserAuth extends User {
   }
 
   Future<Map<String, dynamic>> auth(String userName, String userRegion) async {
-    if(_isLogged != null && _isLogged) {
+    if (_isLogged != null && _isLogged) {
       return {'success': true, 'message': 'Authenticated successfully'};
     }
 
@@ -109,25 +111,28 @@ class UserAuth extends User {
         'Accept-Charset': 'application/x-www-form-urlencoded; charset=UTF-8',
         'X-Riot-Token': '$API_KEY',
       },
-    ).catchError((onError){
-      message = 'Was not possible to connect. Please check your connection and try again.';
+    ).catchError((onError) {
+      message =
+          'Was not possible to connect. Please check your connection and try again.';
     });
 
-    if(response == null) {
+    if (response == null) {
       return {'success': success, 'message': message};
     }
 
-    switch(response.statusCode) {
+    switch (response.statusCode) {
       case 403:
-      case 404:{
-        message = 'Was not possible to connect with the Server. Please try again in an hour.';
-      }
-      break;
+      case 404:
+        {
+          message =
+              'Was not possible to connect with the Server. Please try again in an hour.';
+        }
+        break;
     }
 
     final Map<String, dynamic> responseData = json.decode(response.body);
 
-    if(responseData.containsKey('accountId')) {
+    if (responseData.containsKey('accountId')) {
       success = true;
       message = 'Authenticated successfully';
 
@@ -143,8 +148,9 @@ class UserAuth extends User {
       );
 
       _levelUserImage = 'assets/images/level-5.png';
-      if(responseData['summonerLevel'] < 5) {
-        _levelUserImage = 'assets/images/level-${responseData['summonerLevel']}.png';
+      if (responseData['summonerLevel'] < 5) {
+        _levelUserImage =
+            'assets/images/level-${responseData['summonerLevel']}.png';
       }
 
       // Set local User data
@@ -157,7 +163,8 @@ class UserAuth extends User {
       prefs.setString('accountId', _authUser.accountId);
       prefs.setString('id', _authUser.id);
       prefs.setInt('revisionDate', _authUser.revisionDate);
-      prefs.setString('avatar', 'https://avatar.leagueoflegends.com/NA1/$userName.png');
+      prefs.setString(
+          'avatar', 'https://avatar.leagueoflegends.com/NA1/$userName.png');
       notifyListeners();
     }
 

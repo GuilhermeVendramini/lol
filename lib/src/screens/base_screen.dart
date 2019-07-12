@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:lol/src/controllers/user_controller.dart';
-import 'package:lol/src/widgets/components/profile_tabbarview.dart';
-import 'package:lol/src/widgets/components/matches_tabbarview.dart';
-import 'package:lol/src/widgets/components/reports_tabbarview.dart';
 import 'package:lol/src/widgets/components/champions_tabbarview.dart';
+import 'package:lol/src/widgets/components/matches_tabbarview.dart';
+import 'package:lol/src/widgets/components/profile_tabbarview.dart';
+import 'package:lol/src/widgets/components/reports_tabbarview.dart';
+import 'package:provider/provider.dart';
 
 class BaseScreen extends StatelessWidget {
   @override

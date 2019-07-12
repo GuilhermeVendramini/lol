@@ -23,17 +23,17 @@ class ChampionModel {
     @required this.partype,
   });
 
-  factory ChampionModel.fromJson(Map<String, dynamic> parsedJson){
+  factory ChampionModel.fromJson(Map<String, dynamic> parsedJson) {
     return ChampionModel(
-        name: parsedJson['name'],
-        id: parsedJson['id'],
-        key: parsedJson['key'],
-        title: parsedJson['title'],
-        blurb: parsedJson['blurb'],
-        info: parsedJson['info'],
-        image: parsedJson['image']['full'],
-        tags: parsedJson['tags'],
-        partype: parsedJson['partype'],
+      name: parsedJson['name'],
+      id: parsedJson['id'],
+      key: parsedJson['key'],
+      title: parsedJson['title'],
+      blurb: parsedJson['blurb'],
+      info: parsedJson['info'],
+      image: parsedJson['image']['full'],
+      tags: parsedJson['tags'],
+      partype: parsedJson['partype'],
     );
   }
 }

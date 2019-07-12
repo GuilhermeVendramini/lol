@@ -1,5 +1,6 @@
-import 'dart:convert';
 import 'dart:async' show Future;
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:lol/src/models/champion_model.dart';
@@ -18,7 +19,12 @@ class Champions extends ChampionsController {
 
   ChampionModel getChampion(int championId) {
     _champion = _champions.where((champ) => champ.key == championId.toString());
-    return _champion.first;
+
+    if (_champion.isEmpty) {
+      return ChampionModel(name: 'unknown', image: 'unknown.png');
+    }
+
+    return _champion?.first;
   }
 
   Map<String, dynamic> get resultMessage {
@@ -39,7 +45,7 @@ class Champions extends ChampionsController {
 
 class ChampionsService extends Champions {
   loadChampions() async {
-    if(_isChampionsLoaded != null) {
+    if (_isChampionsLoaded != null) {
       _resultMessage = {'success': true, 'message': 'Champs already loaded.'};
       return null;
     }
@@ -53,7 +59,7 @@ class ChampionsService extends Champions {
       String championsJsonString = await _loadChampionsJson();
       final championsJsonResponse = json.decode(championsJsonString);
       Map<String, dynamic> championsMap = championsJsonResponse['data'];
-      championsMap.forEach((index, championData){
+      championsMap.forEach((index, championData) {
         ChampionModel champion = ChampionModel.fromJson(championData);
         _champions.add(champion);
         _isChampionsLoaded = true;

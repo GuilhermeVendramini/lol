@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lol/src/controllers/campions_controller.dart';
 import 'package:lol/src/controllers/user_champions_controller.dart';
+import 'package:lol/src/controllers/user_controller.dart';
 import 'package:lol/src/models/champion_model.dart';
 import 'package:lol/src/models/user_champion_model.dart';
 import 'package:provider/provider.dart';
-import 'package:lol/src/controllers/user_controller.dart';
 
 class ChampionScreen extends StatefulWidget {
   final int _championId;
@@ -143,8 +143,7 @@ class _ChampionScreenState extends State<ChampionScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text(
-                      '${userChampion.championPointsUntilNextLevel}'),
+                  Text('${userChampion.championPointsUntilNextLevel}'),
                 ],
               ),
               Row(
@@ -155,8 +154,7 @@ class _ChampionScreenState extends State<ChampionScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text(
-                      '${userChampion.championPointsSinceLastLevel}'),
+                  Text('${userChampion.championPointsSinceLastLevel}'),
                 ],
               ),
               Row(
@@ -167,9 +165,7 @@ class _ChampionScreenState extends State<ChampionScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  userChampion.chestGranted == 1
-                      ? Text('Yes')
-                      : Text('No'),
+                  userChampion.chestGranted == 1 ? Text('Yes') : Text('No'),
                 ],
               ),
               Row(

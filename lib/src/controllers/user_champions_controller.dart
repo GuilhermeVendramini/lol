@@ -1,10 +1,11 @@
 import 'dart:convert';
-import 'package:intl/intl.dart';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+import 'package:lol/src/controllers/api.dart';
 import 'package:lol/src/models/champion_model.dart';
 import 'package:lol/src/models/user_champion_model.dart';
-import 'package:http/http.dart' as http;
-import 'package:lol/src/controllers/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserChampionsController with ChangeNotifier {
@@ -23,7 +24,8 @@ class UserChampions extends UserChampionsController {
   }
 
   UserChampionModel getUserChampion(int championId) {
-    _userChampion = _userChampions.where((champ) => champ.championId == championId);
+    _userChampion =
+        _userChampions.where((champ) => champ.championId == championId);
     return _userChampion.first;
   }
 
@@ -45,7 +47,7 @@ class UserChampions extends UserChampionsController {
 
 class UserChampionsService extends UserChampions {
   loadUserChampions(String userId, List<ChampionModel> championList) async {
-    if(_isUserChampionsLoaded != null) {
+    if (_isUserChampionsLoaded != null) {
       _resultMessage = {'success': true, 'message': 'Champs already loaded.'};
       return null;
     }
@@ -60,45 +62,57 @@ class UserChampionsService extends UserChampions {
         'Accept-Charset': 'application/x-www-form-urlencoded; charset=UTF-8',
         'X-Riot-Token': '$API_KEY',
       },
-    ).catchError((onError){
-      _resultMessage = {'success': false, 'message': 'Was not possible to connect with the Server. Please try again in an hour.'};
+    ).catchError((onError) {
+      _resultMessage = {
+        'success': false,
+        'message':
+            'Was not possible to connect with the Server. Please try again in an hour.'
+      };
     });
 
     _isUserChampionsLoaded = false;
 
-    if(response == null) {
+    if (response == null) {
       notifyListeners();
       return null;
-    } else if(response.statusCode != 200 && response.statusCode != 201) {
-      _resultMessage = {'success': false, 'message': 'Was not possible load the Champions. Please try again later.'};
+    } else if (response.statusCode != 200 && response.statusCode != 201) {
+      _resultMessage = {
+        'success': false,
+        'message':
+            'Was not possible load the Champions. Please try again later.'
+      };
       notifyListeners();
       return null;
     }
 
     final List<dynamic> responseData = json.decode(response.body);
     _userChampions = [];
-    responseData.forEach((userChampionData){
-      Iterable<dynamic> findChampion = championList.where(((champ) => int.parse(champ.key) == userChampionData['championId']));
+    responseData.forEach((userChampionData) {
+      Iterable<dynamic> findChampion = championList.where(
+          ((champ) => int.parse(champ.key) == userChampionData['championId']));
       ChampionModel champion;
-      if(findChampion.isNotEmpty) {
+      if (findChampion.isNotEmpty) {
         champion = findChampion.first;
       }
 
-      DateTime _lastPlayTime = DateTime.fromMillisecondsSinceEpoch(userChampionData['lastPlayTime']);
-      String _lastPlayTimeFormatted = DateFormat('dd/MM/yy').add_jm().format(_lastPlayTime);
+      DateTime _lastPlayTime =
+          DateTime.fromMillisecondsSinceEpoch(userChampionData['lastPlayTime']);
+      String _lastPlayTimeFormatted =
+          DateFormat('dd/MM/yy').add_jm().format(_lastPlayTime);
 
       final UserChampionModel userChampion = UserChampionModel(
         championLevel: userChampionData['championLevel'],
         chestGranted: userChampionData['chestGranted'] == true ? 1 : 0,
         championPoints: userChampionData['championPoints'],
-        championPointsSinceLastLevel: userChampionData['championPointsSinceLastLevel'],
-        championPointsUntilNextLevel: userChampionData['championPointsUntilNextLevel'],
+        championPointsSinceLastLevel:
+            userChampionData['championPointsSinceLastLevel'],
+        championPointsUntilNextLevel:
+            userChampionData['championPointsUntilNextLevel'],
         summonerId: userChampionData['summonerId'],
         tokensEarned: userChampionData['tokensEarned'],
         championId: userChampionData['championId'],
         lastPlayTime: _lastPlayTimeFormatted,
-        championName: champion.name != null
-            ? champion.name : 'unknown',
+        championName: champion.name != null ? champion.name : 'unknown',
         championImage: champion.image != null
             ? 'assets/champs/images/${champion.image}'
             : 'assets/champs/images/unknown.png',

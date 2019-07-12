@@ -1,11 +1,11 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:lol/src/controllers/api.dart';
 import 'package:lol/src/models/match_model.dart';
 import 'package:lol/src/models/user_matches_model.dart';
-import 'package:lol/src/controllers/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 class UserMatchesController with ChangeNotifier {
   UserMatchesModel _userMatches;
@@ -42,8 +42,7 @@ class UserMatches extends UserMatchesController {
 
 class UserMatchesService extends UserMatches {
   loadUserMatches(String accountId) async {
-
-    if(_isMatchesLoaded != null) {
+    if (_isMatchesLoaded != null) {
       _resultMessage = {'success': true, 'message': 'Matches already loaded.'};
       return null;
     }
@@ -58,33 +57,45 @@ class UserMatchesService extends UserMatches {
         'Accept-Charset': 'application/x-www-form-urlencoded; charset=UTF-8',
         'X-Riot-Token': '$API_KEY',
       },
-    ).catchError((onError){
-      _resultMessage = {'success': false, 'message': 'Was not possible to connect with the Server. Please try again in an hour.'};
+    ).catchError((onError) {
+      _resultMessage = {
+        'success': false,
+        'message':
+            'Was not possible to connect with the Server. Please try again in an hour.'
+      };
     });
 
-    if(response == null) {
+    if (response == null) {
       notifyListeners();
       return null;
-    } else if(response.statusCode != 200 && response.statusCode != 201) {
-      _resultMessage = {'success': false, 'message': 'Was not possible load the matches. Please try again later.'};
+    } else if (response.statusCode != 200 && response.statusCode != 201) {
+      _resultMessage = {
+        'success': false,
+        'message': 'Was not possible load the matches. Please try again later.'
+      };
       notifyListeners();
       return null;
     }
 
     final Map<String, dynamic> responseData = json.decode(response.body);
 
-    if(responseData.containsKey('endIndex')) {
+    if (responseData.containsKey('endIndex')) {
       final List<MatchModel> matches = [];
       List<dynamic> matchList = responseData['matches'];
 
       // Most Played At
       List<Map<String, dynamic>> lanes = [];
 
-      int countLaneJungle = matchList.take(10).where((match) => match['lane'] == 'JUNGLE').length;
-      int countLaneTop = matchList.take(10).where((match) => match['lane'] == 'TOP').length;
-      int countLaneNone = matchList.take(10).where((match) => match['lane'] == 'NONE').length;
-      int countLaneMid = matchList.take(10).where((match) => match['lane'] == 'MID').length;
-      int countLaneBottom = matchList.take(10).where((match) => match['lane'] == 'BOTTOM').length;
+      int countLaneJungle =
+          matchList.take(10).where((match) => match['lane'] == 'JUNGLE').length;
+      int countLaneTop =
+          matchList.take(10).where((match) => match['lane'] == 'TOP').length;
+      int countLaneNone =
+          matchList.take(10).where((match) => match['lane'] == 'NONE').length;
+      int countLaneMid =
+          matchList.take(10).where((match) => match['lane'] == 'MID').length;
+      int countLaneBottom =
+          matchList.take(10).where((match) => match['lane'] == 'BOTTOM').length;
 
       lanes = [
         {'lane': 'JUNGLE', 'count': countLaneJungle},
@@ -97,7 +108,7 @@ class UserMatchesService extends UserMatches {
       _playedAt = lanes;
 
       int lastMatch = 0;
-      matchList.forEach((matchData){
+      matchList.forEach((matchData) {
         final MatchModel match = MatchModel(
           lane: matchData['lane'],
           gameId: matchData['gameId'],
@@ -111,7 +122,8 @@ class UserMatchesService extends UserMatches {
         matches.add(match);
 
         lastMatch = matchData['timestamp'] > lastMatch
-            ? matchData['timestamp'] : lastMatch;
+            ? matchData['timestamp']
+            : lastMatch;
       });
 
       _userMatches = UserMatchesModel(
@@ -121,7 +133,10 @@ class UserMatchesService extends UserMatches {
         totalGames: responseData['totalGames'],
       );
       _isMatchesLoaded = true;
-      _resultMessage = {'success': true, 'message': 'Loaded matches successfully.'};
+      _resultMessage = {
+        'success': true,
+        'message': 'Loaded matches successfully.'
+      };
     }
     notifyListeners();
     return null;
