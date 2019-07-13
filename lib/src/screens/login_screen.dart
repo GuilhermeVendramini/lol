@@ -59,7 +59,7 @@ class _LoginScreenSate extends State<LoginScreen> {
                       SizedBox(
                         height: 30.0,
                       ),
-                      Text('Region/Language'),
+                      Text('Region'),
                       _regionDropDownButton(),
                       // _languageDropDownButton(),
                       SizedBox(

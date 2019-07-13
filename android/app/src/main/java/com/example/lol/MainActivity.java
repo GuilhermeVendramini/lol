@@ -1,4 +1,4 @@
-package com.example.lol;
+package vendramini.lol;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

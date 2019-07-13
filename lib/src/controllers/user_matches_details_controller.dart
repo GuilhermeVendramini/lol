@@ -100,7 +100,7 @@ class UserMatchesDetailsService extends UserMatchesDetails {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final String userRegion = prefs.getString('userRegion');
 
-      userMatches.matches.take(2).forEach((matchData) async {
+      userMatches.matches.take(10).forEach((matchData) async {
         http.Response response;
         response = await http.get(
           'https://$userRegion.api.riotgames.com/lol/match/v4/matches/${matchData.gameId}',

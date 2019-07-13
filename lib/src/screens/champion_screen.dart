@@ -203,7 +203,8 @@ class _ChampionScreenState extends State<ChampionScreen> {
       child: Card(
         child: Container(
           padding: EdgeInsets.all(20.0),
-          child: Column(
+          child: champion.name != 'unknown'
+              ? Column(
             children: <Widget>[
               Text(champion.title),
               SizedBox(
@@ -280,7 +281,8 @@ class _ChampionScreenState extends State<ChampionScreen> {
                 ],
               ),
             ],
-          ),
+          )
+              : Text('Unknown champion. Coming soon.'),
         ),
       ),
     );

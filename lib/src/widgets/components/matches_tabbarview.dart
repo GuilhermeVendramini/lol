@@ -69,7 +69,7 @@ class MatchesTabBarView extends StatelessWidget {
           itemBuilder: (BuildContext context, int index) {
             Color _colorTeamWin = Colors.red[600];
             String _teamWin = 'FAIL';
-            if (_userMatchesDetails[index].userStats.win) {
+            if (_userMatchesDetails[index].userStats != null && _userMatchesDetails[index].userStats.win) {
               _colorTeamWin = Colors.cyan[600];
               _teamWin = 'WIN';
             }
@@ -81,102 +81,107 @@ class MatchesTabBarView extends StatelessWidget {
             int _gameDuration =
                 Duration(seconds: _userMatchesDetails[index].gameDuration)
                     .inMinutes;
-
-            return GestureDetector(
-              onTap: () {
-                Route route = RouteFade(
-                    builder: (context) =>
-                        MatchScreen(_userMatchesDetails[index].gameId));
-                Navigator.push(context, route);
-              },
-              child: Card(
-                child: Container(
-                  padding: EdgeInsets.all(18.0),
-                  child: Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    alignment: WrapAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.all(16.0),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: _colorTeamWin),
-                        ),
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.all(2.0),
-                              child: Text(
-                                _teamWin,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18.0,
-                                  color: _colorTeamWin,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(top: 2.0),
-                              child: Text(
-                                '${_userMatchesDetails[index].userStats.champLevel}',
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(
-                            top: 10.0, right: 10.0, bottom: 10.0),
-                        child: Text(
-                          _userMatchesDetails[index].gameMode,
-                          style: TextStyle(
-                            fontSize: 12.0,
+            if(_userMatchesDetails[index].userStats != null) {
+              return GestureDetector(
+                onTap: () {
+                  Route route = RouteFade(
+                      builder: (context) =>
+                          MatchScreen(_userMatchesDetails[index].gameId));
+                  Navigator.push(context, route);
+                },
+                child: Card(
+                  child: Container(
+                    padding: EdgeInsets.all(18.0),
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      alignment: WrapAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.all(16.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: _colorTeamWin),
                           ),
-                        ),
-                      ),
-                      Container(
-                          padding: EdgeInsets.only(
-                              top: 10.0, right: 10.0, bottom: 10.0),
                           child: Column(
                             children: <Widget>[
-                              Text(
-                                ' K   D   A',
-                                style: TextStyle(
-                                  fontSize: 12.0,
+                              Container(
+                                padding: EdgeInsets.all(2.0),
+                                child: Text(
+                                  _teamWin,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0,
+                                    color: _colorTeamWin,
+                                  ),
                                 ),
                               ),
-                              Text(
-                                '${_userMatchesDetails[index].userStats.kills} / ${_userMatchesDetails[index].userStats.deaths} / ${_userMatchesDetails[index].userStats.assists}',
-                                style: TextStyle(
-                                  fontSize: 12.0,
+                              Container(
+                                padding: EdgeInsets.only(top: 2.0),
+                                child: Text(
+                                  '${_userMatchesDetails[index].userStats?.champLevel}',
                                 ),
                               ),
                             ],
-                          )),
-                      Container(
-                        padding: EdgeInsets.only(
-                            top: 10.0, right: 10.0, bottom: 10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: <Widget>[
-                            Text(
-                              _dateMatchFormatted,
-                              style: TextStyle(
-                                fontSize: 10.0,
-                              ),
-                            ),
-                            Text(
-                              'Duration: $_gameDuration m',
-                              style: TextStyle(
-                                fontSize: 10.0,
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ],
+                        Container(
+                          padding: EdgeInsets.only(
+                              top: 10.0, right: 10.0, bottom: 10.0),
+                          child: Text(
+                            _userMatchesDetails[index].gameMode,
+                            style: TextStyle(
+                              fontSize: 12.0,
+                            ),
+                          ),
+                        ),
+                        Container(
+                            padding: EdgeInsets.only(
+                                top: 10.0, right: 10.0, bottom: 10.0),
+                            child: Column(
+                              children: <Widget>[
+                                Text(
+                                  ' K   D   A',
+                                  style: TextStyle(
+                                    fontSize: 12.0,
+                                  ),
+                                ),
+                                Text(
+                                  '${_userMatchesDetails[index].userStats?.kills} / ${_userMatchesDetails[index].userStats?.deaths} / ${_userMatchesDetails[index].userStats?.assists}',
+                                  style: TextStyle(
+                                    fontSize: 12.0,
+                                  ),
+                                ),
+                              ],
+                            )),
+                        Container(
+                          padding: EdgeInsets.only(
+                              top: 10.0, right: 10.0, bottom: 10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              Text(
+                                _dateMatchFormatted,
+                                style: TextStyle(
+                                  fontSize: 10.0,
+                                ),
+                              ),
+                              Text(
+                                'Duration: $_gameDuration m',
+                                style: TextStyle(
+                                  fontSize: 10.0,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
+              );
+            }
+            return Padding(
+              padding: EdgeInsets.all(10.0),
+              child: Text('Was not possible load the match information. Please, try again later.'),
             );
           }),
     );

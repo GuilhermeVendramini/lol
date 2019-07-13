@@ -27,7 +27,7 @@ class _MatchScreenState extends State<MatchScreen> {
     MatchDetailModel _userMatch = userMatchesDetails.getMatch(widget._matchId);
 
     String _teamWin = 'FAIL';
-    if (_userMatch.userStats.win) {
+    if (_userMatch.userStats != null && _userMatch.userStats.win) {
       _teamWin = 'WIN';
     }
 

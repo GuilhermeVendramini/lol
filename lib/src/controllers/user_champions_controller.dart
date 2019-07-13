@@ -66,7 +66,7 @@ class UserChampionsService extends UserChampions {
       _resultMessage = {
         'success': false,
         'message':
-            'Was not possible to connect with the Server. Please try again in an hour.'
+            'Was not possible to connect. Please, verify your Summoner, Region and try again.'
       };
     });
 
@@ -112,8 +112,8 @@ class UserChampionsService extends UserChampions {
         tokensEarned: userChampionData['tokensEarned'],
         championId: userChampionData['championId'],
         lastPlayTime: _lastPlayTimeFormatted,
-        championName: champion.name != null ? champion.name : 'unknown',
-        championImage: champion.image != null
+        championName: champion != null ? champion.name : 'unknown',
+        championImage: champion != null
             ? 'assets/champs/images/${champion.image}'
             : 'assets/champs/images/unknown.png',
       );
