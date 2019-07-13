@@ -71,3 +71,6 @@
 
 # API
 /lib/src/controllers/api.dart
+
+# keys
+android/key.properties
